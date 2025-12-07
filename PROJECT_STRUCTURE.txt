@@ -1,0 +1,27 @@
+consiglitechnical/
+├── .github/
+│   └── copilot-instructions.md
+├── .gitignore
+├── .venv/
+├── data/
+│   ├── BMW/
+│   ├── Ford/
+│   ├── Tesla/
+│   ├── news.docx
+│   └── news.pdf
+├── Dockerfile
+├── evaluation/           (empty - for evaluation scripts/metrics)
+├── generation/
+│   ├── chain.py
+│   └── prompts.py
+├── ingestion/
+│   ├── ingest.py
+│   └── utils.py
+├── main.py
+├── PROJECT_STRUCTURE.txt
+├── README.md
+├── requirements.txt
+├── retrieval/
+│   ├── retriever.py
+│   └── router.py
+└── streamlit_app.py

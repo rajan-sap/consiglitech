@@ -1,0 +1,27 @@
+# Direct dependencies for the project consiglitechnical
+# For reproducibility, consider requirements-lock.txt for exact versions.
+
+# Core Framework
+langchain-core
+langchain-text-splitters
+python-dotenv
+tqdm
+
+# Vector Database
+chromadb
+langchain-chroma
+
+# Embeddings (HuggingFace BGE)
+langchain-huggingface
+sentence-transformers
+
+# Document Parsing
+llama-parse
+python-docx
+
+# UI
+streamlit
+pdfplumber
+
+# Utilities
+numpy

@@ -1,0 +1,22 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+venv/
+.venv/
+.envrc
+.DS_Store
+.vscode/
+*.pdf
+
+# Vector database (regenerated from data)
+chroma_db/
+.processed_files.json
+
+# System files
+*.stackdump
+*.exe.stackdump
+
+# Data folder (user-provided documents)
+data/
