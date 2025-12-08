@@ -68,5 +68,3 @@ def inspect_chroma_db():
                 print(f"    {text}")
 
 
-if __name__ == "__main__":
-    inspect_chroma_db()
