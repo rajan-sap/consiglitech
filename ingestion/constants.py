@@ -41,15 +41,15 @@ DOC_TYPE_NEWS_ARTICLE = "News Article"
 # =============================================================================
 
 # Annual reports: larger chunks for financial context
-FINANCIAL_REPORT_SPLITTER = {
-    "chunk_size": 2000,
-    "chunk_overlap": 400,
+ANNUAL_REPORT_SPLITTER = {
+    "chunk_size": 1000,
+    "chunk_overlap": 200,
     "separators": ["\n\n", "\n", ".\n", ". ", "! ", "? ", "; ", ", ", " ", ""],
 }
 
 # News: smaller chunks for precise retrieval
 NEWS_ARTICLE_SPLITTER = {
-    "chunk_size": 1000,
-    "chunk_overlap": 200,
+    "chunk_size": 500,
+    "chunk_overlap": 100,
     "separators": ["\n\n", "\n", ".\n", ". ", "! ", "? ", "; ", ", ", " ", ""],
 }

@@ -44,31 +44,15 @@ def inspect_chroma_db():
             return "\n".join(lines)
         
         # Show sample documents with metadata
-        print(f"\n--- First 3 Chunks ---")
+        print(f"\n--- First 2 Chunks ---")
         first_sample = col.get(
-            limit=3,
+            limit=2,
             include=["documents", "metadatas"]
         )
         for i in range(len(first_sample["documents"])):
             print(f"\n[{i+1}] Metadata:")
             print(format_metadata(first_sample['metadatas'][i]))
             text = first_sample["documents"][i]
-            print(f"    Text ({len(text)} chars):")
-            print(f"    {text}")
-        
-        # Get last 3 chunks
-        print(f"\n--- Last 3 Chunks ---")
-        all_ids = col.get(include=[])["ids"]
-        last_ids = all_ids[-3:]
-        last_sample = col.get(
-            ids=last_ids,
-            include=["documents", "metadatas"]
-        )
-        for i in range(len(last_sample["documents"])):
-            idx = col.count() - 3 + i + 1
-            print(f"\n[{idx}] Metadata:")
-            print(format_metadata(last_sample['metadatas'][i]))
-            text = last_sample["documents"][i]
             print(f"    Text ({len(text)} chars):")
             print(f"    {text}")
 

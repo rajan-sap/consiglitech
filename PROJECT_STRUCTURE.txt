@@ -1,27 +1,39 @@
+```plaintext
 consiglitechnical/
 ├── .github/
-│   └── copilot-instructions.md
 ├── .gitignore
-├── .venv/
+├── .env
+├── chroma_db/                    # Vector database (auto-generated)
 ├── data/
 │   ├── BMW/
-│   ├── Ford/
+│   │   ├── BMW_Annual_Report_2021.pdf
+│   │   ├── BMW_Annual_Report_2022.pdf
+│   │   └── BMW_Annual_Report_2023.pdf
 │   ├── Tesla/
-│   ├── news.docx
+│   │   ├── Tesla_Annual_Report_2022.pdf
+│   │   └── Tesla_Annual_Report_2023.pdf
 │   └── news.pdf
 ├── Dockerfile
-├── evaluation/           (empty - for evaluation scripts/metrics)
+├── evaluation/
+│   └── __init__.py
 ├── generation/
+│   ├── __init__.py
 │   ├── chain.py
 │   └── prompts.py
 ├── ingestion/
+│   ├── __init__.py
+│   ├── constants.py
 │   ├── ingest.py
 │   └── utils.py
-├── main.py
-├── PROJECT_STRUCTURE.txt
-├── README.md
-├── requirements.txt
 ├── retrieval/
+│   ├── __init__.py
 │   ├── retriever.py
 │   └── router.py
-└── streamlit_app.py
+├── inspect_db.py                 # Utility to inspect ChromaDB contents
+├── main.py                       # Entry point for ingestion
+├── streamlit_app.py              # RAG chatbot UI
+├── test_retrieval.py             # Retrieval testing utility
+├── PROJECT_STRUCTURE.txt
+├── README.md
+└── requirements.txt
+```

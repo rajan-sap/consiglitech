@@ -1,0 +1,38 @@
+# Git
+.git/
+.github/
+.gitignore
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+
+# Environment
+.env
+.envrc
+
+# Vector database (regenerated)
+chroma_db/
+.processed_files.json
+
+# System files
+*.stackdump
+*.exe.stackdump
+.DS_Store
+
+# Documentation
+*.md
+PROJECT_STRUCTURE.txt
+
+# Test files
+test_*.py
+inspect_db.py

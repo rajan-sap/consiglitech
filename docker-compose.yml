@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  # =============================================================================
+  # RAG Chatbot Application
+  # =============================================================================
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: consiglitech
+    ports:
+      - "8501:8501"
+    volumes:
+      # Mount data folder for PDFs (add your documents here)
+      - ./data:/app/data
+      # Persist vector database between runs
+      - ./chroma_db:/app/chroma_db
+    env_file:
+      - .env
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # =============================================================================
+  # Ingestion Service (run once to process documents)
+  # Usage: docker-compose run --rm ingestion
+  # =============================================================================
+  ingestion:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./data:/app/data
+      - ./chroma_db:/app/chroma_db
+    env_file:
+      - .env
+    command: python main.py
+    profiles:
+      - tools  # Only runs when explicitly called

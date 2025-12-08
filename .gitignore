@@ -11,12 +11,13 @@ venv/
 *.pdf
 
 # Vector database (regenerated from data)
-chroma_db/
-.processed_files.json
+# chroma_db/
+# .processed_files.json
 
 # System files
 *.stackdump
 *.exe.stackdump
 
 # Data folder (user-provided documents)
-data/
+data/BMW/
+data/Tesla/

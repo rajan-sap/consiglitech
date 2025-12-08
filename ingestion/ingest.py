@@ -26,7 +26,7 @@ from .constants import (
     COMPANY_FOLDERS,
     DATA_PATH,
     EMBEDDING_MODEL_NAME,
-    FINANCIAL_REPORT_SPLITTER,
+    ANNUAL_REPORT_SPLITTER,
     NEWS_ARTICLE_SPLITTER,
     PROCESSED_FILES_PATH,
     SUPPORTED_FILE_TYPES,
@@ -159,7 +159,7 @@ def process_file(file_path: str) -> List[Document]:
         year = extract_year_from_filename(file_name)
         return chunk_documents(
             documents=documents,
-            splitter_config=FINANCIAL_REPORT_SPLITTER,
+            splitter_config=ANNUAL_REPORT_SPLITTER,
             chunk_creator=create_report_chunk,
             file_name=file_name,
             company=company,
@@ -226,6 +226,7 @@ def create_vector_store() -> Chroma:
         vector_store = Chroma(
             persist_directory=VECTOR_DB_PATH,
             embedding_function=embeddings,
+            collection_name="documents",
         )
         
         # Find new files
@@ -251,7 +252,6 @@ def create_vector_store() -> Chroma:
         if new_chunks:
             print(f"\n⏳ Embedding {len(new_chunks)} new chunks...")
             for i in tqdm(range(0, len(new_chunks), BATCH_SIZE), desc="Embedding"):
-                import pdb
                 batch = new_chunks[i : i + BATCH_SIZE]
                 vector_store.add_documents(batch)
             
