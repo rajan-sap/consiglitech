@@ -55,10 +55,16 @@ def get_rag_answer(query: str, k: int = 3) -> str:
         content = doc.page_content.strip()
         page = doc.metadata.get("page_number", "N/A")
         file_name = doc.metadata.get("file_name", "Unknown")
-        
+        # Exclude text chunk from metadata display and format in specified sequence
+        keys = ["file_name", "document_type", "company", "year", "page_number"]
+        metadata_seq = {k: doc.metadata.get(k, None) for k in keys}
         # Only include if similarity is reasonable
         if similarity > 0.5:
-            response_parts.append(f"**[{i}]** {content[:500]}{'...' if len(content) > 500 else ''}")
+            formatted_meta = "\n".join([f"{k}: {metadata_seq[k]}" for k in keys])
+            response_parts.append(
+                f"**[{i}]** {content[:500]}{'...' if len(content) > 500 else ''}"
+                f"\n\n**Metadata:**\n{formatted_meta}"
+            )
             sources.append(f"Page {page} from {file_name} (similarity: {similarity:.2f})")
     
     if not response_parts:
@@ -82,10 +88,7 @@ st.set_page_config(
 
 st.title("📚 RAG Document QA")
 st.markdown("Ask questions about your ingested documents.")
-
-# Initialize chat history
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = []
+st.session_state.chat_history = []
 
 # Display chat history
 for q, a in st.session_state.chat_history:

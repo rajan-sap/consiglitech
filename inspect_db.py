@@ -43,18 +43,29 @@ def inspect_chroma_db():
                     lines.append(f"      {k}: {meta[k]}")
             return "\n".join(lines)
         
-        # Show sample documents with metadata
-        print(f"\n--- First 2 Chunks ---")
-        first_sample = col.get(
-            limit=2,
-            include=["documents", "metadatas"]
-        )
-        for i in range(len(first_sample["documents"])):
-            print(f"\n[{i+1}] Metadata:")
-            print(format_metadata(first_sample['metadatas'][i]))
-            text = first_sample["documents"][i]
-            print(f"    Text ({len(text)} chars):")
-            print(f"    {text}")
+        # Show 5 random chunks with metadata
+        import random
+        total = col.count()
+        if total > 0:
+            # Get all IDs by fetching all documents
+            all_docs = col.get(
+                limit=total,
+                include=["documents"]
+            )
+            all_ids = all_docs["ids"]
+            sample_size = min(5, len(all_ids))
+            sampled_ids = random.sample(all_ids, sample_size)
+            print(f"\n--- 5 Random Chunks ---")
+            random_sample = col.get(
+                ids=sampled_ids,
+                include=["documents", "metadatas"]
+            )
+            for i in range(len(random_sample["documents"])):
+                print(f"\n[Random {i+1}] Metadata:")
+                print(format_metadata(random_sample['metadatas'][i]))
+                text = random_sample["documents"][i]
+                print(f"    Text ({len(text)} chars):")
+                print(f"    {text}")
 
 
 if __name__ == "__main__":
