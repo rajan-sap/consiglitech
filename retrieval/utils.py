@@ -1,45 +1,88 @@
+import os
 import re
 
-def extract_metadata_from_query(query: str) -> dict:
-    """
-    Extracts metadata keys from the query string using simple rules.
-    For production, replace with robust NER or ML-based extraction.
-    """
-    metadata = {}
-
-    # Company extraction
-    for company in ["Tesla", "BMW", "Ford"]:
-        if company.lower() in query.lower():
-            metadata["company"] = company
-
-    # Year extraction
-    year_match = re.search(r"(20\d{2})", query)
-    if year_match:
-        metadata["year"] = int(year_match.group(1))
-
-    # Document type extraction
-    if "annual report" in query.lower():
-        metadata["document_type"] = "Annual Report"
-    elif "news" in query.lower():
-        metadata["document_type"] = "News Article"
-
-    return metadata
-"""
-Utility functions for retrieval logic.
-"""
-
+from openai import OpenAI
+from dotenv import load_dotenv
 from typing import Dict, Any, List
 
-METADATA_KEYS = ["file_name", "document_type", "company", "year", "page_number"]
 
-def build_chroma_metadata_filter(metadata: Dict[str, Any], keys: List[str] = METADATA_KEYS) -> Dict:
+load_dotenv()
+
+
+import re
+
+def extract_metadata_from_query(query):
     """
-    Build a Chroma-compatible metadata filter dict from metadata.
-    Returns a filter in the format expected by Chroma ($and operator).
+    Extract only company, document_type, and year for metadata filtering.
+    Handles both News Article and Annual Report cases.
     """
-    filter_items = [
-        {k: v} for k, v in metadata.items() if k in keys and v is not None
-    ]
-    if not filter_items:
-        raise ValueError(f"At least one valid metadata key ({keys}) with a non-None value is required.")
-    return {"$and": filter_items} if len(filter_items) > 1 else filter_items[0]
+    # Normalize possessives: "Ford's" -> "Ford"
+    query_clean = re.sub(r"'s\\b", "", query)
+
+    # Extract year (4 consecutive digits)
+    year_match = re.search(r"(20\d{2})", query_clean)
+    year = year_match.group(1) if year_match else None
+
+    # Extract company from a known list
+    companies = ["BMW", "Tesla", "Ford"]
+    company = next((c for c in companies if re.search(rf'\b{re.escape(c)}\b', query_clean, re.IGNORECASE)), None)
+
+    # Extract document type (case-insensitive, allow both 'News Article' and 'Annual Report')
+    doc_types = ["annual report", "news article"]
+    document_type = next((d.title() for d in doc_types if d in query_clean.lower()), None)
+
+    return {
+        "company": company,
+        "document_type": document_type,
+        "year": year
+    }
+
+
+
+api_key = os.getenv("OPENAI_API_KEY")
+if not api_key:
+    raise ValueError("OPENAI_API_KEY not set in environment.")
+client = OpenAI(api_key=api_key)
+
+
+def decompose_query(query, model="gpt-4-1106-preview"):
+    """
+    Decompose a query into single-shot factual questions using LLM. Returns a list of queries (strings).
+    """
+    try:
+        system_prompt = (
+            "You are a helpful assistant that decomposes complex queries into atomic factual questions. "
+            "Return only a list of decomposed queries, one per line. Do not include any metadata or explanations."
+        )
+        # Few-shot example: all content is plain string
+        example_user = "Provide a summary of revenue figures for Tesla, BMW, and Ford over the past three years."
+        example_assistant = (
+            "What was Tesla's revenue for the year 2020?\n"
+            "What was Tesla's revenue for the year 2021?\n"
+            "What was Tesla's revenue for the year 2022?\n"
+            "What was BMW's revenue for the year 2020?\n"
+            "What was BMW's revenue for the year 2021?\n"
+            "What was BMW's revenue for the year 2022?\n"
+            "What was Ford's revenue for the year 2020?\n"
+            "What was Ford's revenue for the year 2021?\n"
+            "What was Ford's revenue for the year 2022?"
+        )
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": example_user},
+            {"role": "assistant", "content": example_assistant},
+            {"role": "user", "content": query},
+        ]
+        response = client.chat.completions.create(
+            model=model,
+            messages=messages
+        )
+        if hasattr(response, "choices") and response.choices:
+            content = response.choices[0].message.content
+            queries = [line.strip() for line in content.splitlines() if line.strip()]
+            queries = [q for q in queries if not q.lower().startswith("error communicating with openai")]
+            return queries
+        else:
+            return []
+    except Exception as e:
+        return [f"Error communicating with OpenAI: {e}"]
