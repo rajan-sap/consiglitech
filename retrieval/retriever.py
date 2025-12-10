@@ -28,17 +28,26 @@ class HybridRetriever:
             embedding_function=self.embeddings,
             collection_name="documents",
         )
-        
+    
+
 
     def _format_results(self, results: list) -> list:
-        """Return results as-is (no formatting)."""
-        return results
+        """Format raw results (doc, score) as dicts."""
+        similarity = lambda l2: 1 - (l2 ** 2) / 2  # L2 to cosine similarity
+        return [
+            {
+                "document": doc.page_content,
+                "metadata": doc.metadata,
+                "cosine_similarity": similarity(score),
+            }
+            for doc, score in results
+        ]
 
 
     def search(
         self,
         query: str,
-        k: int = 3,
+        k: int = 5,
         metadata: Optional[Dict[str, Any]] = None,
         auto_extract_metadata: bool = True,
     ) -> list:
@@ -56,7 +65,7 @@ class HybridRetriever:
         """
         results = self.vector_store.similarity_search_with_score(query, k=k)
         return self._format_results(results)
+    
 
-
-        #     
+ 
         

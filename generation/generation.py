@@ -5,7 +5,7 @@ from retrieval.utils import decompose_query
 from retrieval.utils import extract_metadata_from_query
 from retrieval.retriever import HybridRetriever
 
-def generate_answer(question: str, k: int = 3) -> str:
+def generate_answer(question: str, k: int = 5) -> str:
     """
     Full RAG generation pipeline:
     1. Decompose the question into sub-questions.
@@ -29,27 +29,22 @@ def generate_answer(question: str, k: int = 3) -> str:
 
         filter_dict = {k: v for k, v in metadata.items() if v is not None}
 
-
         if filter_dict:
             # Require both 'year' and 'company' to match
             required_keys = ["year", "company"]
             filtered_results = [
-            {
-                "document": doc.page_content,
-                "metadata": doc.metadata,
-                "cosine_similarity": score,
-            }
-            for doc, score in results
-            if all(doc.metadata.get(k) == filter_dict.get(k) for k in required_keys if k in filter_dict)
-        ]
+                r for r in results
+                if all(r["metadata"].get(k) == filter_dict.get(k) for k in required_keys if k in filter_dict)
+            ]
             if filtered_results:
-                best_chunk = max(results, key=lambda x: x[1])
-                relevant_chunks.append(best_chunk[0].page_content)
+                best_chunk = max(filtered_results, key=lambda x: x["cosine_similarity"])
+                relevant_chunks.append(best_chunk["document"])
                 continue
         # Fallback: use best chunk from all results
+        import pdb; pdb.set_trace()
         if results:
-            best_chunk = max(results, key=lambda x: x[1])
-            relevant_chunks.append(best_chunk[0].page_content)
+            best_chunk = max(results, key=lambda x: x["cosine_similarity"])
+            relevant_chunks.append(best_chunk["document"])
 
     # 3. Aggregate context
     aggregated_context = "\n\n".join(relevant_chunks)
