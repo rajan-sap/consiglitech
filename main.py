@@ -1,34 +1,34 @@
 import os
-from generation.generation import generate_answer
+from generation.generator import generate_answer
 from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
 from ingestion.ingest import create_vector_store
 
-print(f"Starting RAG System Orchestration...")
-print(f"Is there any new document to add to the vector store? (y/n): ", end="")
 
-user_input = input().strip().lower()    
-if user_input == "y":
-    print("Processing new documents and updating vector store...")
-    create_vector_store()
-    print("Vector store updated with new documents.")
-else:
-    print("Skipping document ingestion.")
 
-print("Initializing Vector Store for Retrieval/Generation...")
-print("✓ Loading or creating vector store...")
-print("✓ Embedding model is set up.")
+def main():
+    print("Is there any new document to add to the vector store? (y/n): ", end="")
+    # Update vector store if new documents are to be added
+    user_input = input().strip().lower()
+    if user_input == 'y':
+        create_vector_store()
+    
+    else:
+        print("Notthing to update.")     
+        
+    # Interactive query loop
+    while True:
+        print("\nEnter your query (or type 'exit' to quit): ", end="")
+        query = input().strip() 
+        if query.lower() == 'exit':
+            print("Exiting the RAG system. Goodbye!")
+            break
+        elif query:
+            answer = generate_answer(query)
+            print(f"\nAnswer:\n{answer}\n") 
 
 if __name__ == "__main__":
+    main()
     
-    while True:
-        user_input = input("Enter your query about documents: ")
-        answer = generate_answer(user_input)
-        print("\nGenerated Answer:\n")
-        print(answer)
-        again = input("\nWould you like to query again? (y/n): ").strip().lower()
-        if again not in ("y", "yes"):
-            print("Goodbye!")
-            break
