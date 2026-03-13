@@ -210,8 +210,9 @@ def count_data_files():
         news_count = len([f for f in os.listdir(news_folder) if os.path.isfile(os.path.join(news_folder, f))])
         total += news_count
     # count root-level data files too
-    root_files = [f for f in os.listdir("./data") if os.path.isfile(os.path.join("./data", f))]
-    total += len(root_files)
+    if os.path.isdir("./data"):
+        root_files = [f for f in os.listdir("./data") if os.path.isfile(os.path.join("./data", f))]
+        total += len(root_files)
     return total, per_company, news_count
 
 total_docs, docs_per_company, news_docs = count_data_files()
