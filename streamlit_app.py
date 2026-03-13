@@ -373,7 +373,7 @@ if not st.session_state.messages:
         <h2>DocIntel</h2>
         <p>Ask questions about BMW, Ford, and Tesla — annual reports, financials, and news.<br>
         Answers grounded in real documents using hybrid retrieval.<br>
-        <span style="opacity:0.5; font-size:0.9rem;">Real-time news coming soon.</span></p>
+        <span style="opacity:0.5; font-size:0.9rem; color:white; font-style:italic;">Real-time news coming soon.</span></p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -383,12 +383,9 @@ if not st.session_state.messages:
     st.markdown("<p class='example-label'>Try one of these questions</p>", unsafe_allow_html=True)
 
     example_questions = [
-        "What was Tesla's revenue in 2022?",
+        "What was Tesla's revenue in 2022 and 2023?",
         "Compare BMW and Ford's net income over the past 3 years",
-        "Summarize recent news about Tesla",
         "What are BMW's key financial highlights for 2023?",
-        "How did Ford perform in the EV market?",
-        "What is Tesla's operating margin trend?",
     ]
 
     # Render example questions as clickable buttons
