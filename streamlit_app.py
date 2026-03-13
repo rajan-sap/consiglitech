@@ -191,7 +191,21 @@ if "pending_query" not in st.session_state:
 # HELPER: count ingested docs
 # ─────────────────────────────────────────────
 def count_data_files():
-    """Return basic stats about the data directory."""
+    """Return basic stats about the data directory.
+
+    When running locally (./data exists), counts are computed dynamically.
+    On Streamlit Cloud (./data not present), hardcoded defaults from the
+    last local run are returned so the sidebar still shows accurate stats.
+    """
+    # ── Hardcoded fallback (matches last local snapshot) ──
+    DEFAULT_PER_COMPANY = {"BMW": 3, "Ford": 3, "Tesla": 2}
+    DEFAULT_NEWS = 1
+    DEFAULT_TOTAL = sum(DEFAULT_PER_COMPANY.values()) + DEFAULT_NEWS  # 9
+
+    if not os.path.isdir("./data"):
+        return DEFAULT_TOTAL, DEFAULT_PER_COMPANY, DEFAULT_NEWS
+
+    # ── Dynamic counting (local) ──
     companies = ["BMW", "Ford", "Tesla"]
     total = 0
     per_company = {}
@@ -210,9 +224,8 @@ def count_data_files():
         news_count = len([f for f in os.listdir(news_folder) if os.path.isfile(os.path.join(news_folder, f))])
         total += news_count
     # count root-level data files too
-    if os.path.isdir("./data"):
-        root_files = [f for f in os.listdir("./data") if os.path.isfile(os.path.join("./data", f))]
-        total += len(root_files)
+    root_files = [f for f in os.listdir("./data") if os.path.isfile(os.path.join("./data", f))]
+    total += len(root_files)
     return total, per_company, news_count
 
 total_docs, docs_per_company, news_docs = count_data_files()
