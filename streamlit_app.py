@@ -121,6 +121,11 @@ section[data-testid="stSidebar"] hr {
     background: #191d23 !important; color: #d4d4d8 !important;
     border-color: rgba(255,255,255,0.08) !important;
 }
+.stChatInput textarea::placeholder {
+    font-size: 0.88rem !important;
+    opacity: 0.4 !important;
+    font-style: italic !important;
+}
 
 /* ── Stat cards ── */
 .stat-card {
