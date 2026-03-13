@@ -48,15 +48,18 @@ load_dotenv()
 # =============================================================================
 
 
+
+# Load the set of already processed file paths from disk (for deduplication)
 def load_processed_files() -> Set[str]:
     """Load set of already processed file paths."""
     if not os.path.exists(PROCESSED_FILES_PATH):
         return set()
-    
     with open(PROCESSED_FILES_PATH, "r") as f:
         return set(json.load(f))
 
 
+
+# Save the set of processed file paths to disk (for deduplication)
 def save_processed_files(files: Set[str]) -> None:
     """Save set of processed file paths."""
     os.makedirs(os.path.dirname(PROCESSED_FILES_PATH), exist_ok=True)
@@ -64,6 +67,8 @@ def save_processed_files(files: Set[str]) -> None:
         json.dump(list(files), f, indent=2)
 
 
+
+# Return a list of files that have not yet been processed (new files only)
 def get_new_files(all_files: List[str], processed: Set[str]) -> List[str]:
     """Return files that haven't been processed yet."""
     # Normalize paths for comparison
@@ -76,6 +81,8 @@ def get_new_files(all_files: List[str], processed: Set[str]) -> List[str]:
 # =============================================================================
 
 
+
+# Create a text splitter object using the provided configuration dictionary
 def get_text_splitter(config: Dict) -> RecursiveCharacterTextSplitter:
     """Create a text splitter from configuration."""
     return RecursiveCharacterTextSplitter(
@@ -90,6 +97,8 @@ def get_text_splitter(config: Dict) -> RecursiveCharacterTextSplitter:
 # =============================================================================
 
 
+
+# Split documents into text chunks and apply metadata to each chunk
 def chunk_documents(
     documents: List[Document],
     splitter_config: Dict,
@@ -126,7 +135,7 @@ def chunk_documents(
 # DOCUMENT PROCESSING
 # =============================================================================
 
-
+# Recursively collect all file paths in the data directory that match supported file types
 def collect_file_paths(data_path: str) -> List[str]:
     """Recursively collect all supported file paths."""
     paths = []
@@ -137,10 +146,11 @@ def collect_file_paths(data_path: str) -> List[str]:
     return paths
 
 
+
+# Process a single file: load, determine type, split, and add metadata to chunks
 def process_file(file_path: str) -> List[Document]:
     """
     Process a single file into chunks with appropriate metadata.
-    
     Determines document type from folder structure:
     - Company folders (BMW, Ford, Tesla) → Annual Report
     - Other files → News Article
@@ -175,10 +185,10 @@ def process_file(file_path: str) -> List[Document]:
         )
 
 
+# Load and process all documents from the data directory, returning all chunks with metadata
 def load_all_documents(data_path: str = DATA_PATH) -> List[Document]:
     """
     Load and process all documents from data directory.
-    
     Returns list of all chunks with metadata.
     """
     file_paths = collect_file_paths(data_path)
@@ -202,17 +212,18 @@ def load_all_documents(data_path: str = DATA_PATH) -> List[Document]:
 # VECTOR STORE
 # =============================================================================
 
-
+# Create or load the vector store, processing any new documents as needed
 def create_vector_store() -> Chroma:
     """
     Create or load the vector store, processing any new documents.
-    
     - If store doesn't exist: processes all documents
     - If store exists: checks for new files and only processes those
     """
     print("Initializing vector store...")
 
-    embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL_NAME)
+    embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL_NAME,
+                                        model_kwargs={"device": "cpu"},
+                                        encode_kwargs={"normalize_embeddings": True})
 
     # Get all current files in data directory
     all_files = collect_file_paths(DATA_PATH)
