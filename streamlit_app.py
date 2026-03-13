@@ -2,6 +2,7 @@ import streamlit as st
 import os
 import glob
 from generation.generator import generate_answer
+from llm_config import LLM_MODEL, LLM_BASE_URL
 
 # ─────────────────────────────────────────────
 # PAGE CONFIG
@@ -280,10 +281,19 @@ with st.sidebar:
 
     # ── RAG Pipeline info ──
     st.markdown("##### ⚙️ Tech Stack")
-    st.markdown("""
+    # Derive a friendly display name for the active LLM provider + model
+    if LLM_BASE_URL and "groq" in LLM_BASE_URL:
+        _llm_provider = "Groq"
+    elif LLM_BASE_URL and "localhost" in LLM_BASE_URL:
+        _llm_provider = "LM Studio"
+    else:
+        _llm_provider = "OpenAI"
+    _llm_display = f"{_llm_provider} / {LLM_MODEL}"
+
+    st.markdown(f"""
     <div style="font-size:0.95rem; opacity:0.65; line-height:1.55;">
         <b>Embeddings:</b> BGE-base-en v1.5<br>
-        <b>LLM:</b> GPT-4 Turbo<br>
+        <b>LLM:</b> {_llm_display}<br>
         <b>Vector DB:</b> ChromaDB<br>
         <b>Retrieval:</b> Hybrid (metadata + vector)
     </div>

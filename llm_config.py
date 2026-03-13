@@ -2,11 +2,12 @@
 LLM Configuration — Single source of truth
 ============================================
 
-Switch between OpenAI API and LM Studio (or any OpenAI-compatible server)
-by changing the settings below. Every module imports from here.
+Switch between providers by changing the settings below.
+Every module imports from here.
 
-LM Studio:  base_url = "http://localhost:1234/v1", model = "local-model"
-OpenAI:     base_url = None (default),             model = "gpt-4-1106-preview"
+Groq:       base_url = "https://api.groq.com/openai/v1", model = "llama-3.3-70b-versatile"
+LM Studio:  base_url = "http://localhost:1234/v1",        model = "local-model"
+OpenAI:     base_url = None (default),                    model = "gpt-4-1106-preview"
 """
 
 import os
@@ -15,28 +16,41 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# Helper: read secrets from Streamlit Cloud or fall back to env vars
+def _get_secret(key: str, fallback: str = "") -> str:
+    """Try Streamlit secrets first, then env vars, then fallback."""
+    try:
+        import streamlit as st
+        return st.secrets.get(key, os.getenv(key, fallback))
+    except Exception:
+        return os.getenv(key, fallback)
+
 # =============================================================================
 # PROVIDER TOGGLE  — change this section to switch providers
 # =============================================================================
 
-# --- LM Studio (local) ---
-LLM_BASE_URL = "http://localhost:1234/v1"
-LLM_MODEL = "local-model"            # LM Studio ignores this; it serves whatever model is loaded
-LLM_API_KEY = "sk-lm-lljhYQvo:LFEYMnJ2XMGJnswmNIMH"            # Set to your key if LM Studio auth is enabled
+# --- Groq (cloud, free tier) ---
+LLM_BASE_URL = "https://api.groq.com/openai/v1"
+LLM_MODEL = "llama-3.3-70b-versatile"
+LLM_API_KEY = _get_secret("GROQ_API_KEY")
+
+# --- LM Studio (local) — uncomment these and comment out the block above ---
+# LLM_BASE_URL = "http://localhost:1234/v1"
+# LLM_MODEL = "local-model"
+# LLM_API_KEY = _get_secret("LM_STUDIO_API_KEY")  # set in .streamlit/secrets.toml or env
 
 # --- OpenAI (cloud) — uncomment these and comment out the block above ---
 # LLM_BASE_URL = None
 # LLM_MODEL = "gpt-4-1106-preview"
-# LLM_API_KEY = os.getenv("OPENAI_API_KEY")
+# LLM_API_KEY = _get_secret("OPENAI_API_KEY")
 
 # =============================================================================
 # CONTEXT LIMITS  — prevent prompt overflow for local models
 # =============================================================================
 
-# Max characters for retrieved context (~3.5 chars per token).
-# For a 4096 context window, reserve ~1000 tokens for system+question+response.
-# That leaves ~3000 tokens for context ≈ 10500 chars.
-MAX_CONTEXT_CHARS = 10000
+# Groq models support 128k context, so we can be more generous.
+# For local models with 4096 tokens, reduce to 10000.
+MAX_CONTEXT_CHARS = 30000
 
 def truncate_context(text: str, max_chars: int = MAX_CONTEXT_CHARS) -> str:
     """Truncate context to fit within the model's context window."""
@@ -51,5 +65,5 @@ def truncate_context(text: str, max_chars: int = MAX_CONTEXT_CHARS) -> str:
 llm_client = OpenAI(
     base_url=LLM_BASE_URL,
     api_key=LLM_API_KEY or "not-needed",
-    timeout=120.0,  # 2 minutes per request (local models are slower)
+    timeout=60.0,  # Groq is fast; 60s is plenty
 )

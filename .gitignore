@@ -8,6 +8,7 @@ venv/
 .envrc
 .DS_Store
 .vscode/
+.streamlit/secrets.toml
 *.pdf
 
 # Vector database (regenerated from data)

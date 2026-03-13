@@ -45,9 +45,9 @@ A chronological record of every problem encountered during development and how i
 
 **Problem:** LM Studio returned auth errors when called with the default empty API key. The server had authentication enabled.
 
-**Fix:** Set the LM Studio API key explicitly in `llm_config.py`:
+**Fix:** Set the LM Studio API key via environment variable or `.streamlit/secrets.toml`:
 ```python
-LLM_API_KEY = "sk-lm-lljhYQvo:LFEYMnJ2XMGJnswmNIMH"
+LLM_API_KEY = _get_secret("LM_STUDIO_API_KEY")  # reads from secrets or env
 ```
 
 ---
