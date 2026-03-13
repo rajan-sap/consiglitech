@@ -4,18 +4,13 @@ Hybrid Retriever: Metadata + Vector Embeddings
 """
 import os
 import re
-from openai import OpenAI
 from typing import List, Dict, Any, Optional
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
 from ingestion.constants import EMBEDDING_MODEL_NAME, VECTOR_DB_PATH
 from retrieval.utils import extract_metadata_from_query
+from llm_config import llm_client as client, LLM_MODEL
 import chromadb
-
-api_key = os.getenv("OPENAI_API_KEY")
-if not api_key:
-    raise ValueError("OPENAI_API_KEY not set in environment.")
-client = OpenAI(api_key=api_key)
 
 # Step 1: Implementation of ChromaDB connection
 def connect_chromadb(path="./chroma_db"):
@@ -47,7 +42,7 @@ class Retriever:
 
     def _format_results(self, results: list) -> list:
         """Format raw results (doc, score) as dicts."""
-        similarity = lambda l2: 1 - (l2 ** 2) / 2  # L2 to cosine similarity
+        similarity = lambda l2: 1 - (l2 ** 2) / 4  # L2 to cosine similarity
         return [
             {
                 "document": doc.page_content,
@@ -84,7 +79,7 @@ class Retriever:
 
 
 # Step 2: Implementation of query decompostion
-def decompose_query(query, model="gpt-4-1106-preview"):
+def decompose_query(query, model=LLM_MODEL):
     """
     Decompose a query into single-shot factual questions using LLM. Returns a list of queries (strings).
     """

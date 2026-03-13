@@ -1,12 +1,8 @@
 import os
 import re
 
-from openai import OpenAI
-from dotenv import load_dotenv
 from typing import Dict, Any, List
-
-
-load_dotenv()
+from llm_config import llm_client as client, LLM_MODEL
 
 
 import re
@@ -39,13 +35,7 @@ def extract_metadata_from_query(query):
 
 
 
-api_key = os.getenv("OPENAI_API_KEY")
-if not api_key:
-    raise ValueError("OPENAI_API_KEY not set in environment.")
-client = OpenAI(api_key=api_key)
-
-
-def decompose_query(query, model="gpt-4-1106-preview"):
+def decompose_query(query, model=LLM_MODEL):
     """
     Decompose a query into single-shot factual questions using LLM. Returns a list of queries (strings).
     """
