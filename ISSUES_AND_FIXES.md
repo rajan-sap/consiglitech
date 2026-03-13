@@ -167,6 +167,41 @@ if not os.path.isdir("./data"):
 
 ---
 
+## 10. AuthenticationError & "Y" Ghost Responses on Streamlit Cloud
+
+**When:** First live deployment to Streamlit Community Cloud  
+**Files:** `llm_config.py`, `streamlit_app.py`, `generation/generator.py`
+
+**Problem (two symptoms):**
+
+1. **`openai.AuthenticationError`** — The `.streamlit/secrets.toml` file (containing `GROQ_API_KEY`) is gitignored and never pushed to the repo. On Streamlit Cloud, `_get_secret("GROQ_API_KEY")` returned `""`, causing the OpenAI client to be created with `api_key="not-needed"`. Groq rejected every request.
+
+2. **"Y" ghost responses** — Users saw the letter "Y" next to every question, mistaking it for an answer. It was actually the **user avatar** rendered as `"You"[0]` → `"Y"`. Because `generate_answer()` threw an unhandled `AuthenticationError`, no assistant message was ever appended, so chat history only contained user messages with their "Y" avatar.
+
+**Fix:**
+
+1. **Startup API-key warning** — Added a check in `streamlit_app.py` at import time:
+   ```python
+   from llm_config import LLM_API_KEY
+   if not LLM_API_KEY:
+       st.warning("⚠️ LLM API key not found...")
+   ```
+
+2. **Try/except around `generate_answer()`** — Catches any exception from the LLM call and returns a friendly in-chat error message instead of crashing the whole page:
+   ```python
+   try:
+       answer = generate_answer(query)
+   except Exception as e:
+       if "AuthenticationError" in type(e).__name__:
+           answer = "⚠️ Authentication error — set GROQ_API_KEY in Settings → Secrets"
+       else:
+           answer = f"⚠️ Error: {type(e).__name__} — {e}"
+   ```
+
+3. **Streamlit Cloud secret** — User must add `GROQ_API_KEY` via the Cloud dashboard (**Settings → Secrets**), not via the gitignored `.streamlit/secrets.toml`.
+
+---
+
 ## Quick Reference: Key Configuration
 
 | Setting | Location | Current Value |

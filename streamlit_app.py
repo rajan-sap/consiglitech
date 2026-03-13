@@ -2,7 +2,7 @@ import streamlit as st
 import os
 import glob
 from generation.generator import generate_answer
-from llm_config import LLM_MODEL, LLM_BASE_URL
+from llm_config import LLM_MODEL, LLM_BASE_URL, LLM_API_KEY
 
 # ─────────────────────────────────────────────
 # PAGE CONFIG
@@ -13,6 +13,18 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
+# ─────────────────────────────────────────────
+# API KEY VALIDATION
+# ─────────────────────────────────────────────
+if not LLM_API_KEY:
+    st.warning(
+        "⚠️ **LLM API key not found.** The app cannot generate answers.\n\n"
+        "If you're running locally, create `.streamlit/secrets.toml` with:\n"
+        "```\nGROQ_API_KEY = \"gsk_your_key_here\"\n```\n\n"
+        "On Streamlit Cloud, go to **Settings → Secrets** and add the key there.",
+        icon="🔑",
+    )
 
 # ─────────────────────────────────────────────
 # CUSTOM CSS
@@ -425,8 +437,19 @@ if st.session_state.pending_query:
     query = st.session_state.pending_query
     st.session_state.pending_query = None
 
-    with st.spinner("🔍 Searching documents and generating answer..."):
-        answer = generate_answer(query)
+    try:
+        with st.spinner("🔍 Searching documents and generating answer..."):
+            answer = generate_answer(query)
+    except Exception as e:
+        error_type = type(e).__name__
+        if "AuthenticationError" in error_type:
+            answer = (
+                "⚠️ **Authentication error** — the LLM API key is missing or invalid.\n\n"
+                "Please set `GROQ_API_KEY` in Streamlit Cloud **Settings → Secrets**, "
+                "or in `.streamlit/secrets.toml` when running locally."
+            )
+        else:
+            answer = f"⚠️ **Error generating answer:** {error_type} — {e}"
 
     st.session_state.messages.append({"role": "assistant", "content": answer})
     st.rerun()
