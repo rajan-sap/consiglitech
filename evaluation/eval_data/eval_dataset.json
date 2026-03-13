@@ -1,0 +1,962 @@
+[
+  {
+    "question": "What was a key topic at the BMW Group's Supervisory Board meetings in 2021?",
+    "ground_truth": "Strategic cooperations, including the positioning of the BMW Group in the Chinese market and the future structure of the BMW Brilliance Automotive joint venture.",
+    "ground_truth_contexts": [
+      "Strategic cooperations were again a key topic at Supervisory Board meetings in 2021, including in particular the positioning of the BMW Group in the vital Chinese market going forward and the future structure of the BMW Brilliance Automotive joint venture. We also deliberated on the intended acquisition of shares in Brilliance Automotive Manufacturing. The Board of Management updated us regularly on the strategic positioning and status at the various YOUR NOW companies."
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2021"
+    }
+  },
+  {
+    "question": "By how much did the share of electrified vehicles in deliveries increase from 2017 to 2021 according to BMW's Automotive Segment?",
+    "ground_truth": "The share of electrified vehicles in deliveries increased by 56.6%.",
+    "ground_truth_contexts": [
+      "### AUTOMOTIVE SEGMENT\n\n| Indicator | 2017 | 2018 | 2019 | 2020 | 2021 | Change in % |\n|-----------|------|------|------|------|------|-------------|\n| EBIT margin in % | 9.2 | 7.2 | 4.9 | 2.7 | 10.3 | – |\n| RoCE in % | 77.7 | 49.8 | 29.0 | 12.7 | 59.9 | – |\n| Deliveries⁴, ⁵ | 2,465,021 | 2,486,149 | 2,537,504 | 2,325,179 | 2,521,514 | 8.4 |\n| Share of electrified vehicles in deliveries (in %) | 4.2 | 5.7 | 5.8 | 8.3 | 13.0 | 56.6 |\n| CO₂ emissions EU new vehicle fleet (in g/km)⁶, ⁷ | 128.0 | 127.5 | 127.0 | 99.1 (135.0)⁸ | 115.9⁹ | – 14.1 |\n| CO₂ emissions per vehicle produced (in tons)⁴, ⁵, ⁶ | 0.41 | 0.40 | 0.40 | 0.35 | 0.33 | – 5.7 |\n\n### MOTORCYCLES SEGMENT\n\n| Indicator | 2017 | 2018 | 2019 | 2020 | 2021 | Change in % |\n|-----------|------|------|------|------|------|-------------|\n| EBIT margin in % | 9.1 | 8.1 | 8.2 | 4.5 | 8.3 | 84.4 |\n| RoCE in % | 34.0 | 28.4 | 29.4 | 15.0 | 35.9 | – |\n| Deliveries | 164,153 | 165,566 | 175,162 | 169,272 | 194,261 | 14.8 |"
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2021"
+    }
+  },
+  {
+    "question": "How many categories does BMW Motorrad's model range of motorcycles and scooters cover?",
+    "ground_truth": "BMW Motorrad's model range covers six categories: Sport, Tour, Roadster, Heritage, Adventure, and Urban Mobility.",
+    "ground_truth_contexts": [
+      "## Motorcycles Segment\n\nAs in all other areas, the BMW Group focuses rigorously on the premium segment with its Motorcycles segment and its model range of motorcycles and scooters in the Sport, Tour, Roadster, Heritage, Adventure, and Urban Mobility categories. BMW Motorrad also offers a broad range of equipment options to enhance riding safety and comfort as well as personalized configurations. The Motorcycles segment’s sales network is organized similarly to that of the Automotive segment. Currently, BMW motorcycles are sold by more than 1,200 dealerships and importers in over 90 countries worldwide.\n\n## Financial Services Segment"
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2021"
+    }
+  },
+  {
+    "question": "What model is the BMW Group's Company-wide Compliance Management System (CMS) based on?",
+    "ground_truth": "The BMW Group's Company-wide CMS is based on the Prevent, Detect, Respond Model.",
+    "ground_truth_contexts": [
+      "### Compliance Management System (CMS)\n\nThe BMW Group’s Company-wide CMS is based on the Prevent, Detect, Respond Model, which defines specific prevention, monitoring, control, and response measures, on the basis of clearly assigned roles and responsibilities. The CMS is tailored to the Company’s specific risk situation. It addresses all relevant compliance topics, including fraud prevention, export control, anti-money laundering, antitrust compliance, corruption prevention, and human rights as well as data privacy and technical compliance. These last two topics are the responsibility of the respective specialist departments.\n\nAn effective and efficient compliance organization is fundamental to reducing sanction and liability risks, as well as risks arising from other (non-)financial disadvantages, such as reputational risks.\n\n### Further Development of the CMS"
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2021"
+    }
+  },
+  {
+    "question": "What is the BMW Group's commitment in relation to the Paris Climate Agreement?",
+    "ground_truth": "The BMW Group is committed to the Paris Climate Agreement and providing a verifiable track record of continuous improvement.",
+    "ground_truth_contexts": [
+      "#### Position – What does the BMW Group stand for?\n\nThe BMW Group is committed to first-class individual mobility and contributes to sustainable development. It aims to find the right balance between business, the environment and society. The BMW Group combines driving pleasure and responsibility without compromise and, together with its partners, leads the industry in environmental, social and integrity standards. The Company is committed to the Paris Climate Agreement and providing a verifiable track record of continuous improvement. To achieve this and reduce the impact on the environment as a whole, the BMW Group is promoting as well the reduction of CO2 emissions throughout the whole product life cycle as the principles of the circular economy – from the supply chain, to production, the use phase and the recycling of its products. For this reason, BMW has also laid out ambitious targets to reduce CO2 emissions by 2030 (reference year 2019), understood as follows:"
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2021"
+    }
+  },
+  {
+    "question": "What is identified as an important mega-trend for the BMW Group in addition to mobility concepts and services?",
+    "ground_truth": "The combination of digitalisation and connectivity.",
+    "ground_truth_contexts": [
+      "## Corporate Governance\n\n## Remuneration Report\n\n## Other Information\n\n## BMW Group Integrated Strategy\n\nEspecially in urban areas, but will mainly be used as a supplementary option. Mobility concepts and services. In addition to the topics already referred to, the combination of digitalisation and connectivity is another important mega-trend for the BMW Group. The modern vehicle is already one of the most complex and software-intensive items owned by consumers. Vehicles are increasingly viewed as digital objects, with corresponding functions expected. Customers demand products that are seamlessly and perfectly integrated into their familiar living environment. It is therefore safe to assume that digital business models will generate a growing percentage of added value in the future. China, in particular, is setting new standards for digitalisation. Customer desires are increasingly influenced by the world of consumer electronics and are an important factor in purchasing decisions."
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2021"
+    }
+  },
+  {
+    "question": "What section of the BMW Group's 2021 Annual Report provides information on the company's financial performance?",
+    "ground_truth": "The section on 'Financial Performance' provides this information on page 91.",
+    "ground_truth_contexts": [
+      "### Detailed Contents\n\n- 34 Overview of the BMW Group\n- 38 BMW Group Integrated Strategy\n- 51 Products and Mobility Solutions\n- 67 Production, Purchasing and Supplier Network\n- 80 Employees and Society\n- 91 Financial Performance\n- 121 EU Taxonomy\n- 124 Outlook, Risk and Opportunity Management\n- 143 Internal Control System\n- 144 Disclosures Relevant for Takeovers and Explanatory Comments\n\n### Corporate Governance\n\n- 248 Fundamental Aspects of Corporate Governance (Part of the Combined Management Report)\n- 258 Responsibility Statement by the Company’s Legal Representatives\n- 259 Independent Auditor’s Report\n- 267 Independent Practitioner’s Report\n\n### Remuneration Report\n\n- 271 Remuneration Report\n\n### Other Information\n\n- 321 Further GRI Information\n- 332 SASB Index\n- 337 TCFD Index\n- 341 NFS Index\n- 342 Consumption and Carbon Disclosures\n- 344 BMW Group Ten-year Comparison\n- 346 Glossary and Explanation of Key Figures\n- 351 Financial Calendar\n- 352 Contacts"
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2021"
+    }
+  },
+  {
+    "question": "Who is the Chairman of the Supervisory Board at BMW as mentioned in the 2021 Annual Report?",
+    "ground_truth": "Norbert Reithofer",
+    "ground_truth_contexts": [
+      "With great resolve, the Board of Management continued to develop the key strategies that will shape the future of the BMW Group and create the ideal conditions for an attractive product portfolio precisely tailored to meet the needs of our customers as we move forward. The fact that we are on the right track with our strategy was amply borne out by the enthusiastic media response to the BMW i Vision Circular at the IAA Mobility in Munich and the presentation of the BMW iX and BMW i4 models. Even in these uncertain times we therefore look to 2022 with confidence and will remain firmly focused on our mission of moving people with products that evoke emotions.\n\nNorbert Reithofer\nChairman of the Supervisory Board"
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2021"
+    }
+  },
+  {
+    "question": "What policy of BMW AG has been highlighted by rating agencies as a contributing factor to its performance?",
+    "ground_truth": "BMW AG's policy of decarbonisation.",
+    "ground_truth_contexts": [
+      "# BMW Group and Capital Markets\n\n## Ratings Remain at High Level\n\nIn addition to the general recovery in the automotive industry, the upgraded outlook reflects the rating agencies’ expectations that the BMW Group will continue performing well, despite the challenging economic environment. Moreover, both agencies explicitly highlight the fact that BMW AG continues to implement its policy of decarbonisation, thereby enabling it to undercut the targets set by the EU for 2020.\n\nThe BMW Group continues to enjoy the best ratings on the capital market of Europe’s automobile manufacturers. The persisting impact of the coronavirus pandemic and the challenges posed by the ongoing transformation of the automotive industry caused rating agencies to reassess their ratings for the automotive sector in 2020, resulting in the ratings and outlooks of numerous companies being downgraded. However, in light of the generally improved situation, upward adjustments were made over the course of 2021."
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2021"
+    }
+  },
+  {
+    "question": "What is the focus of the BMW Group Report 2021?",
+    "ground_truth": "The BMW Group Report 2021 focuses on the company's transition to electric and digitalised mobility within a sustainable and circular economy.",
+    "ground_truth_contexts": [
+      "# THE FUTURE IS\n\n## ELECTRIC,\n\n## DIGITAL AND\n\n## CIRCULAR\n\n### BMW GROUP REPORT 2021\n\nOn the way to an electric and digitalised mobility in a sustainable and circular economy. Report on the BMW Group’s economic performance and its ecological and social contributions.\n\n↗ Link to the Online Report"
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2021"
+    }
+  },
+  {
+    "question": "How many new debt securities did BMW issue under the EMTN Program in 2022, and what was their total nominal amount?",
+    "ground_truth": "BMW issued two new debt securities with a total nominal amount of euro 2 billion in 2022.",
+    "ground_truth_contexts": [
+      "Under the EMTN Program, the Company issued two new debt securities during the year 2022 (2021: 2 new debt securities) with a nominal amount of euro 2 billion (2021: euro 1.5 billion). During the year the Company redeemed 15 EMTN’s (2021: 14 EMTN’s) with a nominal amount of euro 7.4 billion (2021: euro 4.7 billion). Further issuers are BMW AG, BMW US Capital LLC, BMW International Investment B.V. and BMW Japan Finance Corp. Furthermore, the Company participates in the euro 5.0 billion Multi-Currency Commercial Paper Program established by BMW AG, BMW Finance N.V. and BMW International Investment B.V. The Multi-Currency Commercial Paper Program supports flexible and broad access to capital markets. Since May 2006, the Company acts as an issuer under the euro 2.0 billion French Commercial Paper (Billets de Trésorerie) Program established by the Company."
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "What percentage of the total receivables from BMW Group Companies had a fixed interest rate in 2022?",
+    "ground_truth": "72%",
+    "ground_truth_contexts": [
+      "# Receivables from BMW Group Companies\n\nFrom the total receivables from BMW Group Companies, 72% (2021: 63%) have a fixed interest rate. The weighted average maturity period and the weighted average effective interest rate of the receivables from BMW Group companies during the financial year 2022 are:"
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "What was the net income for BMW Finance N.V. in the year 2022?",
+    "ground_truth": "403,943 euro thousand",
+    "ground_truth_contexts": [
+      "# BMW Finance N.V.\n\n## Cash Flow Statement\n\nin euro thousand    Note    2022    2021\n\nNet income/(loss) for the year                                                  403,943             118,889"
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "Who audited the BMW Finance N.V. Annual Report for the year 2022?",
+    "ground_truth": "PricewaterhouseCoopers Accountants N.V. audited the BMW Finance N.V. Annual Report for the year 2022.",
+    "ground_truth_contexts": [
+      "# BMW Finance N.V.\n\n## Declaration by the Supervisory Board\n\n- Pursuant to the Articles of Association we are pleased to submit the Annual Report for the year 2022 as drawn up by the Board of Management.\n- The Annual Report, which both the Supervisory Board and the Board of Management have signed, has been audited by PricewaterhouseCoopers Accountants N.V.\n- The independent auditor's report is included in the other information section of the Annual Report.\n\nThe Hague, 20 April 2023\n\nF. Altmann    C. Philipp    A. Brons    J. Messerschmidt-Otten\nChairman"
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "What is the main activity of the Company as described in the 2022 Annual Report?",
+    "ground_truth": "The main activity of the Company is the financing of group companies, through bond offerings on the international capital markets.",
+    "ground_truth_contexts": [
+      "#### Overview and Context\nThe Company’s main activity is the financing of group companies, through bond offerings on the international capital markets. The repayment of the bonds to the investors is guaranteed by BMW AG as disclosed in note 13 to the financial statements. The Company has derivative financial instruments in place to mitigate interest rate risk and currency risk. We paid specific attention to the areas of focus driven by the operations of the Company, as set out below."
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "What are the two main categories of risks that the BMW Company's exposure can be broken down into?",
+    "ground_truth": "Financial and non-financial risks.",
+    "ground_truth_contexts": [
+      "# Risk management\n\nThe exposure of the Company can be broken down into two main categories: financial and non-financial risks.\n\n## Risk Management Framework\n\nThe formal procedures and policies operated by the Company to cover banking, foreign exchange and other treasury matters are consistent with objectives and policies for financial risk management within the BMW Group. The Company’s policy is not to take positions in derivative financial instruments with the aim of profit realization. The Company’s risk management policy strives to achieve interest rate and foreign currency exposure neutrality.\n\nThe Company has exposure to the following risks from its use of financial instruments:\n−  credit risk\n−  liquidity risk and\n−  market risk"
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "What was the increase in the Dutch corporation tax rate that BMW Finance N.V. was subject to in 2022?",
+    "ground_truth": "The Dutch corporation tax rate increased from 25% to 25.8% in 2022.",
+    "ground_truth_contexts": [
+      "Effective tax rate                                                      26.6%           23.6%\n\nThe 2022 Dutch corporation tax applies at 25.8%, which represents a slight increase from the previous year’s rate of 25%. In 2022, the Company incurred a tax expense of 3 million as a result of the change in tax rate (from 25% to 25.8%).\n\nBMW Finance N.V., a member of the fiscal unity headed by BMW Holding B.V., is jointly and severally liable for the payment of any tax liability of the fiscal unity. The following companies are part of the fiscal unity per 31 December 2022:\n\n- BMW Holding B.V. (head of the fiscal unity)\n- BMW Finance N.V.\n- BMW Nederland B.V.\n- BMW Financial Services B.V.\n- BMW China Capital B.V.\n\n# Remuneration of Board of Directors\n\nIn 2022, the remuneration of the Board of Directors, which is short-term in nature, amounted to euro 0.6 million (2021: euro 0.6 million). The total remuneration consists of periodic remuneration and bonuses plus other remuneration:"
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "What type of risks does the BMW Group policy align its internal control and risk management system on?",
+    "ground_truth": "The BMW Group policy aligns its internal control and risk management system on misappropriation of assets and financial reporting.",
+    "ground_truth_contexts": [
+      "Non-financial risks could arise from operating risks such as the risk of fraud and compliance risk. Risk of fraud is mainly identified in the area of misappropriation of assets. The Company has aligned its internal control and risk management system on misappropriation of assets and financial reporting with the BMW Group policy. Risk management is based on the COSO model, where the relevant processes include the early identification of risks and opportunities, their measurement and the use of suitable instruments to manage and monitor risks. The Company has established an encompassing reporting system that provides decision makers with comprehensive, up-to-date information and insights into developments regarding the capital markets."
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "What financial statements of BMW Finance N.V. were audited for the year 2022?",
+    "ground_truth": "The audited financial statements for 2022 include the statement of financial position as at 31 December 2022, the income statement, the statements of comprehensive income, changes in equity, the cash flow statement, and the notes with a summary of significant accounting policies and other explanatory information.",
+    "ground_truth_contexts": [
+      "#### What We Have Audited\nWe have audited the accompanying financial statements 2022 of BMW Finance N.V., The Hague.\n\nThe financial statements comprise:\n- the statement of financial position as at 31 December 2022;\n- the following statements for 2022: the income statement, the statements of comprehensive income, changes in equity and the cash flow statement; and\n- the notes, comprising a summary of the significant accounting policies and other explanatory information.\n\nThe financial reporting framework applied in the preparation of the financial statements is EU-IFRS and the relevant provisions of Part 9 of Book 2 of the Dutch Civil Code.\n\n#### The Basis for Our Opinion\nWe conducted our audit in accordance with Dutch law, including the Dutch Standards on Auditing. We have further described our responsibilities under those standards in the section ‘Our responsibilities for the audit of the financial statements’ of our report."
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "What is the purpose of using IT systems at the BMW Group?",
+    "ground_truth": "The BMW Group uses IT systems to monitor financial positions and daily cash flows and to process payments to internal and external counterparties.",
+    "ground_truth_contexts": [
+      "Non-financial risks could arise from operating risks. Risks mainly result from the use of IT systems and information technology. The Company uses IT systems to monitor financial positions and daily cash flows and to process payments to internal and external counterparties. System failures can, therefore, lead to delays in payment processes. Further operating risks can arise in connection with the settlement of financial transactions. The management of daily cash flows at the Company depends on the timely receipt of funds from external institutions who act as counterparties to financial transactions, such as bonds, swaps or other derivative financial instruments. To avoid negative impacts of system failures, all key systems are set up in parallel and/or backup facilities or available within the BMW Group. Likewise, the security of all IT systems is continuously and thoroughly checked, to ensure a high level of information safety is maintained at all times."
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "Which company is the ultimate holding company that BMW is economically interrelated with?",
+    "ground_truth": "BMW AG, Germany",
+    "ground_truth_contexts": [
+      "Given the objectives of the Company, the Company is economically interrelated with the ultimate holding company, BMW AG, Germany. In assessing the solvency of the Company, the solvency of the BMW Group as a whole, headed by BMW AG, needs to be considered. Solvency is assured by managing and monitoring the liquidity situation based on a rolling cash flow forecast. The resulting funding requirements are secured by a variety of instruments placed on the world’s financial markets. The objective is to minimize risk by matching."
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "How many new notes did the Company issue under the EMTN Program in 2023?",
+    "ground_truth": "The Company issued eleven new notes under the EMTN Program in 2023.",
+    "ground_truth_contexts": [
+      "# Annual Management Report\n\n## Debt capital markets\n\nThe Company continues to have good access to the international capital markets and also benefits from attractive refinancing conditions. A variety of instruments in the international capital markets are used to finance the business.\n\nThe Company has successfully utilized the Euro Medium Term Note (“EMTN”) Program of euro 50.0 billion, the euro 5.0 billion Multi-Currency Commercial Paper Program together with the 2.0 billion French Commercial Paper (Billets de Trésorerie) Program in the year under report with the objective to refinance the BMW Group companies. The programs give the Company the ability to raise funds without significant administrative efforts.\n\nDuring 2023, under the EMTN Program, the Company issued eleven new notes (2022: two new notes). Additionally, the Company redeemed thirteen EMTNs during the year (2022: fifteen EMTNs)."
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "What is the fair value of BMW Group receivables as reported on the balance sheet at 31 December 2023?",
+    "ground_truth": "The fair value of BMW Group receivables is 42,169,433.",
+    "ground_truth_contexts": [
+      "# Annual Management Report 31 December 2022\n\n## Report of the Supervisory Board\n\n## Financial Statements\n\n### Income Statement and Statement of Comprehensive Income for the Year Ended 31 December 2023\n\n### Balance Sheet at 31 December 2023\n\n| Note | Fair Value | Carrying Value | Difference |\n|------|------------|----------------|------------|\n| BMW Group receivables (level 2) | [9] 42,169,433 | 41,838,877 | 330,556 |\n| BMW Group liabilities (level 2) | [15] 13,937,170 | 14,111,869 | (174,699) |\n| Non-current debt securities (level 2) | [13] 16,071,399 | 15,839,913 | 231,486 |\n| Loans due to banks (level 2) | [14] 1,786,749 | 1,674,479 | 112,270 |\n\n### Cash Flow Statement for the Year Ended 31 December 2023\n\n### Statement of Changes in Equity\n\n### Notes to the Financial Statements"
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "What was the gross loss reported by BMW in 2023?",
+    "ground_truth": "507.0 million euros",
+    "ground_truth_contexts": [
+      "## Operations in 2023\n\nIn 2023, the Company reported a gross loss of 507.0 million euros, compared to a gross profit of 550.6 million euros in 2022. The results are primarily composed of a positive interest margin of 26.2 million euros (2022: 26.8 million euros) and a loss on financial transactions of 528.9 million euros (2022: profit of 532.3 million euros). The negative impact on the results in 2023 is largely attributed to the valuation of financial instruments at fair value, particularly due to the negative trend of the two-year euro swap curve and the reversal of the positive financial transaction result from 2022."
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "What is the total cash position not part of the Global Payment Platform for BMW as of 31 December 2023?",
+    "ground_truth": "The total cash position that is not part of the Global Payment Platform amounted to euro 0.8 million.",
+    "ground_truth_contexts": [
+      "## Financial statements\n### Income Statement and Statement of comprehensive income for the year ended 31 December 2023\n### Balance Sheet at 31 December 2023\n### Cash Flow Statement for the year ended 31 December 2023\n### Statement of Changes in Equity\n### Notes to the Financial Statements\n1. Significant accounting policies\nCash and Cash equivalents have a maturity of less than three months and are freely disposable to the Company. The Company participates in the Global Payment Platform of BMW AG. Therefore, a part of the cash position with the external banks is reflected in the Inhouse Bank position with BMW AG. The balance is accounted for as a Receivable from BMW Group companies (note 9) and a Liability due to BMW Group companies (note 15). The total cash position that is not part of the Global Payment Platform amounted to euro 0.8 million (2022: euro 1.0 million), is mainly denominated in Chinese renminbi and caused by decreased activity on the Company’s external bank accounts."
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "What was the Company's total balance sheet value as of December 31, 2023?",
+    "ground_truth": "42,280 million euros",
+    "ground_truth_contexts": [
+      "The Company maintained a stable interest margin of 26.2 million euros (2022: 26.8 million euros). An interest remuneration agreement between the Company and BMW AG ensures that the Company earns an “at arm’s length” net interest result for its financing activities, reflecting its function and risk profile as a strategic liquidity reserve provider to BMW AG. The Company paid a liquidity fee of 21.8 million euros in 2023, compared to receiving 65.9 million euros in 2022.\n\n## Financial Position\n\nAs of December 31, 2023, the Company’s total balance sheet decreased by 941 million euros to 42,280 million euros (2022: 43,221 million euros). The portfolio remains stable, with the decrease primarily due to minor business fluctuations. Debt securities declined to 22,861 million euros (2022: 24,158 million euros), offset by an increase in liabilities due to BMW Group companies, which rose to 15,631 million euros (2022: 14,112 million euros).\n\n## Future Outlook"
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "What was the net income or loss for BMW Finance N.V. for the year ended 31 December 2023?",
+    "ground_truth": "The net loss for the year ended 31 December 2023 was 394,288 euro thousand.",
+    "ground_truth_contexts": [
+      "# BMW Finance N.V.\n## Cash Flow Statement for the year ended 31 December 2023\n\n### Annual Management Report in euro thousand\n| Note | 2023 | 2022 |\n|------|------|------|\n| Net income/(loss) for the year | (394,288) | 403,943 |\n\n### Balance Sheet at 31 December 2023\n### Cash Flow Statement for the year ended 31 December 2023\n| Adjustments for non-cash items | | |\n|----------------------------------|------|------|\n| Fair value measurement losses/gains derivatives | (106,768) | 1,580,318 |\n| Fair value measurement losses debt securities | 669,784 | (1,702,472) |\n| Amortisation financial instruments | (13,106) | 12,496 |\n| Loss/ (gain) on revaluation of financial instruments | 4,049 | (2,833) |\n| Reversal of impairment / (impairment loss) on financial receivables | 3,313 | 96 |\n| Taxes | (112,674) | 146,657 |\n| Deferred tax | 13,314 | – |\n| Interest income | (1,965,292) | (988,331) |\n| Interest expense | 1,939,115 | 961,574 |"
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "How much did BMW repay under its French Commercial paper program in 2023?",
+    "ground_truth": "BMW repaid euro 3.1 billion under its French Commercial paper program in 2023.",
+    "ground_truth_contexts": [
+      "The Company also utilised successfully its French Commercial paper program and issued 46 new liabilities (2022: 24 new liabilities) with a nominal amount of euro 3.2 billion in 2023 (2022: 1.8 billion), whereof the Company repaid euro 3.1 billion in 2023 (2022: 1.7 billion).\n\nFurther, under the euro 5.0 billion Multi-Currency Paper Program the Company issued 94 new liabilities (2022: 90 new liabilities) with a nominal amount of euro 12 billion in 2023 (2022: 9 billion), whereof the Company repaid euro 12 billion in 2023 (2022: 9 billion).\n\nDespite the political, economic, and financial climate in 2023, the Company managed to maintain a healthy liquidity level in 2023 and successfully issued EMTNs, European as well as French Commercial Papers. This ensured that the Company remained one of the BMW Group’s most frequent issuers of corporate bond globally.\n\n## Global developments and outlook"
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "What is the date of the balance sheet provided in BMW's 2023 annual report?",
+    "ground_truth": "31 December 2023",
+    "ground_truth_contexts": [
+      "### Balance Sheet at 31 December 2023\n\n### Cash Flow Statement for the year ended 31 December 2023\n\n### Statement of Changes in Equity\n\n### Notes to the Financial Statements\n\n1. Significant accounting policies\n2. Interest income and expense\n3. Other financial income and expenses\n4. Reversal of impairment / (impairment loss) on financial receivables\n5. Result from financial transactions\n6. Miscellaneous income &#x26; expenses\n7. Taxes\n8. Remuneration of Board of Directors\n9. Receivables from BMW Group companies\n10. Other receivables\n11. Cash and cash equivalents\n12. Equity\n13. Debt securities\n14. Loans due to banks\n15. Liabilities due to BMW Group companies\n16. Movement schedule liabilities\n17. Deferred tax liability\n18. Financial instruments\n19. Risk management\n20. Related parties\n21. Subsequent events\n\n## Other Information\n\n### Independent Auditor’s Report"
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "What section of the BMW 2023 Annual Report details the company's accounting policies?",
+    "ground_truth": "Section 15 details the Significant accounting policies.",
+    "ground_truth_contexts": [
+      "04 Annual Management Report\n08 Report of the Supervisory Board\n10 Financial statements\n10 Income Statement and Statement of comprehensive income for the year ended 31 December 2023\n11 Balance Sheet at 31 December 2023\n12 Cash Flow Statement for the year ended 31 December 2023\n13 Statement of Changes in Equity\n14 Notes to the Financial Statements\n15 1. Significant accounting policies\n19 2. Interest income and expense\n20 3. Other financial income and expenses\n20 4. Reversal of impairment / (impairment loss) on financial receivables\n20 5. Result from financial transactions\n21 6. Miscellaneous income &#x26; expenses\n22 7. Taxes\n22 8. Remuneration of Board of Directors\n23 9. Receivables from BMW Group companies\n24 10. Other receivables\n24 11. Cash and cash equivalents\n24 12. Equity\n25 13. Debt securities\n27 14. Loans due to banks\n27 15. Liabilities due to BMW Group companies\n28 16. Movement schedule liabilities\n28 17. Deferred tax liability\n28 18. Financial instruments"
+    ],
+    "metadata": {
+      "company": "BMW",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "What could adversely affect Ford's financial condition or results of operations in the near term?",
+    "ground_truth": "A shift in consumer preferences away from larger, more profitable vehicles with internal combustion engines to battery electric or other less profitable vehicles could result in an adverse effect on Ford's financial condition or results of operations in the near term.",
+    "ground_truth_contexts": [
+      "# Item 1A. Risk Factors (Continued)\n\nFord’s near-term results are dependent on sales of larger, more profitable vehicles, particularly in the United States. A shift in consumer preferences away from larger, more profitable vehicles with internal combustion engines (including trucks and utilities) to battery electric or other vehicles in our portfolio that may be less profitable could result in an adverse effect on our financial condition or results of operations in the near term. In the longer term, if demand for battery electric vehicles grows at a rate greater than our ability to increase our production capacity for those vehicles, lower market share and revenue, as well as facility and other asset-related charges (e.g., accelerated depreciation) associated with the production of internal combustion vehicles, may result."
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2021"
+    }
+  },
+  {
+    "question": "What section of Ford's 2021 Annual Report does the 'Risk Factors' appear?",
+    "ground_truth": "Item 1A",
+    "ground_truth_contexts": [
+      "# Item 1A. Risk Factors (Continued)"
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2021"
+    }
+  },
+  {
+    "question": "What is Ford's expectation for wholesales growth in the year 2022?",
+    "ground_truth": "Ford expects wholesales to be up about 10% - 15% year over year in 2022.",
+    "ground_truth_contexts": [
+      "**Ford Credit**\n- EBT: Strong but lower than 2021\n\n(a) When we provide guidance for Adjusted EBIT and Adjusted Free Cash Flow, we do not provide guidance for the most comparable GAAP measures because, as described in more detail below in “Non-GAAP Measures That Supplement GAAP Measures,” they include items that are difficult to predict with reasonable certainty.\n\nOur outlook for 2022 assumes the following operating environment:\n\n- Supply constraints will remain fluid reflecting a variety of factors, including semiconductor availability and COVID-19 impacts\n- Wholesales are expected to be up about 10% - 15% year over year\n- Pricing environment is expected to remain strong, although the interplay between volume and pricing will be dynamic\n- Inflationary pressures will impact a broad range of costs\n- Commodity costs will be $1.5 - $2.0 billion higher year over year"
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2021"
+    }
+  },
+  {
+    "question": "What type of document contains the 'Emissions Certification' section related to Ford?",
+    "ground_truth": "The 'Emissions Certification' section is contained in Ford's Annual Report for the year 2021.",
+    "ground_truth_contexts": [
+      "### Emissions Certification"
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2021"
+    }
+  },
+  {
+    "question": "What was the net income attributable to Ford Motor Company in 2021?",
+    "ground_truth": "$17,937 million",
+    "ground_truth_contexts": [
+      "# Item 7. Management’s Discussion and Analysis of Financial Condition and Results of Operations (Continued)\n\n## RESULTS OF OPERATIONS - 2021\n\nThe net income attributable to Ford Motor Company was $17,937 million in 2021. Company adjusted EBIT was $10,000 million.\n\nNet income/(loss) includes certain items (“special items”) that are excluded from Company adjusted EBIT. These items are discussed in more detail in Note 26 of the Notes to the Financial Statements. We report special items separately to allow investors analyzing our results to identify certain infrequent significant items that they may wish to exclude when considering the trend of ongoing operating results. Our pre-tax and tax special items were as follows (in millions):"
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2021"
+    }
+  },
+  {
+    "question": "What regulatory aspects may Ford need to consider when modifying its product plans?",
+    "ground_truth": "Ford may need to consider safety, emissions, fuel economy, autonomous vehicle, and other regulations when modifying its product plans.",
+    "ground_truth_contexts": [
+      "Ford may need to substantially modify its product plans to comply with safety, emissions, fuel economy, autonomous vehicle, and other regulations. The automotive industry is subject to regulations worldwide that govern product characteristics and that differ by global region, country, and sometimes within national boundaries. Further, additional and new regulations continue to be proposed to address concerns regarding the environment (including concerns about global climate change and its impact), vehicle safety, and energy independence, and the regulatory landscape can change on short notice. In the United States, legal and policy debates are continuing, with a primary focus on reducing GHG emissions and increasing vehicle electrification. The Trump administration rolled back Obama administration GHG standards through the 2026 model year and sought to block California’s authority to adopt its own regulations as well as other states’ authority to opt in to California’s standards"
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2021"
+    }
+  },
+  {
+    "question": "What types of vehicles does Ford plan to offer in electrified versions as part of their multi-billion dollar investments?",
+    "ground_truth": "Ford plans to offer electrified versions of many of their vehicles, including the F-150 Lightning and E-Transit.",
+    "ground_truth_contexts": [
+      "We have announced our intent to continue making multi-billion dollar investments in electrification and mobility. Our plans include offering electrified versions of many of our vehicles, including the F-150 Lightning and E-Transit. If the market for electrified vehicles does not develop at the rate we expect, even if the regulatory framework encourages a rapid adoption of electrified vehicles, there is a negative perception of our vehicles or about electric vehicles in general, or if consumers prefer our competitors’ vehicles, there could be an adverse impact on our financial condition or results of operations. Further, as discussed below under “Ford may need to substantially modify its product plans to comply with safety, emissions, fuel economy, autonomous vehicle, and other regulations,” lower than planned market acceptance of our vehicles may impact our strategy to comply with fuel economy standards"
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2021"
+    }
+  },
+  {
+    "question": "What was Ford's net income margin in 2021?",
+    "ground_truth": "13.2%",
+    "ground_truth_contexts": [
+      "Net income/(loss) margin was 13.2% in 2021, up from negative 1.0% a year ago. Company adjusted EBIT margin was 7.3% in 2021, up from 2.0% a year ago.\n\nThe table below shows our full year 2021 net income/(loss) attributable to Ford and Company adjusted EBIT by segment (in millions)."
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2021"
+    }
+  },
+  {
+    "question": "What program did Ford establish in 2021 to develop People Leaders?",
+    "ground_truth": "Leadership+",
+    "ground_truth_contexts": [
+      "Finally, the extent to which our People Leaders are equipped to care for, inspire, and empower our people plays a vital role in our strategy, and we are committed to helping our leaders strengthen these capabilities with dedicated learning paths and non-traditional learning opportunities. In 2021, we established Leadership+, a new mechanism for developing People Leaders and delivering key messages related to that role, including demonstrating care, fostering psychological safety, instilling a challenger mindset, and leading through the evolution of work. Through Leadership+, we have activated People Leaders – quickly and at scale – to help deliver Ford+.\n\n# Employee Health and Safety"
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2021"
+    }
+  },
+  {
+    "question": "What was the purpose of Ford's $2.5 billion green bond issuance in November 2021?",
+    "ground_truth": "The purpose of Ford's $2.5 billion green bond issuance in November 2021 was to allocate the net proceeds to the design, development, and manufacturing of their battery electric vehicles.",
+    "ground_truth_contexts": [
+      "In 2021, we introduced our sustainable financing framework, which covers a variety of potential unsecured and securitization funding transactions, including ESG bonds issued by both Ford and Ford Credit to finance environmental and social projects. Net proceeds from sustainable financing transactions will be invested and expended in four areas: Clean Transportation, Clean Manufacturing, Making Lives Better, and Community Revitalization. Our $2.5 billion green bond issuance in November 2021 was the first financing transaction under our sustainable financing framework. We are allocating the net proceeds from that issuance to the design, development, and manufacturing of our battery electric vehicles.\n\nDOE Advanced Technology Vehicle Manufacturer (“ATVM”) Incentive Program. See Note 19 of the Notes to the Financial Statements for information regarding the ATVM loan."
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2021"
+    }
+  },
+  {
+    "question": "What has Ford done to ensure access to raw materials for electric vehicle production?",
+    "ground_truth": "Ford has entered into multi-year commitments with raw material suppliers.",
+    "ground_truth_contexts": [
+      "To facilitate access to the raw materials necessary for the production of electric vehicles, Ford has entered into, and expects to continue to enter into, multi-year commitments to raw material suppliers that subject Ford to risks associated with lower future demand for such materials as well as costs that fluctuate and are difficult to accurately forecast. We have announced plans to significantly increase our electric vehicle production volumes; however, our ability to produce higher volumes of electric vehicles is dependent upon the availability of raw materials necessary for the production of batteries, e.g., lithium, cobalt, nickel, graphite, and manganese, among others"
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "What type of document provides additional information about Ford and its subsidiaries for the year ended December 31, 2022?",
+    "ground_truth": "The Annual Report on Form 10-K for the year ended December 31, 2022 provides additional information about Ford and its subsidiaries.",
+    "ground_truth_contexts": [
+      "In addition to the information about Ford and our subsidiaries contained in this Annual Report on Form 10-K for the year ended December 31, 2022 (“2022 Form 10-K Report” or “Report”), extensive information about our Company can be found at http://corporate.ford.com, including information about our management team, brands, products, services, and corporate governance principles."
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "What is critical to Ford's success and competitiveness in terms of human resources?",
+    "ground_truth": "The ability to attract and retain talented, diverse, and highly skilled employees is critical to Ford's success and competitiveness.",
+    "ground_truth_contexts": [
+      "- Ford’s ability to maintain a competitive cost structure could be affected by labor or other constraints;\n- Ford’s ability to attract and retain talented, diverse, and highly skilled employees is critical to its success and competitiveness;\n- Ford’s new and existing products and digital, software, and physical services are subject to market acceptance and face significant competition from existing and new entrants in the automotive and digital and software services industries and its reputation may be harmed if it is unable to achieve the initiatives it has announced;\n- Ford’s results are dependent on sales of larger, more profitable vehicles, particularly in the United States;\n- With a global footprint, Ford’s results could be adversely affected by economic or geopolitical developments, including protectionist trade policies such as tariffs, or other events;"
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "What model year is the EPA preparing a major update to the GHG and fuel economy standards for heavy-duty vehicles?",
+    "ground_truth": "2027",
+    "ground_truth_contexts": [
+      "# U.S. Requirements - Heavy-Duty Vehicles\n\nEPA and NHTSA have jointly promulgated GHG and fuel economy standards for heavy-duty vehicles (generally, vehicles over 8,500 pounds gross vehicle weight rating) through the 2027 model year, and EPA is preparing a major update to these standards for the 2027 model year and beyond. In Ford’s case, the standards primarily affect heavy-duty pickup trucks and vans, plus vocational vehicles such as shuttle buses and delivery trucks. As the heavy-duty standards increase in stringency, it may become more difficult to comply while continuing to offer a full lineup of heavy-duty trucks.\n\n# European Requirements"
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "What type of risks has affected Ford and Ford Credit's financial condition and results of operations?",
+    "ground_truth": "Operational Risks related to public health issues, including epidemics or pandemics such as COVID-19.",
+    "ground_truth_contexts": [
+      "# ITEM 1A. Risk Factors\n\nWe have listed below the material risk factors applicable to us grouped into the following categories: Operational Risks; Macroeconomic, Market, and Strategic Risks; Financial Risks; and Legal and Regulatory Risks.\n\n## Operational Risks\n\nFord and Ford Credit’s financial condition and results of operations have been and may continue to be adversely affected by public health issues, including epidemics or pandemics such as COVID-19. We face various risks related to public health issues, including epidemics, pandemics, and other outbreaks, including the global outbreak of COVID-19. The impact of COVID-19, including changes in consumer behavior, pandemic fears and market downturns, and restrictions on business and individual activities, has periodically created significant volatility in the global economy."
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "Who took on the role of Chief Advanced Product Development and Technology Officer at Ford in September 2022?",
+    "ground_truth": "J. Doug Field",
+    "ground_truth_contexts": [
+      "| Michael Amend                  | Chief Enterprise Technology Officer                                                      | September 2021   | 45  |\n| Steven P. Croley               | Chief Policy Officer and General Counsel                                                 | July 2021        | 57  |\n| J. Doug Field                  | Chief Advanced Product Development and Technology Officer                                | September 2022   | 57  |\n| Marin Gjaja                    | Chief Customer Officer, Ford Model e                                                     | March 2022       | 53  |\n| Jennifer Waldo                 | Chief People and Employee Experience Officer                                             | May 2022         | 46  |\n| Theodore Cannis                | CEO, Ford Pro                                                                            | May 2022         | 56  |"
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "How many Employee Resource Groups does Ford offer to represent the various dimensions of its employee population?",
+    "ground_truth": "Ford offers 12 Employee Resource Groups.",
+    "ground_truth_contexts": [
+      "### Diversity, Equity, and Inclusion\n\nAt Ford, we believe that creating a Culture of Inclusion for all our employees is both foundational to achieving our Ford+ plan and the right thing to do. Ford offers 12 Employee Resource Groups (“ERGs”) that represent various dimensions of our employee population, including racial, ethnic, gender, religious, sexual orientation and gender identity, ability, and generational communities with chapters throughout the world, in addition to Ford Advocacy for Belonging (“FAB”) Councils in every region. Our ERGs and FAB Councils are instrumental in providing a voice to our globally diverse workforce as well as sharing valuable insights into the development of products, services, and experiences."
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "What does market share represent in the context of the Ford company's annual report?",
+    "ground_truth": "Market share represents reported retail sales of Ford's brands as a percent of total industry volume in the relevant market or region.",
+    "ground_truth_contexts": [
+      "(a) Retail sales represents primarily sales by dealers and is based, in part, on estimated vehicle registrations; includes medium and heavy trucks.\n(b) Industry volume is an internal estimate based on publicly available data collected from various government, private, and public sources around the globe; includes medium and heavy trucks.\n(c) Market share represents reported retail sales of our brands as a percent of total industry volume in the relevant market or region.\n(d) EU20 markets are United Kingdom, Germany, France, Italy, Spain, Austria, Belgium, Czech Republic, Denmark, Finland, Greece, Hungary, Ireland, the Netherlands, Norway, Poland, Portugal, Romania, Sweden, and Switzerland.\n(e) China includes Taiwan; China market share includes Ford brand and JMC brand vehicles produced and sold by our unconsolidated affiliates.\n(f) ASEAN includes Philippines, Thailand, and Vietnam.\n\n## U.S. Sales by Type"
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "Who bears the risks associated with lower-than-expected electric vehicle production volumes or changes in battery technology under Ford's multi-year offtake agreements and long-term purchase contracts?",
+    "ground_truth": "Ford bears the risks associated with lower-than-expected electric vehicle production volumes or changes in battery technology under multi-year offtake agreements and long-term purchase contracts.",
+    "ground_truth_contexts": [
+      "# Item 1A. Risk Factors (Continued)\n\nUnlike our historical arrangements with suppliers, which are typically annual commitments, under multi-year offtake agreements and other long-term purchase contracts, the risks associated with lower-than-expected electric vehicle production volumes or changes in battery technology that reduce the need for certain raw materials are borne by Ford rather than our suppliers. In the event we do not purchase the materials pursuant to the terms of these agreements, even if the supplier finds another purchaser, we may be obligated to reimburse the supplier for costs it incurs in finding the new purchaser as well as any lost revenue attributable to the replacement purchaser paying a lower price than required under the pricing mechanism in our agreement."
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "What factors could lead to a significant decline in Ford Credit's consumer and non-consumer originations?",
+    "ground_truth": "Factors such as Ford's suspension of manufacturing operations, a significant decline in dealer showroom traffic, and a reduction of operations at dealers could lead to a significant decline in Ford Credit's consumer and non-consumer originations.",
+    "ground_truth_contexts": [
+      "The predominant share of Ford Credit’s business consists of financing Ford and Lincoln vehicles, and the duration or resurgence of public health issues such as COVID-19 may negatively impact the level of originations at Ford Credit. For example, Ford’s suspension of manufacturing operations, a significant decline in dealer showroom traffic, and/or a reduction of operations at dealers may lead to a significant decline in Ford Credit’s consumer and non-consumer originations. Moreover, economic uncertainty and higher unemployment arising from widespread public health issues or otherwise may result in higher defaults in Ford Credit’s consumer portfolio, and prolonged unemployment may have a negative impact on both new and used vehicle demand."
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "What was the percentage increase in Ford Model e's wholesales in 2023 compared to the previous year?",
+    "ground_truth": "Ford Model e’s wholesales increased 20% from a year ago in 2023.",
+    "ground_truth_contexts": [
+      "In 2023, Ford Model e’s wholesales increased 20% from a year ago, primarily reflecting higher production of F-150 Lightning. Full year 2023 revenue increased 12%, driven by higher wholesales, offset partially by lower net pricing. Ford Model e’s 2023 full year EBIT loss was $4.7 billion, a $2.6 billion higher loss than a year ago, with an EBIT margin of negative 79.7%. The EBIT deterioration was primarily driven by lower net pricing, higher material costs (including volume-related obligations for batteries of about $310 million, inflationary cost increases, and higher launch-related supplier costs), higher volume/capacity-related manufacturing and spending-related costs, higher warranty costs, and higher engineering costs for future programs, offset partially by lower commodity costs and stronger currencies.\n\n## Ford Pro Segment"
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "What is critical to Ford's success and competitiveness according to the 2023 Annual Report?",
+    "ground_truth": "Ford's ability to attract, develop, grow, and reward talent is critical to its success and competitiveness.",
+    "ground_truth_contexts": [
+      "- Ford’s ability to attract, develop, grow, and reward talent is critical to its success and competitiveness;\n- Ford’s new and existing products and digital, software, and physical services are subject to market acceptance and face significant competition from existing and new entrants in the automotive and digital and software services industries, and its reputation may be harmed if it is unable to achieve the initiatives it has announced;\n- Ford’s results are dependent on sales of larger, more profitable vehicles, particularly in the United States;\n- With a global footprint and supply chain, Ford’s results and operations could be adversely affected by economic or geopolitical developments, including protectionist trade policies such as tariffs, or other events;\n- Industry sales volume can be volatile and could decline if there is a financial crisis, recession, public health emergency, or significant geopolitical event;"
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "What types of vehicles does Ford Pro focus on selling?",
+    "ground_truth": "Ford Pro focuses on selling ICE (Internal Combustion Engine), hybrid, and electric vehicles.",
+    "ground_truth_contexts": [
+      "## FORD PRO SEGMENT\n\nFord Pro primarily includes the sale of Ford and Lincoln vehicles, service parts, accessories, and services for commercial, government, and rental customers. Included in this segment are sales of all core Ford Pro vehicles, such as Super Duty and the Transit range of vans in North America and Europe and all sales of Ranger in Europe. In the United States and Canada, Ford Pro also includes all vehicle sales to commercial, government, and rental customers. This segment focuses on selling ICE, hybrid, and electric vehicles, and providing digital and physical services to optimize and maintain fleets, including telematics and EV charging solutions. This segment reflects external sales of vehicles produced by Ford Blue and Ford Model e and the costs (including intersegment markup) associated with acquiring vehicles for sale and providing services. Ford Pro operates in North America and Europe.\n\n## General"
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "Who bears the risks associated with lower-than-expected electric vehicle production volumes or changes in battery technology under Ford's multi-year offtake agreements?",
+    "ground_truth": "Ford bears the risks under multi-year offtake agreements.",
+    "ground_truth_contexts": [
+      "Unlike our historical arrangements with suppliers, under multi-year offtake agreements, the risks associated with lower-than-expected electric vehicle production volumes or changes in battery technology that reduce the need for certain raw materials are borne by Ford rather than our suppliers. Accordingly, in the event we do not purchase the materials pursuant to the terms of these agreements and we are unable to restructure an agreement or an alternate purchaser is unable to be found, Ford retains its obligation for the cost of those materials. For additional discussion of the risks related to our offtake agreements and other long-term purchase contracts, see “Item 1A. Risk Factors.”"
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "What are the vehicle brands owned by the company mentioned in the document?",
+    "ground_truth": "Ford and Lincoln",
+    "ground_truth_contexts": [
+      "## General\n\nOur vehicle brands are Ford and Lincoln. In 2023, we sold approximately 4,413,000 vehicles at wholesale throughout the world. See “Item 7. Management’s Discussion and Analysis of Financial Condition and Results of Operations” (“Item 7”) for a discussion of our calculation of wholesale unit volumes."
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "What are the three customer-centered business segments of Ford as mentioned in the 2023 annual report?",
+    "ground_truth": "The three customer-centered business segments of Ford are Ford Blue, Ford Model e, and Ford Pro.",
+    "ground_truth_contexts": [
+      ". Ford develops and delivers innovative, must-have Ford trucks, sport utility vehicles, commercial vans and cars, and Lincoln luxury vehicles, along with connected services. The Company does that through three customer-centered business segments: Ford Blue, engineering iconic gas-powered and hybrid vehicles; Ford Model e, inventing breakthrough electric vehicles (“EVs”) along with embedded software that defines always-on digital experiences for all customers; and Ford Pro, helping commercial customers transform and expand their businesses with vehicles and services tailored to their needs. Additionally, the Company provides financial services through Ford Motor Credit Company LLC (“Ford Credit”)."
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "How much was the supplemental dividend included in Ford's first quarter 2023 dividend per share?",
+    "ground_truth": "$0.65",
+    "ground_truth_contexts": [
+      "## Dividends\n\nThe table below shows the dividends we paid per share of Common and Class B Stock for each quarterly period in 2022 and 2023:\n\n| Quarter                | Dividends per share of Ford Common and Class B Stock |\n|-----------------------|-------------------------------------------------------|\n| First Quarter 2022    | $0.10                                                |\n| Second Quarter 2022   | $0.10                                                |\n| Third Quarter 2022    | $0.15                                                |\n| Fourth Quarter 2022   | $0.15                                                |\n| First Quarter 2023    | $0.80 (includes a supplemental dividend of $0.65)   |\n| Second Quarter 2023   | $0.15                                                |\n| Third Quarter 2023    | $0.15                                                |\n| Fourth Quarter 2023   | $0.15                                                |"
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "What modifications might Ford need to make to comply with various regulations?",
+    "ground_truth": "Ford may need to substantially modify its product plans and facilities.",
+    "ground_truth_contexts": [
+      "Ford may need to substantially modify its product plans and facilities to comply with safety, emissions, fuel economy, autonomous driving technology, environmental, and other regulations. The automotive industry is subject to regulations worldwide that govern product characteristics and that differ by global region, country, and sometimes within national boundaries. Regulators have enacted and are proposing standards to address concerns regarding the environment (including concerns about global climate change and air quality), vehicle safety, and energy independence, and the regulatory landscape can change on short notice."
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "What was the increase in net income attributable to Ford from 2022 to 2023?",
+    "ground_truth": "$6,328 million",
+    "ground_truth_contexts": [
+      "The table below shows our full year 2023 net income/(loss) attributable to Ford and Company adjusted EBIT by segment (in millions).\n\n| Segment                  | 2022 | 2023 | H / (L) |\n|--------------------------|------|------|---------|\n| Ford Blue                | $6,847 | $7,462 | $615 |\n| Ford Model e             | (2,133) | (4,701) | (2,568) |\n| Ford Pro                 | 3,222 | 7,222 | 4,000 |\n| Ford Next                | (926) | (138) | 788 |\n| Ford Credit              | 2,657 | 1,331 | (1,326) |\n| Corporate Other          | 748 | (760) | (1,508) |\n| Company Adjusted EBIT (a) | 10,415 | 10,416 | 1 |\n\nInterest on Debt: (1,259) | (1,302) | (43)\nSpecial Items: (12,172) | (5,147) | 7,025\nTaxes / Noncontrolling Interests: 1,035 | 380 | (655)\nNet Income/(Loss): $(1,981) | $4,347 | $6,328\n\n(a) See Non-GAAP Financial Measure Reconciliations section for reconciliation to GAAP."
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "What industries do Ford's products and services compete in?",
+    "ground_truth": "Ford's products and services compete in the automotive and digital and software services industries.",
+    "ground_truth_contexts": [
+      "Ford’s new and existing products and digital, software, and physical services are subject to market acceptance and face significant competition from existing and new entrants in the automotive and digital and software services industries, and its reputation may be harmed if it is unable to achieve the initiatives it has announced. Although we conduct extensive market research before launching new or refreshed vehicles and introducing new services, many factors both within and outside our control affect the success of new or existing products and services in the marketplace, and we may not be able to accurately predict or identify emerging trends or preferences or the success of new products or services in the market. It takes years to design and develop a new vehicle or change an existing vehicle"
+    ],
+    "metadata": {
+      "company": "Ford",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "By how much did Tesla's cash and cash equivalents and investments increase from the end of 2021 to the end of 2022?",
+    "ground_truth": "Tesla's cash and cash equivalents and investments increased by $4.48 billion from the end of 2021 to the end of 2022.",
+    "ground_truth_contexts": [
+      "We ended 2022 with $22.19 billion in cash and cash equivalents and investments, representing an increase of $4.48 billion from the end of 2021. Our cash flows provided by operating activities during 2022 and 2021 were $14.72 billion and $11.50 billion, respectively, representing an increase of $3.23 billion. Capital expenditures amounted to $7.16 billion during 2022, compared to $6.48 billion during 2021. Sustained growth has allowed our business to generally fund itself, and we will continue investing in a number of capital-intensive projects in upcoming periods.\n\n## Management Opportunities, Challenges and Uncertainties and 2023 Outlook\n\n### Automotive—Production\n\nThe following is a summary of the status of production of each of our announced vehicle models in production and under development, as of the date of this Annual Report on Form 10-K:"
+    ],
+    "metadata": {
+      "company": "Tesla",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "What was the cost of automotive sales for Tesla in 2022?",
+    "ground_truth": "$49,599 million",
+    "ground_truth_contexts": [
+      "| (Dollars in millions)                                  | Year Ended December 31, | 2022 vs. 2021 Change | 2021 vs. 2020 Change |\n|-------------------------------------------------------|--------------------------|----------------------|----------------------|\n|                                                       | 2022                     | 2021                 | 2020                 |\n| Cost of revenues                                       |                          |                      |                      |\n| Automotive sales                                      | $49,599                 | $32,415             | $19,696             |\n| Automotive leasing                                    | $1,509                  | $978                | $563                |\n| Total automotive cost of revenues                     | $51,108                 | $33,393             | $20,259             |"
+    ],
+    "metadata": {
+      "company": "Tesla",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "By how much did Tesla's energy generation and storage revenue increase in 2022 compared to 2021?",
+    "ground_truth": "Tesla's energy generation and storage revenue increased by $1.12 billion, or 40%, in 2022 compared to 2021.",
+    "ground_truth_contexts": [
+      "# Energy Generation and Storage Segment\n\nEnergy generation and storage revenue includes sales and leasing of solar energy generation and energy storage products, financing of solar energy generation products, services related to such products, and sales of solar energy systems incentives.\n\n## 2022 compared to 2021\n\nEnergy generation and storage revenue increased $1.12 billion, or 40%, in the year ended December 31, 2022 as compared to the year ended December 31, 2021, primarily due to an increase in energy storage deployments of Megapack, Powerwall and higher average selling price of Megapack, as well as on solar cash and loan deployments driven by price increases in 2022.\n\n## Cost of Revenues and Gross Margin"
+    ],
+    "metadata": {
+      "company": "Tesla",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "What is the focus of the document titled 'Financial Overview for 2022 Compared to 2021'?",
+    "ground_truth": "The focus of the document is to compare Tesla's financial performance in 2022 to that of 2021.",
+    "ground_truth_contexts": [
+      "# Financial Overview for 2022 Compared to 2021"
+    ],
+    "metadata": {
+      "company": "Tesla",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "By what date did the amendment executed in 2021 require Tesla to spend or incur $5.00 billion in the State of New York?",
+    "ground_truth": "December 31, 2029",
+    "ground_truth_contexts": [
+      "In 2021, an amendment was executed to extend our overall agreement to spend or incur $5.00 billion in combined capital, operational expenses, costs of goods sold and other costs in the State of New York through December 31, 2029. On February 1, 2022, we reported to the State of New York that we had met and exceeded our annual requirements for jobs and investment in Buffalo and New York State. As of December 31, 2022, we are currently in excess of such targets relating to investments and personnel in the State of New York and Buffalo and do not currently expect any issues meeting our applicable obligations in the years beyond. However, if our expectations as to the costs and timelines of our investment and operations at Buffalo or our production ramp of the Solar Roof prove incorrect, we may incur additional expenses or be required to make substantial payments to the SUNY Foundation."
+    ],
+    "metadata": {
+      "company": "Tesla",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "What type of financial document is provided for Tesla, Inc. for the year ended December 31?",
+    "ground_truth": "Consolidated Statements of Cash Flows",
+    "ground_truth_contexts": [
+      "# Tesla, Inc.\n\n## Consolidated Statements of Cash Flows\n(in millions)\n\n### Year Ended December 31,"
+    ],
+    "metadata": {
+      "company": "Tesla",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "On what date did a Tesla stockholder file a derivative action against certain Tesla directors in the Delaware Court of Chancery?",
+    "ground_truth": "June 17, 2020",
+    "ground_truth_contexts": [
+      "# Litigation Related to Directors’ Compensation\n\nOn June 17, 2020, a purported Tesla stockholder filed a derivative action in the Delaware Court of Chancery, purportedly on behalf of Tesla, against certain of Tesla’s current and former directors regarding compensation awards granted to Tesla’s directors, other than Elon Musk, between 2017 and 2020. The suit asserts claims for breach of fiduciary duty and unjust enrichment and seeks declaratory and injunctive relief, unspecified damages, and other relief. Defendants filed their answer on September 17, 2020. Trial is currently set for November 27, 2023, to December 1, 2023.\n\n# Litigation Relating to Potential Going Private Transaction"
+    ],
+    "metadata": {
+      "company": "Tesla",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "What was the gross profit for the automotive segment of Tesla in 2021?",
+    "ground_truth": "$13,735",
+    "ground_truth_contexts": [
+      "| Segment                             | Year Ended December 31, | | |\n|-------------------------------------|--------------------------|---|---|\n|                                     | 2022         | 2021         | 2020         |\n| Automotive segment                  | $77,553     | $51,034     | $29,542     |\n| Gross profit                        | $20,565     | $13,735     | $6,612      |\n| Energy generation and storage segment| $3,909      | $2,789      | $1,994      |\n| Gross profit                        | $288       | $(129)      | $18         |\n\nThe following table presents revenues by geographic area based on the sales location of our products (in millions):"
+    ],
+    "metadata": {
+      "company": "Tesla",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "What is the focus of the section titled 'Automotive—Deliveries and Customer Infrastructure'?",
+    "ground_truth": "The focus of the section is on the deliveries and customer infrastructure related to the automotive sector.",
+    "ground_truth_contexts": [
+      "# Automotive—Deliveries and Customer Infrastructure"
+    ],
+    "metadata": {
+      "company": "Tesla",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "When did the Court enter judgment in favor of Mr. Musk on all counts?",
+    "ground_truth": "April 27, 2022",
+    "ground_truth_contexts": [
+      "On April 27, 2022, the Court entered judgment in favor of Mr. Musk on all counts. On May 26, 2022, the plaintiff filed a notice of appeal. The parties have completed briefing and argument will be held before the Supreme Court of Delaware on March 29, 2023.\n\nThese plaintiffs and others filed parallel actions in the U.S. District Court for the District of Delaware on or about April 21, 2017. They include claims for violations of the federal securities laws and breach of fiduciary duties by Tesla’s board of directors. Those actions have been consolidated and stayed pending the above-referenced Chancery Court litigation.\n\n## Litigation Relating to 2018 CEO Performance Award"
+    ],
+    "metadata": {
+      "company": "Tesla",
+      "document_type": "Annual Report",
+      "year": "2022"
+    }
+  },
+  {
+    "question": "What is the maximum lease term offered by Tesla under their direct vehicle operating leasing programs?",
+    "ground_truth": "Tesla offers a maximum lease term of up to 48 months.",
+    "ground_truth_contexts": [
+      "We have outstanding leases under our direct vehicle operating leasing programs in the U.S., Canada and in certain countries in Europe. Qualifying customers are permitted to lease a vehicle directly from Tesla for up to 48 months. At the end of the lease term, customers are generally required to return the vehicles to us. We account for these leasing transactions as operating leases. We record leasing revenues to automotive leasing revenue on a straight-line basis over the contractual term, and we record the depreciation of these vehicles to cost of automotive leasing revenue. For the years ended December 31, 2023, 2022 and 2021, we recognized $1.86 billion, $1.75 billion and $1.25 billion of direct vehicle leasing revenue, respectively. As of December 31, 2023 and 2022, we had deferred $458 million and $407 million, respectively, of lease-related upfront payments, which will be recognized on a straight-line basis over the contractual terms of the individual leases."
+    ],
+    "metadata": {
+      "company": "Tesla",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "What caused a sequential decline in production volumes for Tesla during the third quarter of 2023?",
+    "ground_truth": "Pre-planned shutdowns for upgrades at various factories caused a sequential decline in production volumes for Tesla during the third quarter of 2023.",
+    "ground_truth_contexts": [
+      "These plans are subject to uncertainties inherent in establishing and ramping manufacturing operations, which may be exacerbated by new product and manufacturing technologies we introduce, the number of concurrent international projects, any industry-wide component constraints, labor shortages and any future impact from events outside of our control. For example, during the third quarter of 2023, we experienced a sequential decline in production volumes due to pre-planned shutdowns for upgrades at various factories. Moreover, we have set ambitious technological targets with our plans for battery cells as well as for iterative manufacturing and design improvements for our vehicles with each new factory.\n\n## Automotive—Demand, Sales, Deliveries and Infrastructure"
+    ],
+    "metadata": {
+      "company": "Tesla",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "What type of financial document is provided for Tesla, Inc. for the year ended December 31?",
+    "ground_truth": "Consolidated Statements of Cash Flows",
+    "ground_truth_contexts": [
+      "# Tesla, Inc.\n\n## Consolidated Statements of Cash Flows\n(in millions)\n\n### Year Ended December 31,"
+    ],
+    "metadata": {
+      "company": "Tesla",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "What is the focus of the section in Tesla's 2023 Annual Report?",
+    "ground_truth": "Energy Generation and Storage Demand, Production and Deployment",
+    "ground_truth_contexts": [
+      "# Energy Generation and Storage Demand, Production and Deployment"
+    ],
+    "metadata": {
+      "company": "Tesla",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "What was the total revenue from automotive leasing for Tesla in the year ended December 31, 2023?",
+    "ground_truth": "$2,120 million",
+    "ground_truth_contexts": [
+      "# Revenue Recognition\n\n## Revenue by Source\n\nThe following table disaggregates our revenue by major source (in millions):\n\n| Year Ended December 31, | 2023       | 2022       | 2021       |\n|--------------------------|------------|------------|------------|\n| Automotive sales         | $78,509    | $67,210    | $44,125    |\n| Automotive regulatory credits | $1,790     | $1,776     | $1,465     |\n| Energy generation and storage sales | $5,515     | $3,376     | $2,279     |\n| Services and other       | $8,319     | $6,091     | $3,802     |\n| **Total revenues from sales and services** | **$94,133** | **$78,453** | **$51,671** |\n| Automotive leasing       | $2,120     | $2,476     | $1,642     |\n| Energy generation and storage leasing | $520       | $533       | $510       |\n| **Total revenues**      | **$96,773** | **$81,462** | **$53,823** |\n\n## Automotive Segment\n\n### Automotive Sales"
+    ],
+    "metadata": {
+      "company": "Tesla",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "What products and services are included in Tesla's Automotive sales revenue?",
+    "ground_truth": "Tesla's Automotive sales revenue includes cash and financing deliveries of new Model S, Model X, Semi, Model 3, Model Y, and Cybertruck vehicles, access to FSD Capability features, ongoing maintenance, internet connectivity, free Supercharging programs, and over-the-air software updates.",
+    "ground_truth_contexts": [
+      "### Automotive &#x26; Services and Other Segment\n\nAutomotive sales revenue includes revenues related to cash and financing deliveries of new Model S, Model X, Semi, Model 3, Model Y, and Cybertruck vehicles, including access to our FSD Capability features and their ongoing maintenance, internet connectivity, free Supercharging programs and over-the-air software updates. These deliveries are vehicles that are not subject to lease accounting.\n\nAutomotive regulatory credits include sales of regulatory credits to other automotive manufacturers. Our revenue from automotive regulatory credits is directly related to our new vehicle production, sales and pricing negotiated with our customers. We monetize them proactively as new vehicles are sold based on standing arrangements with buyers of such credits, typically as close as possible to the production and delivery of the vehicle or changes in regulation impacting the credits."
+    ],
+    "metadata": {
+      "company": "Tesla",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "How much revenue did Tesla recognize from the deferred revenue balance for the year ended December 31, 2023?",
+    "ground_truth": "$469 million",
+    "ground_truth_contexts": [
+      "Deferred revenue is equivalent to the total transaction price allocated to the performance obligations that are unsatisfied, or partially unsatisfied, as of the balance sheet date. Revenue recognized from the deferred revenue balance as of December 31, 2022 was $469 million for the year ended December 31, 2023. We had recognized revenue of $472 million from the deferred revenue balance as of December 31, 2021, for the year ended December 31, 2022, primarily related to the general FSD Capability feature release in North America in the fourth quarter of 2022. Of the total deferred revenue balance as of December 31, 2023, we expect to recognize $926 million of revenue in the next 12 months. The remaining balance will be recognized at the time of transfer of control of the product or over the performance period as discussed above in Automotive Sales."
+    ],
+    "metadata": {
+      "company": "Tesla",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "By how much did Tesla's total automotive revenues increase from 2021 to 2023?",
+    "ground_truth": "Tesla's total automotive revenues increased by $35,187 from 2021 to 2023.",
+    "ground_truth_contexts": [
+      "|                          | 2023          | 2022          | 2021          |\n|--------------------------|---------------|---------------|---------------|\n| Revenues                 |               |               |               |\n| Automotive sales         | $78,509       | $67,210       | $44,125       |\n| Automotive regulatory credits | $1,790    | $1,776        | $1,465        |\n| Automotive leasing        | $2,120        | $2,476        | $1,642        |\n| **Total automotive revenues** | **$82,419** | **$71,462** | **$47,232**   |\n| Energy generation and storage | $6,035    | $3,909        | $2,789        |\n| Services and other       | $8,319        | $6,091        | $3,802        |\n| **Total revenues**       | **$96,773**   | **$81,462**   | **$53,823**   |\n| Cost of revenues         |               |               |               |\n| Automotive sales         | $65,121       | $49,599       | $32,415       |"
+    ],
+    "metadata": {
+      "company": "Tesla",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "What type of claims did the EEOC assert against Tesla in the civil complaint filed on September 28, 2023?",
+    "ground_truth": "The EEOC asserted claims for race harassment and retaliation.",
+    "ground_truth_contexts": [
+      "Additionally, on June 1, 2022, the Equal Employment Opportunity Commission (“EEOC”) issued a cause finding against Tesla that closely parallels the CRD’s allegations. On September 28, 2023, the EEOC filed a civil complaint against Tesla in the United States District Court for the Northern District of California asserting claims for race harassment and retaliation and seeking, among other things, monetary and injunctive relief. On December 18, 2023, Tesla filed a motion to stay the case. Separately, on December 26, 2023, Tesla filed a motion to dismiss the case."
+    ],
+    "metadata": {
+      "company": "Tesla",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  },
+  {
+    "question": "What is Tesla's mission as stated in their 2023 annual report?",
+    "ground_truth": "Tesla's mission is to accelerate the world’s transition to sustainable energy.",
+    "ground_truth_contexts": [
+      "## Overview and 2023 Highlights\n\nOur mission is to accelerate the world’s transition to sustainable energy. We design, develop, manufacture, lease and sell high-performance fully electric vehicles, solar energy generation systems and energy storage products. We also offer maintenance, installation, operation, charging, insurance, financial and other services related to our products. Additionally, we are increasingly focused on products and services based on artificial intelligence, robotics and automation."
+    ],
+    "metadata": {
+      "company": "Tesla",
+      "document_type": "Annual Report",
+      "year": "2023"
+    }
+  }
+]
