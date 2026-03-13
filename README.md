@@ -1,163 +1,161 @@
-# RAG PDF Question Answering Pipeline
+# DocIntel — Document Intelligence App
 
-A Retrieval-Augmented Generation (RAG) pipeline for question answering over PDF documents. Built with LangChain, ChromaDB, and Streamlit.
+A RAG-based Q&A tool that lets you chat with automotive annual reports. Drop in PDFs from BMW, Ford, Tesla (or others), and ask questions — the app retrieves the right chunks and generates grounded answers using an LLM.
 
-## Features
+Built with Streamlit, ChromaDB, and Groq (llama-3.3-70b).
 
-- **PDF Ingestion**: Parse PDFs using LlamaParse with markdown extraction
-- **Smart Chunking**: Different chunking strategies for annual reports vs news articles
-- **Vector Search**: ChromaDB with HuggingFace BGE embeddings (768 dimensions)
-- **Chat Interface**: Streamlit-based RAG chatbot
+**Live demo:** [consiglitech.streamlit.app](https://consiglitech.streamlit.app) *(Streamlit Community Cloud)*
 
-## Project Structure
+---
+
+## What it does
+
+- Parses PDFs (annual reports, news articles) and splits them into chunks
+- Embeds chunks with HuggingFace BGE and stores them in ChromaDB
+- Retrieves relevant context using hybrid search (metadata filters + vector similarity)
+- Classifies user queries with the LLM — general/meta questions get answered directly, document questions go through the full RAG pipeline
+- Shows a dark-theme chat UI with a sidebar that breaks down the knowledge base
+
+## Project layout
 
 ```
-consiglitech/
-├── ingestion/          # Document loading, chunking, embedding
-│   ├── constants.py    # Configuration (chunk sizes, paths, etc.)
-│   ├── ingest.py       # Main ingestion pipeline
-│   └── utils.py        # PDF/DOCX loaders, chunk creators
-├── retrieval/          # Document retrieval logic
-├── generation/         # Answer generation (LLM integration)
-├── evaluation/         # Evaluation scripts
-├── data/               # PDF documents (not tracked in git)
-│   ├── BMW/            # Company annual reports
-│   ├── Tesla/
-│   └── news.pdf
-├── chroma_db/          # Vector database (auto-generated)
-├── main.py             # Entry point for ingestion
-├── streamlit_app.py    # RAG chatbot UI
-└── requirements.txt    # Python dependencies
+├── streamlit_app.py        # Main UI
+├── llm_config.py           # LLM provider config (Groq / LM Studio / OpenAI)
+├── main.py                 # Ingestion entry point
+│
+├── ingestion/              # PDF loading, chunking, embedding
+│   ├── constants.py        # Chunk sizes, model name, paths
+│   ├── ingest.py           # Ingestion pipeline
+│   └── utils.py            # Loaders + chunk helpers
+│
+├── retrieval/              # Hybrid retrieval logic
+│   ├── retriever.py
+│   └── utils.py
+│
+├── generation/             # LLM query classification + answer generation
+│   ├── generator.py        # Intent classifier + two-route generation
+│   └── prompts.py
+│
+├── evaluation/             # Synthetic QA eval pipeline
+│   ├── config.py           # Known reports, QA pairs per report
+│   ├── dataset_generator.py
+│   ├── evaluate.py
+│   ├── metrics.py          # MRR, Hit Rate, latency, token cost
+│   └── eval_data/          # Generated datasets + results
+│
+├── data/                   # PDFs — not tracked in git
+│   ├── BMW/                # 3 annual reports (2021–2023)
+│   ├── Ford/               # 3 annual reports (2021–2023)
+│   ├── Tesla/              # 2 annual reports (2022–2023)
+│   └── News and Advertisement/
+│
+├── chroma_db/              # Vector DB (auto-generated after ingestion)
+├── .streamlit/secrets.toml # Local API keys — gitignored
+├── ISSUES_AND_FIXES.md     # Dev log of every bug + resolution
+├── requirements.txt        # 17 direct deps, loose pins
+├── Dockerfile
+└── docker-compose.yml
 ```
 
-## Quick Start
+## Getting started
 
-### 1. Clone the Repository
+### 1. Clone and set up
 
 ```bash
 git clone https://github.com/rajan-sap/consiglitech.git
 cd consiglitech
-```
 
-### 2. Set Up Python Environment
-
-```bash
-# Create virtual environment
 python -m venv .venv
-
-# Activate it
-# Windows:
+# Windows
 .venv\Scripts\activate
-# macOS/Linux:
+# macOS / Linux
 source .venv/bin/activate
 
-# Install dependencies
 pip install -r requirements.txt
 ```
 
-### 3. Configure Environment Variables
+### 2. Add your API keys
 
-```bash
-# Copy the template
-cp .env.example .env
+Create `.streamlit/secrets.toml` (this file is gitignored):
 
-# Edit .env with your API keys
-# Required: LLAMA_CLOUD_API_KEY (get from https://cloud.llamaindex.ai/)
+```toml
+GROQ_API_KEY = "gsk_your_key_here"
 ```
 
-### 4. Add Your Documents
+You'll also need a `LLAMA_CLOUD_API_KEY` in your `.env` if you want to re-run ingestion with LlamaParse. Get one at [cloud.llamaindex.ai](https://cloud.llamaindex.ai/).
 
-Place PDF files in the `data/` folder:
-- Company reports go in subfolders: `data/BMW/`, `data/Tesla/`, etc.
-- News articles go directly in `data/`
+### 3. Add PDFs and run ingestion
 
-### 5. Run Ingestion
+Put your PDF files under `data/` — company reports in subfolders (`data/BMW/`, `data/Ford/`, etc.), news articles in `data/News and Advertisement/`.
 
 ```bash
 python main.py
 ```
 
-This will:
-- Parse all PDFs using LlamaParse
-- Chunk documents based on type (annual report vs news)
-- Embed chunks using BGE embeddings
-- Store in ChromaDB
+This parses every PDF, chunks them (1000 chars for reports, 500 for news), embeds with BGE-base-en-v1.5, and stores everything in `chroma_db/`.
 
-### 6. Start the App
+### 4. Launch the app
 
 ```bash
 streamlit run streamlit_app.py
 ```
 
-Open http://localhost:8501 in your browser.
+Then open [localhost:8501](http://localhost:8501).
 
-## Docker Setup
-
-### Using Docker Compose (Recommended)
+## Docker (alternative)
 
 ```bash
-# 1. Set up environment
-cp .env.example .env
-# Edit .env with your API keys
-
-# 2. Add your PDFs to data/ folder
-
-# 3. Run ingestion (first time only, or when adding new documents)
-docker-compose run --rm ingestion
-
-# 4. Start the app
-docker-compose up -d
-
-# View logs
-docker-compose logs -f
-
-# Stop the app
-docker-compose down
+# Set up .env with your keys first, then:
+docker-compose run --rm ingestion   # one-time ingest
+docker-compose up -d                # start the app
+docker-compose logs -f              # tail logs
 ```
 
-### Using Docker Directly
+Or build and run manually:
 
 ```bash
-# Build the image
 docker build -t consiglitech .
-
-# Run the app
-docker run -p 8501:8501 \
-  -v ./data:/app/data \
-  -v ./chroma_db:/app/chroma_db \
-  --env-file .env \
-  consiglitech
-
-# Or run ingestion only
-docker run -v ./data:/app/data -v ./chroma_db:/app/chroma_db --env-file .env consiglitech python main.py
+docker run -p 8501:8501 -v ./data:/app/data -v ./chroma_db:/app/chroma_db --env-file .env consiglitech
 ```
 
-## Configuration
+## Key config
 
-Key settings in `ingestion/constants.py`:
+All LLM settings live in `llm_config.py` — switch providers by commenting/uncommenting a block:
 
-| Setting | Value | Description |
-|---------|-------|-------------|
-| `EMBEDDING_MODEL_NAME` | `BAAI/bge-base-en-v1.5` | HuggingFace embedding model |
-| `ANNUAL_REPORT_SPLITTER.chunk_size` | 1000 | Chunk size for reports |
-| `NEWS_ARTICLE_SPLITTER.chunk_size` | 500 | Chunk size for news |
-| `BATCH_SIZE` | 100 | Embedding batch size |
+| Setting | Where | Default |
+|---------|-------|---------|
+| LLM provider | `llm_config.py` | Groq (`llama-3.3-70b-versatile`) |
+| Embedding model | `ingestion/constants.py` | `BAAI/bge-base-en-v1.5` (768-dim) |
+| Report chunk size | `ingestion/constants.py` | 1000 chars |
+| News chunk size | `ingestion/constants.py` | 500 chars |
+| Context limit | `llm_config.py` | 30,000 chars |
+| Client timeout | `llm_config.py` | 60s |
 
-## Utilities
+## Evaluation
+
+The eval pipeline generates synthetic QA pairs from the actual reports and scores retrieval + generation quality. See `evaluation/` for details or run:
 
 ```bash
-# Inspect the vector database
-python -m inspect_db
-
-# Test retrieval quality
-python -m test_retrieval "your query here"
+python -m evaluation.evaluate
 ```
+
+Results land in `evaluation/eval_data/eval_results.json`.
+
+## Useful commands
+
+```bash
+python -m inspect_db        # peek inside the vector DB
+```
+
+## Known issues
+
+See [ISSUES_AND_FIXES.md](ISSUES_AND_FIXES.md) for a running log of every bug encountered during development and how each was resolved (10 issues documented so far).
 
 ## Requirements
 
 - Python 3.10+
-- LlamaParse API key (for PDF parsing)
-- ~2GB disk space for embeddings model
+- A Groq API key (free tier works fine) — or swap in OpenAI / LM Studio in `llm_config.py`
+- ~2 GB disk for the embedding model on first run
 
 ## License
 
