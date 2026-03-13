@@ -141,13 +141,39 @@ All 15 test cases (10 general, 5 document) classified correctly. No UI changes n
 
 ---
 
+## 9. Sidebar Document Counts Show Zero on Streamlit Cloud
+
+**When:** Deploying to Streamlit Community Cloud  
+**File:** `streamlit_app.py` → `count_data_files()`
+
+**Problem:** The `./data` directory is gitignored (large PDF reports), so it doesn't exist on Streamlit Cloud. The `count_data_files()` function scanned `./data` dynamically and returned `0` for all counts, causing the sidebar to display **"0 Documents, 0 Companies"** — misleading for users.
+
+**Fix:** Added a two-path strategy inside `count_data_files()`:
+
+1. **Cloud (fallback):** When `os.path.isdir("./data")` is `False`, return hardcoded defaults from the last local snapshot:
+   - BMW: 3, Ford: 3, Tesla: 2, News & Ads: 1, Total: 9
+2. **Local (dynamic):** When `./data` exists, compute counts dynamically from the filesystem so any added/removed documents are reflected immediately.
+
+```python
+DEFAULT_PER_COMPANY = {"BMW": 3, "Ford": 3, "Tesla": 2}
+DEFAULT_NEWS = 1
+DEFAULT_TOTAL = sum(DEFAULT_PER_COMPANY.values()) + DEFAULT_NEWS  # 9
+
+if not os.path.isdir("./data"):
+    return DEFAULT_TOTAL, DEFAULT_PER_COMPANY, DEFAULT_NEWS
+```
+
+**Note:** If new documents are added locally, the hardcoded defaults should be updated to keep the cloud sidebar accurate.
+
+---
+
 ## Quick Reference: Key Configuration
 
 | Setting | Location | Current Value |
 |---------|----------|---------------|
-| LLM Provider | `llm_config.py` | LM Studio (`localhost:1234`) |
-| Context limit | `llm_config.py` | 10,000 chars |
-| Client timeout | `llm_config.py` | 120s |
+| LLM Provider | `llm_config.py` | Groq (`llama-3.3-70b-versatile`) |
+| Context limit | `llm_config.py` | 30,000 chars |
+| Client timeout | `llm_config.py` | 60s |
 | RAGAS enabled | `evaluation/evaluate.py` | `SKIP_RAGAS = True` |
 | QA pairs per report | `evaluation/config.py` | 10 (80 total) |
 | Embedding model | `ingestion/constants.py` | `BAAI/bge-base-en-v1.5` |
