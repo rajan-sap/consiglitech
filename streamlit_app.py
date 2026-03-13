@@ -53,11 +53,11 @@ section[data-testid="stSidebar"] {
 section[data-testid="stSidebar"] > div:first-child {
     display: flex; flex-direction: column; height: 100vh;
     min-height: 100vh;
-    padding-top: 1.5rem; padding-bottom: 1.5rem;
-    justify-content: space-evenly;
+    padding-top: 1rem; padding-bottom: 1rem;
+    justify-content: flex-start;
     overflow-y: auto;
     overflow-x: hidden;
-    gap: 0.8rem;
+    gap: 0.35rem;
 }
 section[data-testid="stSidebar"] > div:first-child > div {
     flex-shrink: 0;
@@ -78,12 +78,12 @@ section[data-testid="stSidebar"] > div:first-child::-webkit-scrollbar-thumb:hove
 }
 section[data-testid="stSidebar"] * {
     color: #b8bcc4 !important;
-    font-size: 1.02rem;
+    font-size: 0.92rem;
 }
-section[data-testid="stSidebar"] { min-width: 330px !important; }
+section[data-testid="stSidebar"] { min-width: 280px !important; max-width: 310px !important; }
 section[data-testid="stSidebar"] hr {
     border-color: rgba(255,255,255,0.06);
-    margin: 0.8rem 0;
+    margin: 0.4rem 0;
 }
 
 /* ── Chat bubbles ── */
@@ -125,11 +125,11 @@ section[data-testid="stSidebar"] hr {
 /* ── Stat cards ── */
 .stat-card {
     background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 0.6rem; padding: 0.5rem 0.75rem; margin-bottom: 0.3rem;
+    border-radius: 0.5rem; padding: 0.35rem 0.5rem; margin-bottom: 0.2rem;
     text-align: center;
 }
-.stat-card .stat-value { font-size: 1.8rem; font-weight: 700; color: #60a5fa !important; }
-.stat-card .stat-label { font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.55; }
+.stat-card .stat-value { font-size: 1.5rem; font-weight: 700; color: #60a5fa !important; }
+.stat-card .stat-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.55; }
 
 /* ── Welcome card ── */
 .welcome-card {
@@ -248,12 +248,12 @@ total_docs, docs_per_company, news_docs = count_data_files()
 with st.sidebar:
     # Logo / branding
     st.markdown("""
-    <div style="text-align:center; padding: 0rem 0 0.4rem 0;">
-        <div style="font-size:2.2rem;">📑</div>
-        <div style="font-size:1.35rem; font-weight:700; letter-spacing:-0.02em; margin-top:0.15rem; color:#e8e8ec !important;">
+    <div style="text-align:center; padding: 0 0 0.2rem 0;">
+        <div style="font-size:1.8rem;">📑</div>
+        <div style="font-size:1.15rem; font-weight:700; letter-spacing:-0.02em; margin-top:0.1rem; color:#e8e8ec !important;">
             DocIntel
         </div>
-        <div style="font-size:0.82rem; opacity:0.45; text-transform:uppercase; letter-spacing:0.1em;">
+        <div style="font-size:0.75rem; opacity:0.45; text-transform:uppercase; letter-spacing:0.1em;">
             Document Intelligence
         </div>
     </div>
@@ -282,11 +282,11 @@ with st.sidebar:
         icon = {"BMW": "🚗", "Ford": "🚙", "Tesla": "⚡"}.get(company, "📁")
         st.markdown(f"""
         <div style="display:flex; align-items:center; justify-content:space-between;
-                    padding:0.35rem 0.6rem; margin:0.15rem 0; border-radius:0.45rem;
-                    background:rgba(255,255,255,0.04); font-size:1rem;">
-            <span style="font-size:1.02rem;">{icon} {company}</span>
-            <span style="background:rgba(96,165,250,0.12); padding:0.15rem 0.55rem;
-                         border-radius:1rem; font-size:0.92rem; font-weight:600; color:#60a5fa !important;">
+                    padding:0.25rem 0.5rem; margin:0.1rem 0; border-radius:0.4rem;
+                    background:rgba(255,255,255,0.04); font-size:0.88rem;">
+            <span style="font-size:0.9rem;">{icon} {company}</span>
+            <span style="background:rgba(96,165,250,0.12); padding:0.1rem 0.45rem;
+                         border-radius:1rem; font-size:0.82rem; font-weight:600; color:#60a5fa !important;">
                 {count}
             </span>
         </div>""", unsafe_allow_html=True)
@@ -294,11 +294,11 @@ with st.sidebar:
     # News and Advertisements row
     st.markdown(f"""
         <div style="display:flex; align-items:center; justify-content:space-between;
-                    padding:0.35rem 0.6rem; margin:0.15rem 0; border-radius:0.45rem;
-                    background:rgba(255,255,255,0.04); font-size:1rem;">
-            <span style="font-size:1.02rem;">📰 News & Ads</span>
-            <span style="background:rgba(96,165,250,0.12); padding:0.15rem 0.55rem;
-                         border-radius:1rem; font-size:0.92rem; font-weight:600; color:#60a5fa !important;">
+                    padding:0.25rem 0.5rem; margin:0.1rem 0; border-radius:0.4rem;
+                    background:rgba(255,255,255,0.04); font-size:0.88rem;">
+            <span style="font-size:0.9rem;">📰 News & Ads</span>
+            <span style="background:rgba(96,165,250,0.12); padding:0.1rem 0.45rem;
+                         border-radius:1rem; font-size:0.82rem; font-weight:600; color:#60a5fa !important;">
                 {news_docs}
             </span>
         </div>""", unsafe_allow_html=True)
@@ -317,7 +317,7 @@ with st.sidebar:
     _llm_display = f"{_llm_provider} / {LLM_MODEL}"
 
     st.markdown(f"""
-    <div style="font-size:0.95rem; opacity:0.65; line-height:1.55;">
+    <div style="font-size:0.85rem; opacity:0.65; line-height:1.45;">
         <b>Embeddings:</b> BGE-base-en v1.5<br>
         <b>LLM:</b> {_llm_display}<br>
         <b>Vector DB:</b> ChromaDB<br>
@@ -356,7 +356,7 @@ with st.sidebar:
     st.divider()
 
     # ── Actions ──
-    st.markdown("<div style='height:1rem;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height:0.3rem;'></div>", unsafe_allow_html=True)
     if st.button("🗑️  Clear Conversation", use_container_width=True):
         st.session_state.messages = []
         st.rerun()
