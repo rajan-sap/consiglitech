@@ -1,6 +1,6 @@
 # DocIntel — Document Intelligence App
 
-A RAG-based Q&A tool that lets you chat with automotive annual reports. Drop in PDFs from BMW, Ford, Tesla (or others), and ask questions — the app retrieves the right chunks and generates grounded answers using an LLM.
+A RAG-based document query tool that lets you chat with company annual reports or 1000 of pages. Drop in PDFs from BMW, Ford, Tesla (or others), and ask questions — the app retrieves the right chunks and generates grounded answers using an LLM.
 
 Built with Streamlit, ChromaDB, and Groq (llama-3.3-70b).
 
