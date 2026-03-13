@@ -1,24 +1,51 @@
 ```plaintext
 consiglitechnical/
-├── .github/
-├── .gitignore
+├── .dockerignore
 ├── .env
+├── .env.example
+├── .git/
+├── .github/                      # (empty)
+├── .gitignore
+├── .python-version
+├── .venv/
+│   ├── .gitignore
+│   ├── .lock
+│   ├── CACHEDIR.TAG
+│   ├── etc/
+│   ├── include/
+│   ├── Lib/
+│   ├── pyvenv.cfg
+│   ├── Scripts/
+│   └── share/
 ├── chroma_db/                    # Vector database (auto-generated)
+│   ├── .processed_files.json
+│   ├── chroma.sqlite3
+│   └── efff0af9-3adc-46b2-bc7e-0f5d10cc2e7c/
+│       ├── data_level0.bin
+│       ├── header.bin
+│       ├── index_metadata.pickle
+│       ├── length.bin
+│       └── link_lists.bin
 ├── data/
 │   ├── BMW/
 │   │   ├── BMW_Annual_Report_2021.pdf
 │   │   ├── BMW_Annual_Report_2022.pdf
 │   │   └── BMW_Annual_Report_2023.pdf
+│   ├── Ford/
+│   │   ├── Ford_Annual_Report_2021.pdf
+│   │   ├── Ford_Annual_Report_2022.pdf
+│   │   └── Ford_Annual_Report_2023.pdf
 │   ├── Tesla/
 │   │   ├── Tesla_Annual_Report_2022.pdf
 │   │   └── Tesla_Annual_Report_2023.pdf
 │   └── news.pdf
+├── docker-compose.yml
 ├── Dockerfile
 ├── evaluation/
 │   └── __init__.py
 ├── generation/
 │   ├── __init__.py
-│   ├── chain.py
+│   ├── generation.py
 │   └── prompts.py
 ├── ingestion/
 │   ├── __init__.py
@@ -28,12 +55,13 @@ consiglitechnical/
 ├── retrieval/
 │   ├── __init__.py
 │   ├── retriever.py
-│   └── router.py
+│   └── utils.py
 ├── inspect_db.py                 # Utility to inspect ChromaDB contents
-├── main.py                       # Entry point for ingestion
-├── streamlit_app.py              # RAG chatbot UI
-├── test_retrieval.py             # Retrieval testing utility
+├── main.py                       # Entry point for ingestion/query loop
+├── python.exe.stackdump
 ├── PROJECT_STRUCTURE.txt
 ├── README.md
-└── requirements.txt
+├── requirements.txt
+├── streamlit_app.py              # RAG chatbot UI
+└── __pycache__/
 ```

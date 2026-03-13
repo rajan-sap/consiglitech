@@ -27,6 +27,8 @@ def inspect_chroma_db():
             limit=5,
             include=["documents", "metadatas", "embeddings"]
         )
+        import pdb; pdb.set_trace()
+        print(f"\n--- Sample Documents ---")
         
         # Show embedding info
         if sample["embeddings"] is not None and len(sample["embeddings"]) > 0:
@@ -68,3 +70,5 @@ def inspect_chroma_db():
                 print(f"    {text}")
 
 
+if __name__ == "__main__":
+    inspect_chroma_db()
