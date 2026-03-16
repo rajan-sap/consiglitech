@@ -1,6 +1,7 @@
 import streamlit as st
 import os
 import glob
+import re
 from generation.generator import generate_answer
 from llm_config import LLM_MODEL, LLM_BASE_URL, LLM_API_KEY
 
@@ -190,6 +191,28 @@ section[data-testid="stSidebar"] button:hover {
     color: #e0e0e4 !important;
 }
 
+/* ── Download button styling in sidebar ── */
+section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] button {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    min-width: auto !important;
+}
+section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] button p {
+    font-size: 1rem !important;
+    margin: 0 !important;
+}
+
+/* ── Sidebar section titles ── */
+section[data-testid="stSidebar"] h4,
+section[data-testid="stSidebar"] h5 {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.3rem !important;
+}
+
 /* ── Hide default Streamlit elements ── */
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
@@ -203,6 +226,8 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 if "pending_query" not in st.session_state:
     st.session_state.pending_query = None
+if "selected_tesla_pdf" not in st.session_state:
+    st.session_state.selected_tesla_pdf = None
 
 # ─────────────────────────────────────────────
 # HELPER: count ingested docs
@@ -248,6 +273,30 @@ def count_data_files():
 total_docs, docs_per_company, news_docs = count_data_files()
 
 # ─────────────────────────────────────────────
+# HELPER: extract metadata from filename
+# ─────────────────────────────────────────────
+def extract_metadata_from_filename(filename):
+    """
+    Extract company and year from PDF filename like 'Tesla_Annual_Report_2023.pdf'
+    Returns dict with 'company' and 'year' keys.
+    """
+    # Remove .pdf extension
+    name = filename.replace('.pdf', '')
+    
+    # Extract company (first word)
+    company = name.split('_')[0] if '_' in name else None
+    
+    # Extract year (4 digit year)
+    year_match = re.search(r'(20\d{2})', name)
+    year = year_match.group(1) if year_match else None
+    
+    return {
+        "company": company,
+        "year": year,
+        "document_type": "Annual Report"
+    }
+
+# ─────────────────────────────────────────────
 # SIDEBAR
 # ─────────────────────────────────────────────
 with st.sidebar:
@@ -273,7 +322,7 @@ with st.sidebar:
         st.markdown(f"""
         <div class="stat-card">
             <div class="stat-value">{total_docs}</div>
-            <div class="stat-label">Documents</div>
+            <div class="stat-label">Documents, >2000 Pages</div>
         </div>""", unsafe_allow_html=True)
     with cols[1]:
         st.markdown(f"""
@@ -285,6 +334,8 @@ with st.sidebar:
     # Per-company breakdown + News
     for company, count in docs_per_company.items():
         icon = {"BMW": "🚗", "Ford": "🚙", "Tesla": "⚡"}.get(company, "📁")
+        
+        # Regular company display
         st.markdown(f"""
         <div style="display:flex; align-items:center; justify-content:space-between;
                     padding:0.25rem 0.5rem; margin:0.1rem 0; border-radius:0.4rem;
@@ -307,6 +358,31 @@ with st.sidebar:
                 {news_docs}
             </span>
         </div>""", unsafe_allow_html=True)
+
+    st.markdown("<div style='height: 0.5rem;'></div>", unsafe_allow_html=True)
+    
+    # ── Sample Documents ──
+    st.markdown("##### 📄 Sample Documents")
+    
+    # Tesla PDF files - show only the first one
+    tesla_folder = "./data/Tesla"
+    if os.path.isdir(tesla_folder):
+        tesla_files = [f for f in os.listdir(tesla_folder) if f.endswith('.pdf')]
+        tesla_files = sorted(tesla_files)
+        
+        if tesla_files:
+            # Show only the first PDF file as a download button
+            pdf_file = tesla_files[0]
+            pdf_path = os.path.join(tesla_folder, pdf_file)
+            with open(pdf_path, "rb") as f:
+                st.download_button(
+                    label=pdf_file,
+                    data=f,
+                    file_name=pdf_file,
+                    mime="application/pdf"
+                )
+
+    st.divider()
 
     st.divider()
 
@@ -376,7 +452,7 @@ if not st.session_state.messages:
     <div class="welcome-card">
         <div style="font-size:2.5rem; margin-bottom:0.6rem;">📑</div>
         <h2>DocIntel</h2>
-        <p>Ask questions about BMW, Ford, and Tesla — annual reports, financials, and news.<br>
+        <p>Ask questions about BMW, Ford, and Tesla — annual reports and financials.<br>
         Answers grounded in real documents using hybrid retrieval.<br>
         <span style="opacity:0.5; font-size:0.9rem; color:white; font-style:italic;">Real-time news coming soon.</span></p>
     </div>
@@ -389,8 +465,9 @@ if not st.session_state.messages:
 
     example_questions = [
         "What was Tesla's revenue in 2022 and 2023?",
+        "What models of Tesla are in development phase in 2022?",
         "Compare BMW and Ford's net income over the past 3 years",
-        "What are BMW's key financial highlights for 2023?",
+
     ]
 
     # Render example questions as clickable buttons
@@ -409,12 +486,12 @@ else:
             avatar_class = "user-av"
             bubble_class = "user-bubble"
             row_class = "user"
-            avatar_text = "You"
+            avatar_text = "User"
         else:
             avatar_class = "bot-av"
             bubble_class = "bot-bubble"
             row_class = ""
-            avatar_text = "AI"
+            avatar_text = "Agent"
 
         st.markdown(f"""
         <div class="chat-row {row_class}">
@@ -439,9 +516,20 @@ if st.session_state.pending_query:
     query = st.session_state.pending_query
     st.session_state.pending_query = None
 
+    # Get document filter from selected Tesla PDF (if any)
+    document_filter = None
+    # Get checkbox value from session state - use True as default
+    use_doc_filter = st.session_state.get("use_tesla_doc_filter", True)
+    if (
+        use_doc_filter 
+        and "selected_tesla_pdf" in st.session_state 
+        and st.session_state.selected_tesla_pdf
+    ):
+        document_filter = extract_metadata_from_filename(st.session_state.selected_tesla_pdf)
+
     try:
         with st.spinner("🔍 Searching documents and generating answer..."):
-            answer = generate_answer(query)
+            answer = generate_answer(query, document_filter=document_filter)
     except Exception as e:
         error_type = type(e).__name__
         if "AuthenticationError" in error_type:
