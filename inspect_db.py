@@ -27,7 +27,6 @@ def inspect_chroma_db():
             limit=5,
             include=["documents", "metadatas", "embeddings"]
         )
-        import pdb; pdb.set_trace()
         print(f"\n--- Sample Documents ---")
         
         # Show embedding info

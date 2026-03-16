@@ -259,8 +259,8 @@ def count_data_files():
             total += len(files)
         else:
             per_company[c] = 0
-    # Count News and Advertisement folder
-    news_folder = os.path.join("./data", "News and Advertisement")
+    # Count News folder
+    news_folder = os.path.join("./data", "News")
     news_count = 0
     if os.path.isdir(news_folder):
         news_count = len([f for f in os.listdir(news_folder) if os.path.isfile(os.path.join(news_folder, f))])

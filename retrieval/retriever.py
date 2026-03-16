@@ -1,4 +1,3 @@
-
 """
 Hybrid Retriever: Metadata + Vector Embeddings
 """
@@ -127,9 +126,10 @@ def extract_metadata_from_query(single_shot_query):
     """
     Extract only company, document_type, and year for metadata filtering.
     Handles both News Article and Annual Report cases.
+    Default to News Article if no company or annual report is specified.
     """
     # Normalize possessives: "Ford's" -> "Ford"
-    query_clean = re.sub(r"'s\\b", "", single_shot_query)
+    query_clean = re.sub(r"'s\b", "", single_shot_query)
 
     # Extract year (4 consecutive digits)
     year_match = re.search(r"(20\d{2})", query_clean)
@@ -142,6 +142,17 @@ def extract_metadata_from_query(single_shot_query):
     # Extract document type (case-insensitive, allow both 'News Article' and 'Annual Report')
     doc_types = ["annual report", "news article"]
     document_type = next((d.title() for d in doc_types if d in query_clean.lower()), None)
+    
+    # Check for financial keywords that indicate annual report
+    financial_keywords = ["revenue", "profit", "income", "financial", "earnings", "balance sheet", "cash flow", "fiscal", "quarterly", "annual"]
+    has_financial_keyword = any(kw in query_clean.lower() for kw in financial_keywords)
+    
+    # If no company found AND no annual report specified, default to News Article
+    if company is None and document_type != "Annual Report":
+        document_type = "News Article"
+    # If company is found with financial keyword, prefer Annual Report
+    elif company is not None and has_financial_keyword:
+        document_type = "Annual Report"
 
     return {
         "company": company,
@@ -151,11 +162,17 @@ def extract_metadata_from_query(single_shot_query):
    
 
 # Step 4: Retrieve aggregated context based on decomposed queries
-def retrieve_aggregated_context(query, retriever):
+def retrieve_aggregated_context(query, retriever, document_filter=None):
     aggregated_context = ""
     decomposed_queries = decompose_query(query)
     for single_query in decomposed_queries:
         metadata_for_query = extract_metadata_from_query(single_query)
+        # Combine automatic extraction with manual document_filter
+        if document_filter:
+            if metadata_for_query:
+                metadata_for_query = {**metadata_for_query, **document_filter}
+            else:
+                metadata_for_query = document_filter
         results = retriever.search(single_query, k=3, metadata_filter=metadata_for_query)
         for res in results:
             # import pdb; pdb.set_trace()

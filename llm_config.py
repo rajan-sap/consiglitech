@@ -39,10 +39,6 @@ LLM_API_KEY = _get_secret("GROQ_API_KEY")
 # LLM_MODEL = "local-model"
 # LLM_API_KEY = _get_secret("LM_STUDIO_API_KEY")  # set in .streamlit/secrets.toml or env
 
-# --- OpenAI (cloud) — uncomment these and comment out the block above ---
-# LLM_BASE_URL = None
-# LLM_MODEL = "gpt-4-1106-preview"
-# LLM_API_KEY = _get_secret("OPENAI_API_KEY")
 
 # =============================================================================
 # CONTEXT LIMITS  — prevent prompt overflow for local models

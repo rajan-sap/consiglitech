@@ -63,7 +63,7 @@ SYSTEM_PROMPT_GENERAL = (
 # ─── Answer Generation ───────────────────────────────────────────────────────
 
 # Step 4: Implementation of answer generation
-def generate_answer(query, return_details=False):
+def generate_answer(query, return_details=False, document_filter=None):
     """
     Generate an answer using the RAG pipeline (retrieve + generate).
     Automatically classifies the query: general/meta questions are answered
@@ -74,6 +74,7 @@ def generate_answer(query, return_details=False):
         query: The user's question.
         return_details: If True, return a dict with answer, context, and raw response.
                         If False (default), return just the answer string.
+        document_filter: Optional metadata filter to restrict search to specific documents.
 
     Returns:
         str (default) or dict with 'answer', 'context', 'response' keys.
@@ -100,7 +101,7 @@ def generate_answer(query, return_details=False):
         return answer
 
     # ── Route 2: Document questions — full RAG pipeline ─────────────────
-    aggregated_context = retrieve_aggregated_context(query, retiever)
+    aggregated_context = retrieve_aggregated_context(query, retiever, document_filter)
     aggregated_context = truncate_context(aggregated_context)
 
     prompt = (
