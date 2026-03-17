@@ -20,5 +20,6 @@ venv/
 
 # Data folder (user-provided documents)
 data/BMW/
+data/Ford/
 # data/Tesla/
 eval_data/eval_dataset.json
