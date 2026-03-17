@@ -92,13 +92,13 @@ section[data-testid="stSidebar"] hr {
 .chat-row.user { flex-direction: row-reverse; }
 
 .chat-avatar {
-    width: 38px; height: 38px; border-radius: 10px;
+    width: 28px; height: 28px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 0.95rem; flex-shrink: 0; font-weight: 600;
-    letter-spacing: 0.02em;
+    flex-shrink: 0;
+    background: transparent;
 }
-.chat-avatar.user-av { background: #2563eb; color: #dbeafe; }
-.chat-avatar.bot-av  { background: #1a7f64; color: #d1fae5; }
+.chat-avatar.user-av { font-size: 2rem; color: #93c5fd; }
+.chat-avatar.bot-av  { font-size: 2.5rem; color: #34d399; }
 
 .chat-bubble {
     max-width: 72%; padding: 1rem 1.25rem; border-radius: 0.85rem;
@@ -465,7 +465,7 @@ if not st.session_state.messages:
 
     example_questions = [
         "What was Tesla's revenue in 2022 and 2023?",
-        "What models of Tesla are in development phase in 2022?",
+        "Which Tesla models were in development phase in 2022?",
         "Compare BMW and Ford's net income over the past 3 years",
 
     ]
@@ -486,16 +486,16 @@ else:
             avatar_class = "user-av"
             bubble_class = "user-bubble"
             row_class = "user"
-            avatar_text = "User"
+            avatar_text = "👤"
         else:
             avatar_class = "bot-av"
             bubble_class = "bot-bubble"
             row_class = ""
-            avatar_text = "Agent"
+            avatar_text = "🤖"
 
         st.markdown(f"""
         <div class="chat-row {row_class}">
-            <div class="chat-avatar {avatar_class}">{avatar_text[0]}</div>
+            <div class="chat-avatar {avatar_class}">{avatar_text}</div>
             <div class="chat-bubble {bubble_class}">{msg['content']}</div>
         </div>
         """, unsafe_allow_html=True)
