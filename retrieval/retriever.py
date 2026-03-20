@@ -37,8 +37,16 @@ class Retriever:
         try:
             # Check if the vector store directory exists and has content
             import os
-            chroma_path = VECTOR_DB_PATH
+            import sys
+            
+            # Get absolute path for debugging
+            chroma_path = os.path.abspath(VECTOR_DB_PATH)
             db_file = os.path.join(chroma_path, "chroma.sqlite3")
+            
+            # Debug output
+            print(f"[DEBUG] ChromaDB path: {chroma_path}", file=sys.stderr)
+            print(f"[DEBUG] ChromaDB exists: {os.path.exists(chroma_path)}", file=sys.stderr)
+            print(f"[DEBUG] ChromaDB sqlite exists: {os.path.exists(db_file)}", file=sys.stderr)
             
             # Check for directory and sqlite file
             if os.path.exists(chroma_path) and os.path.exists(db_file):
@@ -51,20 +59,22 @@ class Retriever:
                 # Try to get collection count - if it fails, the store might be corrupted
                 try:
                     count = self.vector_store._collection.count()
+                    print(f"[DEBUG] Collection count: {count}", file=sys.stderr)
                     # If we can access the count, consider it available
                     # (even if 0, we'll let it try and handle errors in search)
                     self.is_available = True
                 except Exception as e:
                     # Collection might not exist or be corrupted
-                    print(f"Warning: Could not get collection count: {e}")
+                    print(f"[DEBUG] Could not get collection count: {e}", file=sys.stderr)
                     self.is_available = True  # Still try to use it, search will handle errors
             else:
                 # ChromaDB directory or file doesn't exist
+                print(f"[DEBUG] ChromaDB directory or file missing", file=sys.stderr)
                 self.vector_store = None
                 self.is_available = False
         except Exception as e:
             # If ChromaDB fails to initialize, mark as unavailable
-            print(f"Warning: ChromaDB not available: {e}")
+            print(f"[DEBUG] Warning: ChromaDB not available: {e}", file=sys.stderr)
             self.vector_store = None
             self.is_available = False
         
@@ -96,8 +106,16 @@ class Retriever:
         Returns:
             List of dicts with document, score, and metadata
         """
+        import sys
+        
+        # Debug output
+        print(f"[DEBUG] Search called with query: {query}", file=sys.stderr)
+        print(f"[DEBUG] is_available: {self.is_available}", file=sys.stderr)
+        print(f"[DEBUG] vector_store: {self.vector_store}", file=sys.stderr)
+        
         # Return empty results if vector store is not available
         if not self.is_available or self.vector_store is None:
+            print("[DEBUG] Returning empty - vector store not available", file=sys.stderr)
             return []
         
         try:
