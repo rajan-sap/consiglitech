@@ -26,15 +26,41 @@ class Retriever:
         self.embeddings = HuggingFaceEmbeddings(
             model_name=EMBEDDING_MODEL_NAME,
             model_kwargs={"device": "cpu"},
-            encode_kwargs={"normalize_embeddings": True},)
+            encode_kwargs={"normalize_embeddings": True},
+        )
         
         # Initialize the Chroma vector store for document retrieval
         # Note: The embedding_function is used by Chroma to vectorize queries and documents internally
-        self.vector_store = Chroma(
-            persist_directory=VECTOR_DB_PATH,
-            embedding_function=self.embeddings,
-            collection_name="documents",
-        )
+        self.vector_store = None
+        self.is_available = False
+        
+        try:
+            # Check if the vector store directory exists and has content
+            import os
+            chroma_path = VECTOR_DB_PATH
+            db_file = os.path.join(chroma_path, "chroma.sqlite3")
+            
+            if os.path.exists(chroma_path) and os.path.exists(db_file):
+                # Try to load existing vector store
+                self.vector_store = Chroma(
+                    persist_directory=VECTOR_DB_PATH,
+                    embedding_function=self.embeddings,
+                    collection_name="documents",
+                )
+                # Verify the collection has documents
+                try:
+                    count = self.vector_store._collection.count()
+                    self.is_available = count > 0
+                except Exception:
+                    self.is_available = False
+            else:
+                self.is_available = False
+        except Exception as e:
+            # If ChromaDB fails to initialize, mark as unavailable
+            print(f"Warning: ChromaDB not available: {e}")
+            self.vector_store = None
+            self.is_available = False
+        
         self.filtered_ids = filtered_ids
     
 
@@ -63,18 +89,27 @@ class Retriever:
         Returns:
             List of dicts with document, score, and metadata
         """
-        chroma_filter = None
-        if metadata_filter:
-            # Remove None values from filter
-            clean_filter = {k: v for k, v in metadata_filter.items() if v is not None}
-            if len(clean_filter) == 0:
-                chroma_filter = None
-            elif len(clean_filter) == 1:
-                chroma_filter = clean_filter
-            else:
-                chroma_filter = {"$and": [{k: v} for k, v in clean_filter.items()]}
-        results = self.vector_store.similarity_search_with_score(query, k=k, filter=chroma_filter)
-        return self._format_results(results)
+        # Return empty results if vector store is not available
+        if not self.is_available or self.vector_store is None:
+            return []
+        
+        try:
+            chroma_filter = None
+            if metadata_filter:
+                # Remove None values from filter
+                clean_filter = {k: v for k, v in metadata_filter.items() if v is not None}
+                if len(clean_filter) == 0:
+                    chroma_filter = None
+                elif len(clean_filter) == 1:
+                    chroma_filter = clean_filter
+                else:
+                    chroma_filter = {"$and": [{k: v} for k, v in clean_filter.items()]}
+            results = self.vector_store.similarity_search_with_score(query, k=k, filter=chroma_filter)
+            return self._format_results(results)
+        except Exception as e:
+            # Return empty list on any error during search
+            print(f"Search error: {e}")
+            return []
 
 
 # Step 2: Implementation of query decompostion

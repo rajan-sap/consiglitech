@@ -202,6 +202,55 @@ if not os.path.isdir("./data"):
 
 ---
 
+---
+
+## 11. "Error finding id" on Streamlit Cloud for Document Questions
+
+**When:** Deploying to Streamlit Community Cloud
+**Files:** `retrieval/retriever.py`, `generation/generator.py`
+
+**Problem:** The app worked locally but failed on Streamlit Cloud with:
+```
+Error generating answer: InternalError — Error executing plan: Internal error: Error finding id
+```
+
+This happened only for document-related questions (e.g., "What was the revenue of BMW in 2022?") while generic questions (e.g., "Hi good morning") worked fine.
+
+**Root Cause:**
+1. The `data/BMW/` and `data/Ford/` folders are gitignored (large PDF files)
+2. Only `data/Tesla/` was in the repo
+3. On Streamlit Cloud, the ChromaDB vector store (`./chroma_db`) either didn't exist or was empty
+4. When the Retriever tried to search empty ChromaDB, it threw an internal error
+5. Generic questions worked because they skip the RAG pipeline via `is_general_query()`
+
+**Fix:** Added graceful error handling in two places:
+
+1. **Retriever initialization** (`retrieval/retriever.py`):
+   - Check if ChromaDB exists and has documents before attempting searches
+   - Added `self.is_available` flag to track availability
+   - Return empty results instead of crashing on search errors
+
+2. **Generator** (`generation/generator.py`):
+   - Check `retriever.is_available` before attempting RAG pipeline
+   - Return a helpful error message when ChromaDB is unavailable
+   - Handle empty retrieval results with a user-friendly message
+
+```python
+# In Retriever.__init__
+if os.path.exists(chroma_path) and os.path.exists(db_file):
+    self.vector_store = Chroma(...)
+    count = self.vector_store._collection.count()
+    self.is_available = count > 0
+else:
+    self.is_available = False
+
+# In generate_answer()
+if not retiever.is_available:
+    return "I'm sorry, but the document knowledge base is not currently available..."
+```
+
+---
+
 ## Quick Reference: Key Configuration
 
 | Setting | Location | Current Value |

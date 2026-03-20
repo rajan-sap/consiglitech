@@ -11,8 +11,8 @@ venv/
 .streamlit/secrets.toml
 
 # Vector database (regenerated from data)
-# chroma_db/
-# .processed_files.json
+chroma_db/
+.processed_files.json
 
 # System files
 *.stackdump

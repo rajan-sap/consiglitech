@@ -101,7 +101,42 @@ def generate_answer(query, return_details=False, document_filter=None):
         return answer
 
     # ── Route 2: Document questions — full RAG pipeline ─────────────────
+    # Check if the retriever is available (ChromaDB has documents)
+    if not retiever.is_available:
+        answer = (
+            "I'm sorry, but the document knowledge base is not currently available. "
+            "This could be because:\n"
+            "1. The document store is still being initialized\n"
+            "2. No documents have been uploaded yet\n\n"
+            "Please try again in a few moments or contact the administrator."
+        )
+        if return_details:
+            return {
+                "answer": answer,
+                "context": "",
+                "response": None,
+            }
+        return answer
+    
     aggregated_context = retrieve_aggregated_context(query, retiever, document_filter)
+    
+    # If no context was retrieved, provide a helpful message
+    if not aggregated_context.strip():
+        answer = (
+            "I couldn't find any relevant documents to answer your question. "
+            "This might be because:\n"
+            "1. The documents don't contain information about that topic\n"
+            "2. The question is outside the scope of the uploaded documents\n\n"
+            "Try asking about Tesla, BMW, or Ford annual reports, or check if the documents have been properly uploaded."
+        )
+        if return_details:
+            return {
+                "answer": answer,
+                "context": "",
+                "response": None,
+            }
+        return answer
+    
     aggregated_context = truncate_context(aggregated_context)
 
     prompt = (
