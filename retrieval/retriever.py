@@ -40,6 +40,7 @@ class Retriever:
             chroma_path = VECTOR_DB_PATH
             db_file = os.path.join(chroma_path, "chroma.sqlite3")
             
+            # Check for directory and sqlite file
             if os.path.exists(chroma_path) and os.path.exists(db_file):
                 # Try to load existing vector store
                 self.vector_store = Chroma(
@@ -47,13 +48,19 @@ class Retriever:
                     embedding_function=self.embeddings,
                     collection_name="documents",
                 )
-                # Verify the collection has documents
+                # Try to get collection count - if it fails, the store might be corrupted
                 try:
                     count = self.vector_store._collection.count()
-                    self.is_available = count > 0
-                except Exception:
-                    self.is_available = False
+                    # If we can access the count, consider it available
+                    # (even if 0, we'll let it try and handle errors in search)
+                    self.is_available = True
+                except Exception as e:
+                    # Collection might not exist or be corrupted
+                    print(f"Warning: Could not get collection count: {e}")
+                    self.is_available = True  # Still try to use it, search will handle errors
             else:
+                # ChromaDB directory or file doesn't exist
+                self.vector_store = None
                 self.is_available = False
         except Exception as e:
             # If ChromaDB fails to initialize, mark as unavailable
