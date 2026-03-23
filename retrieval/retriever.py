@@ -121,14 +121,21 @@ class Retriever:
         try:
             chroma_filter = None
             if metadata_filter:
-                # Remove None values from filter
-                clean_filter = {k: v for k, v in metadata_filter.items() if v is not None}
-                if len(clean_filter) == 0:
+                # Handle company being a list (multiple companies) - don't filter by company if it's a list
+                filter_to_use = {k: v for k, v in metadata_filter.items() if v is not None}
+                
+                # If company is a list, remove it from filter (search all companies)
+                if "company" in filter_to_use and isinstance(filter_to_use["company"], list):
+                    del filter_to_use["company"]
+                
+                if len(filter_to_use) == 0:
                     chroma_filter = None
-                elif len(clean_filter) == 1:
-                    chroma_filter = clean_filter
+                elif len(filter_to_use) == 1:
+                    chroma_filter = filter_to_use
                 else:
-                    chroma_filter = {"$and": [{k: v} for k, v in clean_filter.items()]}
+                    chroma_filter = {"$and": [{k: v} for k, v in filter_to_use.items()]}
+            
+            print(f"[DEBUG] ChromaDB filter: {chroma_filter}", file=sys.stderr)
             results = self.vector_store.similarity_search_with_score(query, k=k, filter=chroma_filter)
             return self._format_results(results)
         except Exception as e:
@@ -195,9 +202,10 @@ def extract_metadata_from_query(single_shot_query):
     year_match = re.search(r"(20\d{2})", query_clean)
     year = year_match.group(1) if year_match else None
 
-    # Extract company from a known list
+    # Extract ALL companies from a known list (not just the first one)
     companies = ["BMW", "Tesla", "Ford"]
-    company = next((c for c in companies if re.search(rf'\b{re.escape(c)}\b', query_clean, re.IGNORECASE)), None)
+    found_companies = [c for c in companies if re.search(rf'\b{re.escape(c)}\b', query_clean, re.IGNORECASE)]
+    company = found_companies if found_companies else None  # Return list of companies or None
 
     # Extract document type (case-insensitive, allow both 'News Article' and 'Annual Report')
     doc_types = ["annual report", "news article"]
