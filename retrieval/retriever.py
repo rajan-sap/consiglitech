@@ -223,18 +223,32 @@ def extract_metadata_from_query(single_shot_query):
 
 # Step 4: Retrieve aggregated context based on decomposed queries
 def retrieve_aggregated_context(query, retriever, document_filter=None):
+    import sys
+    
     aggregated_context = ""
     decomposed_queries = decompose_query(query)
+    
+    print(f"[DEBUG] Original query: {query}", file=sys.stderr)
+    print(f"[DEBUG] Decomposed queries: {decomposed_queries}", file=sys.stderr)
+    
     for single_query in decomposed_queries:
         metadata_for_query = extract_metadata_from_query(single_query)
+        print(f"[DEBUG] Single query: {single_query}", file=sys.stderr)
+        print(f"[DEBUG] Extracted metadata: {metadata_for_query}", file=sys.stderr)
+        
         # Combine automatic extraction with manual document_filter
         if document_filter:
             if metadata_for_query:
                 metadata_for_query = {**metadata_for_query, **document_filter}
             else:
                 metadata_for_query = document_filter
+        
         results = retriever.search(single_query, k=3, metadata_filter=metadata_for_query)
+        print(f"[DEBUG] Search results count: {len(results)}", file=sys.stderr)
+        
         for res in results:
             # import pdb; pdb.set_trace()
             aggregated_context += f"Document: {res['document']}\nMetadata: {res['metadata']}\n\n"
+    
+    print(f"[DEBUG] Final aggregated context length: {len(aggregated_context)}", file=sys.stderr)
     return aggregated_context
