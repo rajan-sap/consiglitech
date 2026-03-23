@@ -1,27 +1,55 @@
+# Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-.env
+*.pyi
+.pytest_cache/
+.tox/
+dist/
+build/
+*.egg-info/
+*.egg
+
+# Virtual environments
 venv/
 .venv/
 .envrc
-.DS_Store
-.vscode/
 
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment secrets
+.env
 .streamlit/secrets.toml
 
-# Vector database
-# - chroma_db/ MUST be deployed to Streamlit Cloud for document queries to work
-# - .processed_files.json is local tracking, keep ignored
+# Local data files (BMW/Ford annual reports - user provided)
+data/BMW/
+data/Ford/
+data/Tesla/
+data/News/
+eval_data/eval_dataset.json
+eval_data/eval_results.json
+
+# Local processing artifacts
 .processed_files.json
 
 # System files
 *.stackdump
 *.exe.stackdump
+Thumbs.db
+.DS_Store
 
-# Data folder (user-provided documents)
-data/BMW/
-data/Ford/
-# data/Tesla/
-eval_data/eval_dataset.json
+# Development/test files (not needed in repository)
+test_pipeline.py
+PIPELINE_VERIFICATION_REPORT.md
+inspect_db.py
+
+# NOTE: chroma_db/ folder contains vector embeddings and is large (~20MB)
+# It should be deployed separately or rebuilt from source documents
+chroma_db/
+
