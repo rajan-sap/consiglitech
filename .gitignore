@@ -8,10 +8,12 @@ venv/
 .envrc
 .DS_Store
 .vscode/
+
 .streamlit/secrets.toml
 
-# Vector database (regenerated from data)
-chroma_db/
+# Vector database
+# - chroma_db/ MUST be deployed to Streamlit Cloud for document queries to work
+# - .processed_files.json is local tracking, keep ignored
 .processed_files.json
 
 # System files

@@ -6,6 +6,24 @@ from generation.generator import generate_answer
 from llm_config import LLM_MODEL, LLM_BASE_URL, LLM_API_KEY
 
 # ─────────────────────────────────────────────
+# DEBUG: Check retriever status on load
+# ─────────────────────────────────────────────
+DEBUG_MODE = os.environ.get("STREAMLIT_DEBUG", "false").lower() == "true"
+if DEBUG_MODE:
+    st.write("🔍 Debug Mode Enabled")
+    from generation.generator import retiever
+    st.write(f"- Current dir: {os.getcwd()}")
+    st.write(f"- Data dir exists: {os.path.isdir('./data')}")
+    st.write(f"- ChromaDB dir exists: {os.path.isdir('./chroma_db')}")
+    st.write(f"- Retriever available: {retiever.is_available}")
+    if retiever.vector_store:
+        try:
+            count = retiever.vector_store._collection.count()
+            st.write(f"- Vector store doc count: {count}")
+        except Exception as e:
+            st.write(f"- Error getting count: {e}")
+
+# ─────────────────────────────────────────────
 # PAGE CONFIG
 # ─────────────────────────────────────────────
 st.set_page_config(
