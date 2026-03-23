@@ -200,9 +200,9 @@ def load_all_documents(data_path: str = DATA_PATH) -> List[Document]:
         try:
             chunks = process_file(path)
             all_chunks.extend(chunks)
-            tqdm.write(f"✓ {os.path.basename(path)}: {len(chunks)} chunks")
+            print(f"[OK] {os.path.basename(path)}: {len(chunks)} chunks")
         except Exception as e:
-            tqdm.write(f"✗ {os.path.basename(path)}: {e}")
+            print(f"[FAIL] {os.path.basename(path)}: {e}")
 
     print(f"\nTotal chunks: {len(all_chunks)}")
     return all_chunks
@@ -247,7 +247,7 @@ def create_vector_store() -> Chroma:
             print("✓ No new documents to process.")
             return vector_store
         
-        print(f"\n📄 Found {len(new_files)} new document(s) to process...")
+        print(f"\nFound {len(new_files)} new document(s) to process...")
         
         # Process only new files
         new_chunks = []
@@ -256,19 +256,19 @@ def create_vector_store() -> Chroma:
                 chunks = process_file(path)
                 new_chunks.extend(chunks)
                 processed_files.add(os.path.normpath(path)) # Mark as processed
-                tqdm.write(f"✓ {os.path.basename(path)}: {len(chunks)} chunks") # Log success
+                print(f"[OK] {os.path.basename(path)}: {len(chunks)} chunks") # Log success
             except Exception as e:
-                tqdm.write(f"✗ {os.path.basename(path)}: {e}")
+                print(f"[FAIL] {os.path.basename(path)}: {e}")
         
         if new_chunks:
-            print(f"\n⏳ Embedding {len(new_chunks)} new chunks...")
+            print(f"Embedding {len(new_chunks)} new chunks...")
             for i in tqdm(range(0, len(new_chunks), BATCH_SIZE), desc="Embedding"):
                 batch = new_chunks[i : i + BATCH_SIZE]
                 vector_store.add_documents(batch)
             
             # Save updated tracking
             save_processed_files(processed_files)
-            print(f"✓ Added {len(new_chunks)} chunks to vector store.")
+            print(f"[OK] Added {len(new_chunks)} chunks to vector store.")
         
         return vector_store
 
@@ -279,7 +279,7 @@ def create_vector_store() -> Chroma:
     if not chunks:
         raise ValueError("No documents found. Check your data directory.")
 
-    print(f"\n⏳ Embedding {len(chunks)} chunks...")
+    print(f"\nEmbedding {len(chunks)} chunks...")
 
     vector_store = Chroma(
         embedding_function=embeddings,
@@ -297,5 +297,5 @@ def create_vector_store() -> Chroma:
         processed_files.add(os.path.normpath(path))
     save_processed_files(processed_files)
 
-    print(f"\n✓ Ingestion complete! Saved to {VECTOR_DB_PATH}")
+    print(f"\nIngestion complete! Saved to {VECTOR_DB_PATH}")
     return vector_store

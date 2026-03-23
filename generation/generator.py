@@ -32,7 +32,7 @@ def is_general_query(query: str) -> bool:
                 {"role": "system", "content": CLASSIFY_SYSTEM_PROMPT},
                 {"role": "user", "content": query},
             ],
-            temperature=0.0,
+            temperature=0.2,
             max_tokens=10,
         )
         label = response.choices[0].message.content.strip().upper()

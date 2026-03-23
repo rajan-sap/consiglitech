@@ -18,6 +18,92 @@ def connect_chromadb(path="./chroma_db"):
     return client, collections
 
 
+
+
+# Step 2: Implementation of query decompostion
+def decompose_query(query, model=LLM_MODEL):
+    """
+    Decompose a query into single-shot factual questions using LLM. Returns a list of queries (strings).
+    """
+    try:
+        system_prompt = (
+            "You are a helpful assistant that decomposes complex queries into atomic factual questions. "
+            "Each decomposed query should be a single, self-contained question that can be answered with a fact."
+            "Do not include any metadata or explanations."
+            
+        )
+        # Few-shot example: all content is plain string
+        example_user = "Provide a summary of revenue figures for Tesla, BMW, and Ford over the past three years."
+        example_assistant = (
+            "What was Tesla's revenue for the year 2020?\n"
+            "What was Tesla's revenue for the year 2022?\n"
+            "What was BMW's revenue for the year 2020?\n"
+            "What was BMW's revenue for the year 2022?\n"
+            "What was Ford's revenue for the year 2020?\n"
+            "What was Ford's revenue for the year 2022?"
+        )
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": example_user},
+            {"role": "assistant", "content": example_assistant},
+            {"role": "user", "content": query},
+        ]
+        response = client.chat.completions.create(
+            model=model,
+            messages=messages
+        )
+        if hasattr(response, "choices") and response.choices:
+            content = response.choices[0].message.content
+            queries = [line.strip() for line in content.splitlines() if line.strip()]
+            queries = [q for q in queries if not q.lower().startswith("error communicating with openai")]
+            return queries
+        else:
+            return []
+    except Exception as e:
+        return [f"Error communicating with OpenAI: {e}"]
+
+# Step 3: Implementaition of metadata extraction from query
+def extract_metadata_from_query(single_shot_query):
+    """
+    Extract only company, document_type, and year for metadata filtering.
+    Handles both News Article and Annual Report cases.
+    Default to News Article if no company or annual report is specified.
+    """
+    # Normalize possessives: "Ford's" -> "Ford"
+    query_clean = re.sub(r"'s\b", "", single_shot_query)
+
+    # Extract year (4 consecutive digits)
+    year_match = re.search(r"(20\d{2})", query_clean)
+    year = year_match.group(1) if year_match else None
+
+    # Extract ALL companies from a known list (not just the first one)
+    companies = ["BMW", "Tesla", "Ford"]
+    found_companies = [c for c in companies if re.search(rf'\b{re.escape(c)}\b', query_clean, re.IGNORECASE)]
+    company = found_companies if found_companies else None  # Return list of companies or None
+
+    # Extract document type (case-insensitive, allow both 'News Article' and 'Annual Report')
+    doc_types = ["annual report", "news article"]
+    document_type = next((d.title() for d in doc_types if d in query_clean.lower()), None)
+    
+    # Check for financial keywords that indicate annual report
+    financial_keywords = ["revenue", "profit", "income", "financial", "earnings", "balance sheet", "cash flow", "fiscal", "quarterly", "annual"]
+    has_financial_keyword = any(kw in query_clean.lower() for kw in financial_keywords)
+    
+    # If no company found AND no annual report specified, default to News Article
+    if company is None and document_type != "Annual Report":
+        document_type = "News Article"
+    # If company is found with financial keyword, prefer Annual Report
+    elif company is not None and has_financial_keyword:
+        document_type = "Annual Report"
+
+    return {
+        "company": company,
+        "document_type": document_type,
+        "year": year
+    }
+   
+
+# Step 4: Implementaiton of context retrieval based on decomposed queries
 class Retriever:
     # Helper functions are now imported from utils.py for modularity
 
@@ -144,90 +230,6 @@ class Retriever:
             return []
 
 
-# Step 2: Implementation of query decompostion
-def decompose_query(query, model=LLM_MODEL):
-    """
-    Decompose a query into single-shot factual questions using LLM. Returns a list of queries (strings).
-    """
-    try:
-        system_prompt = (
-            "You are a helpful assistant that decomposes complex queries into atomic factual questions. "
-            "Return only a list of decomposed queries, one per line. Do not include any metadata or explanations."
-        )
-        # Few-shot example: all content is plain string
-        example_user = "Provide a summary of revenue figures for Tesla, BMW, and Ford over the past three years."
-        example_assistant = (
-            "What was Tesla's revenue for the year 2020?\n"
-            "What was Tesla's revenue for the year 2021?\n"
-            "What was Tesla's revenue for the year 2022?\n"
-            "What was BMW's revenue for the year 2020?\n"
-            "What was BMW's revenue for the year 2021?\n"
-            "What was BMW's revenue for the year 2022?\n"
-            "What was Ford's revenue for the year 2020?\n"
-            "What was Ford's revenue for the year 2021?\n"
-            "What was Ford's revenue for the year 2022?"
-        )
-        messages = [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": example_user},
-            {"role": "assistant", "content": example_assistant},
-            {"role": "user", "content": query},
-        ]
-        response = client.chat.completions.create(
-            model=model,
-            messages=messages
-        )
-        if hasattr(response, "choices") and response.choices:
-            content = response.choices[0].message.content
-            queries = [line.strip() for line in content.splitlines() if line.strip()]
-            queries = [q for q in queries if not q.lower().startswith("error communicating with openai")]
-            return queries
-        else:
-            return []
-    except Exception as e:
-        return [f"Error communicating with OpenAI: {e}"]
-
-
-# Step 3: Implementaition of metadata extraction from query
-def extract_metadata_from_query(single_shot_query):
-    """
-    Extract only company, document_type, and year for metadata filtering.
-    Handles both News Article and Annual Report cases.
-    Default to News Article if no company or annual report is specified.
-    """
-    # Normalize possessives: "Ford's" -> "Ford"
-    query_clean = re.sub(r"'s\b", "", single_shot_query)
-
-    # Extract year (4 consecutive digits)
-    year_match = re.search(r"(20\d{2})", query_clean)
-    year = year_match.group(1) if year_match else None
-
-    # Extract ALL companies from a known list (not just the first one)
-    companies = ["BMW", "Tesla", "Ford"]
-    found_companies = [c for c in companies if re.search(rf'\b{re.escape(c)}\b', query_clean, re.IGNORECASE)]
-    company = found_companies if found_companies else None  # Return list of companies or None
-
-    # Extract document type (case-insensitive, allow both 'News Article' and 'Annual Report')
-    doc_types = ["annual report", "news article"]
-    document_type = next((d.title() for d in doc_types if d in query_clean.lower()), None)
-    
-    # Check for financial keywords that indicate annual report
-    financial_keywords = ["revenue", "profit", "income", "financial", "earnings", "balance sheet", "cash flow", "fiscal", "quarterly", "annual"]
-    has_financial_keyword = any(kw in query_clean.lower() for kw in financial_keywords)
-    
-    # If no company found AND no annual report specified, default to News Article
-    if company is None and document_type != "Annual Report":
-        document_type = "News Article"
-    # If company is found with financial keyword, prefer Annual Report
-    elif company is not None and has_financial_keyword:
-        document_type = "Annual Report"
-
-    return {
-        "company": company,
-        "document_type": document_type,
-        "year": year
-    }
-   
 
 # Step 4: Retrieve aggregated context based on decomposed queries
 def retrieve_aggregated_context(query, retriever, document_filter=None):
