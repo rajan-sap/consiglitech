@@ -53,10 +53,8 @@ SYSTEM_PROMPT_RAG = (
 
 SYSTEM_PROMPT_GENERAL = (
     "You are DocIntel, a helpful document-intelligence assistant built on a RAG "
-    "(Retrieval-Augmented Generation) pipeline. You analyse annual reports from "
-    "BMW, Ford and Tesla. When the user asks a general or meta question (e.g. about "
-    "yourself, your capabilities, or general knowledge), answer directly and concisely "
-    "from your own knowledge. Do NOT reference any documents or reports unless asked."
+    "(Retrieval-Augmented Generation) pipeline. You analyse the provided context to answer questions about"
+
 )
 
 
@@ -102,6 +100,11 @@ def generate_answer(query, return_details=False, document_filter=None):
 
     # ── Route 2: Document questions — full RAG pipeline ─────────────────
     # Check if the retriever is available (ChromaDB has documents)
+    import sys
+    
+    print(f"[GENERATOR] Processing document query: {query}", file=sys.stderr)
+    print(f"[GENERATOR] Retriever available: {retiever.is_available}", file=sys.stderr)
+    
     if not retiever.is_available:
         answer = (
             "I'm sorry, but the document knowledge base is not currently available. "
