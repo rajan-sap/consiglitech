@@ -29,10 +29,10 @@ def _get_secret(key: str, fallback: str = "") -> str:
 # PROVIDER TOGGLE  — change this section to switch providers
 # =============================================================================
 
-# --- Groq (cloud, free tier) ---
-LLM_BASE_URL = "https://api.groq.com/openai/v1"
-LLM_MODEL = "llama-3.3-70b-versatile"
-LLM_API_KEY = _get_secret("GROQ_API_KEY")
+# --- Gemini (Google, OpenAI-compatible endpoint) ---
+LLM_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
+LLM_MODEL = "gemini-2.0-flash"
+LLM_API_KEY = _get_secret("GEMINI_API_KEY")
 
 # --- LM Studio (local) — uncomment these and comment out the block above ---
 # LLM_BASE_URL = "http://localhost:1234/v1"
