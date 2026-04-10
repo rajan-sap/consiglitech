@@ -316,9 +316,6 @@ with st.sidebar:
         <div style="font-size:1.05rem; font-weight:700; letter-spacing:-0.02em; color:#c9cdd4 !important;">
             DocIntel
         </div>
-        <div style="font-size:0.65rem; color:#555b65 !important; text-transform:uppercase; letter-spacing:0.1em; margin-top:0.15rem;">
-            Document Intelligence
-        </div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -462,20 +459,15 @@ with st.sidebar:
 # ─────────────────────────────────────────────
 # HEADER
 # ─────────────────────────────────────────────
-st.markdown("""
-<div style="padding: 1.2rem 0 0.6rem 0;">
-    <h1 style="font-size:1.5rem; font-weight:700; color:#d8dce2; margin:0; letter-spacing:-0.03em;">
-        DocIntel
-    </h1>
-    <p style="font-size:0.88rem; color:#555b65; margin:0.2rem 0 0 0;">
-        Advanced RAG system to talk with your text and tabular data
-    </p>
-</div>
-""", unsafe_allow_html=True)
+# ─────────────────────────────────────────────
+# MAIN CONTENT
+# ─────────────────────────────────────────────
+st.markdown(
+    '<p style="font-size:1.15rem; color:#555b65; margin:0 0 0.5rem 0;">'
+    'Advanced RAG system to talk with your text and tabular data</p>',
+    unsafe_allow_html=True,
+)
 
-# ─────────────────────────────────────────────
-# MAIN CONTENT — TABS
-# ─────────────────────────────────────────────
 tab_kb, tab_upload = st.tabs(["Knowledge Base", "Your Documents"])
 
 # ═════════════════════════════════════════════
@@ -492,7 +484,7 @@ with tab_kb:
         """, unsafe_allow_html=True)
 
         st.markdown("")
-        st.markdown("<p class='example-label'>Try one of these questions</p>", unsafe_allow_html=True)
+        st.markdown("<p class='example-label'>Ask questions like these</p>", unsafe_allow_html=True)
 
         example_questions = [
             "What was Tesla's revenue in 2022 and 2023?",
