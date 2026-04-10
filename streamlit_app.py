@@ -45,9 +45,14 @@ html, body, [class*="css"] { font-family: 'Inter', -apple-system, sans-serif; }
 section[data-testid="stSidebar"] {
     background: #161a22;
     border-right: 1px solid #1e222b;
+    height: 100vh !important;
+    min-height: 100vh !important;
+    top: 0 !important;
+    position: fixed !important;
 }
 section[data-testid="stSidebar"] > div:first-child {
     display: flex; flex-direction: column;
+    height: 100vh; min-height: 100vh;
     padding-top: 1rem; padding-bottom: 1rem;
     overflow-y: auto; gap: 0.3rem;
 }
