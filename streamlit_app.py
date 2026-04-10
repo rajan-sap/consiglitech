@@ -35,7 +35,7 @@ st.markdown("""
 <style>
 /* ── Global ── */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-html, body, [class*="css"] { font-family: 'Inter', -apple-system, sans-serif; }
+html, body, [class*="css"] { font-family: 'Inter', -apple-system, sans-serif; font-size: 1.08rem; }
 
 /* ── Outer page background (visible outside the app) ── */
 html, body { background: #090b0e !important; }
