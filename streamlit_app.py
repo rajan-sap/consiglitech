@@ -460,6 +460,20 @@ with st.sidebar:
 
 
 # ─────────────────────────────────────────────
+# HEADER
+# ─────────────────────────────────────────────
+st.markdown("""
+<div style="padding: 1.2rem 0 0.6rem 0;">
+    <h1 style="font-size:1.5rem; font-weight:700; color:#d8dce2; margin:0; letter-spacing:-0.03em;">
+        DocIntel
+    </h1>
+    <p style="font-size:0.88rem; color:#555b65; margin:0.2rem 0 0 0;">
+        Advanced RAG system to talk with your text and tabular data
+    </p>
+</div>
+""", unsafe_allow_html=True)
+
+# ─────────────────────────────────────────────
 # MAIN CONTENT — TABS
 # ─────────────────────────────────────────────
 tab_kb, tab_upload = st.tabs(["Knowledge Base", "Your Documents"])
