@@ -41,11 +41,14 @@ html, body, [class*="css"] { font-family: 'Inter', -apple-system, sans-serif; }
 .stApp { background: #0f1117; color: #c9cdd4; }
 .stApp > header { background: transparent !important; }
 
-/* ── Constrain main content width ── */
-.main .block-container {
-    max-width: 70% !important;
-    padding-left: 2rem !important;
-    padding-right: 2rem !important;
+/* ── Constrain main content width on desktop ── */
+@media (min-width: 1024px) {
+    .main .block-container {
+        max-width: 70% !important;
+        margin: 0 auto !important;
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+    }
 }
 
 /* ── Sidebar ── */
@@ -305,6 +308,38 @@ with st.sidebar:
             <span>News & Ads</span>
             <span style="color:#6b7280 !important; font-size:0.8rem; font-weight:500;">{news_docs}</span>
         </div>""", unsafe_allow_html=True)
+
+    st.divider()
+
+    # ── Sample Document ──
+    st.markdown("##### Sample Document")
+    tesla_folder = "./data/Tesla"
+    if os.path.isdir(tesla_folder):
+        tesla_pdfs = sorted([f for f in os.listdir(tesla_folder) if f.endswith('.pdf')])
+        if tesla_pdfs:
+            pdf_file = tesla_pdfs[0]
+            pdf_path = os.path.join(tesla_folder, pdf_file)
+            with open(pdf_path, "rb") as f:
+                st.download_button(
+                    label=pdf_file,
+                    data=f,
+                    file_name=pdf_file,
+                    mime="application/pdf",
+                    use_container_width=True,
+                )
+            st.markdown(
+                '<div style="font-size:0.75rem; color:#555b65 !important; margin-top:0.2rem;">'
+                'Download to see the complexity of source documents.</div>',
+                unsafe_allow_html=True,
+            )
+    else:
+        st.markdown(
+            '<div style="font-size:0.78rem; color:#555b65 !important;">'
+            'Tesla_Annual_Report_2022.pdf<br>'
+            '<span style="font-size:0.72rem;">Sample not available on cloud. Clone the repo to access.</span>'
+            '</div>',
+            unsafe_allow_html=True,
+        )
 
     st.divider()
 
