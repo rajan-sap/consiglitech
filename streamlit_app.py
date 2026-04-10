@@ -201,6 +201,10 @@ if "user_retriever" not in st.session_state:
     st.session_state.user_retriever = None
 if "processed_uploads" not in st.session_state:
     st.session_state.processed_uploads = {}  # {filename: chunk_count}
+if "query_count" not in st.session_state:
+    st.session_state.query_count = 0
+
+MAX_FREE_QUERIES = 10
 
 # ─────────────────────────────────────────────
 # HELPER: count ingested docs
@@ -486,12 +490,16 @@ with tab_kb:
     if st.session_state.pending_query:
         query = st.session_state.pending_query
         st.session_state.pending_query = None
-        try:
-            with st.spinner("Searching documents..."):
-                answer = generate_answer(query)
-        except Exception as e:
-            error_type = type(e).__name__
-            answer = f"⚠️ **Error generating answer:** {error_type} — {e}"
+        if st.session_state.query_count >= MAX_FREE_QUERIES:
+            answer = "You've reached the free chat limit (10 queries). This is a beta version with limited resources. Thank you for trying DocIntel!"
+        else:
+            try:
+                with st.spinner("Searching documents..."):
+                    answer = generate_answer(query)
+                st.session_state.query_count += 1
+            except Exception as e:
+                error_type = type(e).__name__
+                answer = f"⚠️ **Error generating answer:** {error_type} — {e}"
         st.session_state.messages.append({"role": "assistant", "content": answer})
         st.rerun()
 
@@ -576,12 +584,16 @@ with tab_upload:
         if st.session_state.upload_pending_query:
             query = st.session_state.upload_pending_query
             st.session_state.upload_pending_query = None
-            try:
-                with st.spinner("Searching your documents..."):
-                    answer = generate_answer_for_uploads(query, st.session_state.user_retriever)
-            except Exception as e:
-                error_type = type(e).__name__
-                answer = f"⚠️ **Error generating answer:** {error_type} — {e}"
+            if st.session_state.query_count >= MAX_FREE_QUERIES:
+                answer = "You've reached the free chat limit (10 queries). This is a beta version with limited resources. Thank you for trying DocIntel!"
+            else:
+                try:
+                    with st.spinner("Searching your documents..."):
+                        answer = generate_answer_for_uploads(query, st.session_state.user_retriever)
+                    st.session_state.query_count += 1
+                except Exception as e:
+                    error_type = type(e).__name__
+                    answer = f"⚠️ **Error generating answer:** {error_type} — {e}"
             st.session_state.upload_messages.append({"role": "assistant", "content": answer})
             st.rerun()
     elif not uploaded_files:
