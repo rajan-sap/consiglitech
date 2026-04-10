@@ -1,4 +1,0 @@
-# Test-only dependencies (install alongside requirements.txt)
-pytest>=7.4.0
-pytest-mock>=3.12.0
-pytest-timeout>=2.2.0
