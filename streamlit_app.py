@@ -1,6 +1,9 @@
-import streamlit as st
 import os
 import re
+import time
+
+import streamlit as st
+
 from generation.generator import generate_answer, generate_answer_for_uploads
 from ingestion.upload_processor import process_uploaded_file
 from retrieval.session_retriever import SessionRetriever
@@ -201,8 +204,6 @@ if "user_retriever" not in st.session_state:
     st.session_state.user_retriever = None
 if "processed_uploads" not in st.session_state:
     st.session_state.processed_uploads = {}  # {filename: chunk_count}
-import time
-
 MAX_FREE_QUERIES = 10
 LIMIT_WINDOW_SECONDS = 3600  # 1 hour
 

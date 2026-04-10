@@ -7,7 +7,6 @@ from typing import List, Dict, Any, Optional
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
 from ingestion.constants import EMBEDDING_MODEL_NAME, VECTOR_DB_PATH
-from retrieval.utils import extract_metadata_from_query
 from llm_config import llm_client as client, LLM_MODEL
 import chromadb
 
@@ -108,62 +107,29 @@ class Retriever:
     # Helper functions are now imported from utils.py for modularity
 
     def __init__(self, filtered_ids: Optional[List[str]] = None, query: Optional[str] = None):
-        # Initialize the embedding model (used to convert text to vectors)
         self.embeddings = HuggingFaceEmbeddings(
             model_name=EMBEDDING_MODEL_NAME,
             model_kwargs={"device": "cpu"},
             encode_kwargs={"normalize_embeddings": True},
         )
-        
-        # Initialize the Chroma vector store for document retrieval
-        # Note: The embedding_function is used by Chroma to vectorize queries and documents internally
         self.vector_store = None
         self.is_available = False
-        
+
         try:
-            # Check if the vector store directory exists and has content
-            import os
-            import sys
-            
-            # Get absolute path for debugging
             chroma_path = os.path.abspath(VECTOR_DB_PATH)
             db_file = os.path.join(chroma_path, "chroma.sqlite3")
-            
-            # Debug output
-            print(f"[DEBUG] ChromaDB path: {chroma_path}", file=sys.stderr)
-            print(f"[DEBUG] ChromaDB exists: {os.path.exists(chroma_path)}", file=sys.stderr)
-            print(f"[DEBUG] ChromaDB sqlite exists: {os.path.exists(db_file)}", file=sys.stderr)
-            
-            # Check for directory and sqlite file
+
             if os.path.exists(chroma_path) and os.path.exists(db_file):
-                # Try to load existing vector store
                 self.vector_store = Chroma(
                     persist_directory=VECTOR_DB_PATH,
                     embedding_function=self.embeddings,
                     collection_name="documents",
                 )
-                # Try to get collection count - if it fails, the store might be corrupted
-                try:
-                    count = self.vector_store._collection.count()
-                    print(f"[DEBUG] Collection count: {count}", file=sys.stderr)
-                    # If we can access the count, consider it available
-                    # (even if 0, we'll let it try and handle errors in search)
-                    self.is_available = True
-                except Exception as e:
-                    # Collection might not exist or be corrupted
-                    print(f"[DEBUG] Could not get collection count: {e}", file=sys.stderr)
-                    self.is_available = True  # Still try to use it, search will handle errors
-            else:
-                # ChromaDB directory or file doesn't exist
-                print(f"[DEBUG] ChromaDB directory or file missing", file=sys.stderr)
-                self.vector_store = None
-                self.is_available = False
-        except Exception as e:
-            # If ChromaDB fails to initialize, mark as unavailable
-            print(f"[DEBUG] Warning: ChromaDB not available: {e}", file=sys.stderr)
+                self.is_available = True
+        except Exception:
             self.vector_store = None
             self.is_available = False
-        
+
         self.filtered_ids = filtered_ids
     
 
@@ -182,83 +148,46 @@ class Retriever:
 
 
     def search(self, query, k=5, metadata_filter=None):
-        """
-        Perform top-k vector search on documents matching metadata_filter (if provided), else on all documents.
-
-        Args:
-            query: The search query (text)
-            k: Number of top results to return
-
-        Returns:
-            List of dicts with document, score, and metadata
-        """
-        import sys
-        
-        # Debug output
-        print(f"[DEBUG] Search called with query: {query}", file=sys.stderr)
-        print(f"[DEBUG] is_available: {self.is_available}", file=sys.stderr)
-        print(f"[DEBUG] vector_store: {self.vector_store}", file=sys.stderr)
-        
-        # Return empty results if vector store is not available
+        """Perform top-k vector search, optionally filtered by metadata."""
         if not self.is_available or self.vector_store is None:
-            print("[DEBUG] Returning empty - vector store not available", file=sys.stderr)
             return []
-        
+
         try:
             chroma_filter = None
             if metadata_filter:
-                # Handle company being a list (multiple companies) - don't filter by company if it's a list
                 filter_to_use = {k: v for k, v in metadata_filter.items() if v is not None}
-                
-                # If company is a list, remove it from filter (search all companies)
+
                 if "company" in filter_to_use and isinstance(filter_to_use["company"], list):
                     del filter_to_use["company"]
-                
+
                 if len(filter_to_use) == 0:
                     chroma_filter = None
                 elif len(filter_to_use) == 1:
                     chroma_filter = filter_to_use
                 else:
                     chroma_filter = {"$and": [{k: v} for k, v in filter_to_use.items()]}
-            
-            print(f"[DEBUG] ChromaDB filter: {chroma_filter}", file=sys.stderr)
+
             results = self.vector_store.similarity_search_with_score(query, k=k, filter=chroma_filter)
             return self._format_results(results)
-        except Exception as e:
-            # Return empty list on any error during search
-            print(f"Search error: {e}")
+        except Exception:
             return []
 
 
 
-# Step 4: Retrieve aggregated context based on decomposed queries
 def retrieve_aggregated_context(query, retriever, document_filter=None):
-    import sys
-    
+    """Decompose query, extract metadata, search, and aggregate results."""
     aggregated_context = ""
     decomposed_queries = decompose_query(query)
-    
-    print(f"[DEBUG] Original query: {query}", file=sys.stderr)
-    print(f"[DEBUG] Decomposed queries: {decomposed_queries}", file=sys.stderr)
-    
+
     for single_query in decomposed_queries:
         metadata_for_query = extract_metadata_from_query(single_query)
-        print(f"[DEBUG] Single query: {single_query}", file=sys.stderr)
-        print(f"[DEBUG] Extracted metadata: {metadata_for_query}", file=sys.stderr)
-        
-        # Combine automatic extraction with manual document_filter
+
         if document_filter:
-            if metadata_for_query:
-                metadata_for_query = {**metadata_for_query, **document_filter}
-            else:
-                metadata_for_query = document_filter
-        
+            metadata_for_query = {**(metadata_for_query or {}), **document_filter}
+
         results = retriever.search(single_query, k=3, metadata_filter=metadata_for_query)
-        print(f"[DEBUG] Search results count: {len(results)}", file=sys.stderr)
-        
+
         for res in results:
-            # import pdb; pdb.set_trace()
             aggregated_context += f"Document: {res['document']}\nMetadata: {res['metadata']}\n\n"
-    
-    print(f"[DEBUG] Final aggregated context length: {len(aggregated_context)}", file=sys.stderr)
+
     return aggregated_context

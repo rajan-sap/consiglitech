@@ -1,9 +1,9 @@
 """
 Integration tests — Full RAG Pipeline
 
-These call the real LLM (Groq) and read from the real ChromaDB.
+These call the real LLM (Gemini) and read from the real ChromaDB.
 They are slow and require:
-  - GROQ_API_KEY set in env or .streamlit/secrets.toml
+  - GEMINI_API_KEY set in env or .streamlit/secrets.toml
   - ./chroma_db with ingested data
 
 Run explicitly:  pytest tests/integration -v -m integration --timeout=120

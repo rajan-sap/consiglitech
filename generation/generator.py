@@ -66,8 +66,8 @@ SYSTEM_PROMPT_UPLOAD_RAG = (
 
 SYSTEM_PROMPT_GENERAL = (
     "You are DocIntel, a helpful document-intelligence assistant built on a RAG "
-    "(Retrieval-Augmented Generation) pipeline. You analyse the provided context to answer questions about"
-
+    "(Retrieval-Augmented Generation) pipeline. You have access to annual reports "
+    "from BMW, Ford, and Tesla. Answer general questions helpfully and concisely."
 )
 
 
@@ -112,14 +112,9 @@ def generate_answer(query, return_details=False, document_filter=None):
         return answer
 
     # ── Route 2: Document questions — full RAG pipeline ─────────────────
-    # Check if the retriever is available (ChromaDB has documents)
-    import sys
-    
-    retiever = _get_retriever()
-    print(f"[GENERATOR] Processing document query: {query}", file=sys.stderr)
-    print(f"[GENERATOR] Retriever available: {retiever.is_available}", file=sys.stderr)
+    retriever = _get_retriever()
 
-    if not retiever.is_available:
+    if not retriever.is_available:
         answer = (
             "I'm sorry, but the document knowledge base is not currently available. "
             "This could be because:\n"
@@ -136,7 +131,7 @@ def generate_answer(query, return_details=False, document_filter=None):
         return answer
     
     from retrieval.retriever import retrieve_aggregated_context
-    aggregated_context = retrieve_aggregated_context(query, retiever, document_filter)
+    aggregated_context = retrieve_aggregated_context(query, retriever, document_filter)
     
     # If no context is retrieved, provide a helpful message
     if not aggregated_context.strip():

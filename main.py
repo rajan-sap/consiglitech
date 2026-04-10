@@ -16,7 +16,7 @@ def main():
         create_vector_store()
     
     else:
-        print("Notthing to update.")     
+        print("Nothing to update.")     
         
     # Interactive query loop
     while True:
