@@ -34,192 +34,136 @@ if not LLM_API_KEY:
 st.markdown("""
 <style>
 /* ── Global ── */
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
-html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; font-size: 1.05rem; }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+html, body, [class*="css"] { font-family: 'Inter', -apple-system, sans-serif; }
 
-/* ── Main area: warm dark canvas ── */
-.stApp {
-    background: #121518;
-    color: #d4d4d8;
-}
+/* ── Main area ── */
+.stApp { background: #0f1117; color: #c9cdd4; }
 .stApp > header { background: transparent !important; }
 
 /* ── Sidebar ── */
 section[data-testid="stSidebar"] {
-    background: #191d23;
-    border-right: 1px solid rgba(255,255,255,0.06);
-    height: 100vh !important;
-    min-height: 100vh !important;
-    top: 0 !important;
+    background: #161a22;
+    border-right: 1px solid #1e222b;
 }
 section[data-testid="stSidebar"] > div:first-child {
-    display: flex; flex-direction: column; height: 100vh;
-    min-height: 100vh;
+    display: flex; flex-direction: column;
     padding-top: 1rem; padding-bottom: 1rem;
-    justify-content: flex-start;
-    overflow-y: auto;
-    overflow-x: hidden;
-    gap: 0.35rem;
+    overflow-y: auto; gap: 0.3rem;
 }
-section[data-testid="stSidebar"] > div:first-child > div {
-    flex-shrink: 0;
-}
-
-/* Sidebar scrollbar styling */
-section[data-testid="stSidebar"] > div:first-child::-webkit-scrollbar {
-    width: 5px;
-}
-section[data-testid="stSidebar"] > div:first-child::-webkit-scrollbar-track {
-    background: transparent;
-}
+section[data-testid="stSidebar"] > div:first-child::-webkit-scrollbar { width: 4px; }
 section[data-testid="stSidebar"] > div:first-child::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.12); border-radius: 3px;
+    background: rgba(255,255,255,0.08); border-radius: 2px;
 }
-section[data-testid="stSidebar"] > div:first-child::-webkit-scrollbar-thumb:hover {
-    background: rgba(255,255,255,0.22);
-}
-section[data-testid="stSidebar"] * {
-    color: #b8bcc4 !important;
-    font-size: 0.92rem;
-}
-section[data-testid="stSidebar"] { min-width: 280px !important; max-width: 310px !important; }
-section[data-testid="stSidebar"] hr {
-    border-color: rgba(255,255,255,0.06);
-    margin: 0.4rem 0;
-}
+section[data-testid="stSidebar"] * { color: #8b919a !important; font-size: 0.88rem; }
+section[data-testid="stSidebar"] { min-width: 270px !important; max-width: 300px !important; }
+section[data-testid="stSidebar"] hr { border-color: #1e222b; margin: 0.5rem 0; }
 
 /* ── Chat bubbles ── */
-.chat-row { display: flex; margin: 0.75rem 0; align-items: flex-start; gap: 0.7rem; }
+.chat-row { display: flex; margin: 0.6rem 0; align-items: flex-start; gap: 0.6rem; }
 .chat-row.user { flex-direction: row-reverse; }
-
 .chat-avatar {
-    width: 28px; height: 28px; border-radius: 50%;
+    width: 26px; height: 26px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    background: transparent;
+    flex-shrink: 0; font-size: 0.8rem; font-weight: 600;
 }
-.chat-avatar.user-av { font-size: 2rem; color: #93c5fd; }
-.chat-avatar.bot-av  { font-size: 2.5rem; color: #34d399; }
-
+.chat-avatar.user-av { background: #2a2d35; color: #8b919a; }
+.chat-avatar.bot-av  { background: #1c2028; color: #6b7280; }
 .chat-bubble {
-    max-width: 72%; padding: 1rem 1.25rem; border-radius: 0.85rem;
-    line-height: 1.65; font-size: 1.02rem;
+    max-width: 70%; padding: 0.85rem 1.1rem; border-radius: 0.7rem;
+    line-height: 1.6; font-size: 0.95rem;
 }
 .chat-bubble.user-bubble {
-    background: #1e3a5f; color: #e0ecff; border-bottom-right-radius: 0.2rem;
-    border: 1px solid rgba(37,99,235,0.2);
+    background: #1a2332; color: #bcc5d0;
+    border: 1px solid #232d3b;
 }
 .chat-bubble.bot-bubble {
-    background: #1e2329; color: #c8cdd5; border-bottom-left-radius: 0.2rem;
-    border: 1px solid rgba(255,255,255,0.06);
+    background: #181c24; color: #a0a7b0;
+    border: 1px solid #1e222b;
 }
 
 /* ── Input area ── */
-.stChatInput {
-    border-top: 1px solid rgba(255,255,255,0.06);
-}
-.stChatInput > div { background: #191d23 !important; }
+.stChatInput > div { background: #161a22 !important; }
 .stChatInput textarea {
-    background: #191d23 !important; color: #d4d4d8 !important;
-    border-color: rgba(255,255,255,0.08) !important;
+    background: #161a22 !important; color: #c9cdd4 !important;
+    border-color: #1e222b !important;
 }
-.stChatInput textarea::placeholder {
-    font-size: 0.88rem !important;
-    opacity: 0.4 !important;
-    font-style: italic !important;
-}
+.stChatInput textarea::placeholder { opacity: 0.35 !important; }
 
 /* ── Stat cards ── */
 .stat-card {
-    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 0.5rem; padding: 0.35rem 0.5rem; margin-bottom: 0.2rem;
-    text-align: center;
+    background: #161a22; border: 1px solid #1e222b;
+    border-radius: 0.4rem; padding: 0.4rem 0.5rem; text-align: center;
 }
-.stat-card .stat-value { font-size: 1.5rem; font-weight: 700; color: #60a5fa !important; }
-.stat-card .stat-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.55; }
+.stat-card .stat-value { font-size: 1.3rem; font-weight: 600; color: #c9cdd4 !important; }
+.stat-card .stat-label {
+    font-size: 0.65rem; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #555b65 !important;
+}
 
 /* ── Welcome card ── */
 .welcome-card {
-    background: #191d23;
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 1rem; padding: 2.8rem 2rem; text-align: center;
-    color: #d4d4d8; margin: 2.5rem auto; max-width: 640px;
+    background: #161a22; border: 1px solid #1e222b;
+    border-radius: 0.75rem; padding: 2.5rem 2rem; text-align: center;
+    margin: 2rem auto; max-width: 600px;
 }
-.welcome-card h2 { font-weight: 700; margin-bottom: 0.5rem; font-size: 1.75rem; color: #f0f0f2; }
-.welcome-card p  { opacity: 0.65; font-size: 1.05rem; margin: 0; line-height: 1.6; }
+.welcome-card h2 {
+    font-weight: 600; margin-bottom: 0.4rem; font-size: 1.5rem;
+    color: #d8dce2 !important; letter-spacing: -0.02em;
+}
+.welcome-card p { color: #6b7280 !important; font-size: 0.95rem; line-height: 1.6; }
 
 /* ── Example questions ── */
-.example-label { text-align:center; color:#71757e; font-size:0.95rem; margin-bottom:0.5rem; }
-
-/* Style Streamlit buttons in example area */
+.example-label { text-align: center; color: #555b65; font-size: 0.85rem; margin-bottom: 0.5rem; }
 div[data-testid="stHorizontalBlock"] button {
-    background: #191d23 !important; color: #a0a4ac !important;
-    border: 1px solid rgba(255,255,255,0.08) !important;
-    border-radius: 0.6rem !important; font-size: 0.95rem !important;
-    padding: 0.55rem 0.9rem !important; transition: all 0.2s !important;
+    background: #161a22 !important; color: #8b919a !important;
+    border: 1px solid #1e222b !important;
+    border-radius: 0.5rem !important; font-size: 0.88rem !important;
+    padding: 0.5rem 0.8rem !important; transition: border-color 0.15s !important;
 }
 div[data-testid="stHorizontalBlock"] button:hover {
-    background: #1e2329 !important; color: #e0e0e4 !important;
-    border-color: rgba(96,165,250,0.35) !important;
+    border-color: #333a45 !important; color: #c9cdd4 !important;
 }
 
-/* ── Pipeline badge ── */
-.pipeline-step {
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    background: rgba(255,255,255,0.04); border-radius: 0.5rem;
-    padding: 0.45rem 0.75rem; margin: 0.25rem; font-size: 0.9rem;
-    border: 1px solid rgba(255,255,255,0.04);
-}
-.pipeline-step .step-icon { font-size: 1.15rem; }
-
-/* ── Scrollable chat container ── */
-.chat-container {
-    max-height: 62vh; overflow-y: auto; padding: 0.5rem 0.5rem 1rem 0.5rem;
-    scroll-behavior: smooth;
-}
-
-/* ── Spinner text ── */
-.stSpinner > div { color: #8b8f97 !important; }
-
-/* ── Clear button ── */
+/* ── Sidebar buttons ── */
 section[data-testid="stSidebar"] button {
-    background: rgba(255,255,255,0.04) !important;
-    border: 1px solid rgba(255,255,255,0.08) !important;
-    color: #a0a4ac !important; border-radius: 0.5rem !important;
+    background: #1a1e26 !important; border: 1px solid #1e222b !important;
+    color: #6b7280 !important; border-radius: 0.4rem !important;
 }
 section[data-testid="stSidebar"] button:hover {
-    background: rgba(255,255,255,0.08) !important;
-    color: #e0e0e4 !important;
+    border-color: #333a45 !important; color: #a0a7b0 !important;
 }
 
-/* ── Upload area styling ── */
+/* ── Upload area ── */
 .upload-card {
-    background: #191d23;
-    border: 2px dashed rgba(96,165,250,0.25);
-    border-radius: 1rem; padding: 2rem; text-align: center;
-    color: #d4d4d8; margin: 1.5rem auto; max-width: 640px;
+    background: #161a22; border: 1px dashed #2a2f3a;
+    border-radius: 0.75rem; padding: 2rem; text-align: center;
+    margin: 1.5rem auto; max-width: 600px;
 }
-.upload-card h3 { font-weight: 600; margin-bottom: 0.4rem; color: #f0f0f2; }
-.upload-card p  { opacity: 0.55; font-size: 0.95rem; }
+.upload-card h3 { font-weight: 600; color: #d8dce2 !important; margin-bottom: 0.3rem; }
+.upload-card p { color: #555b65 !important; font-size: 0.9rem; }
 
 /* ── File chip ── */
 .file-chip {
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    background: rgba(96,165,250,0.08); border: 1px solid rgba(96,165,250,0.18);
-    border-radius: 0.5rem; padding: 0.3rem 0.7rem; margin: 0.2rem;
-    font-size: 0.85rem; color: #93c5fd !important;
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    background: #1a1e26; border: 1px solid #252a34;
+    border-radius: 0.35rem; padding: 0.25rem 0.6rem; margin: 0.15rem;
+    font-size: 0.8rem; color: #8b919a !important;
 }
 
 /* ── Sidebar section titles ── */
 section[data-testid="stSidebar"] h4,
 section[data-testid="stSidebar"] h5 {
-    font-size: 1.1rem !important;
-    font-weight: 600 !important;
-    margin-top: 0.5rem !important;
-    margin-bottom: 0.3rem !important;
+    font-size: 0.78rem !important; font-weight: 600 !important;
+    text-transform: uppercase !important; letter-spacing: 0.06em !important;
+    color: #555b65 !important;
+    margin-top: 0.5rem !important; margin-bottom: 0.3rem !important;
 }
 
-/* ── Hide default Streamlit elements ── */
+/* ── Spinner ── */
+.stSpinner > div { color: #555b65 !important; }
+
+/* ── Hide chrome ── */
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
 </style>
@@ -290,9 +234,9 @@ def extract_metadata_from_filename(filename):
 def render_chat(messages):
     for msg in messages:
         if msg["role"] == "user":
-            avatar_class, bubble_class, row_class, avatar_text = "user-av", "user-bubble", "user", "👤"
+            avatar_class, bubble_class, row_class, avatar_text = "user-av", "user-bubble", "user", "You"
         else:
-            avatar_class, bubble_class, row_class, avatar_text = "bot-av", "bot-bubble", "", "🤖"
+            avatar_class, bubble_class, row_class, avatar_text = "bot-av", "bot-bubble", "", "DI"
         st.markdown(f"""
         <div class="chat-row {row_class}">
             <div class="chat-avatar {avatar_class}">{avatar_text}</div>
@@ -306,12 +250,11 @@ def render_chat(messages):
 # ─────────────────────────────────────────────
 with st.sidebar:
     st.markdown("""
-    <div style="text-align:center; padding: 0 0 0.2rem 0;">
-        <div style="font-size:1.8rem;">📑</div>
-        <div style="font-size:1.15rem; font-weight:700; letter-spacing:-0.02em; margin-top:0.1rem; color:#e8e8ec !important;">
+    <div style="text-align:center; padding: 0.3rem 0 0.1rem 0;">
+        <div style="font-size:1.05rem; font-weight:700; letter-spacing:-0.02em; color:#c9cdd4 !important;">
             DocIntel
         </div>
-        <div style="font-size:0.75rem; opacity:0.45; text-transform:uppercase; letter-spacing:0.1em;">
+        <div style="font-size:0.65rem; color:#555b65 !important; text-transform:uppercase; letter-spacing:0.1em; margin-top:0.15rem;">
             Document Intelligence
         </div>
     </div>
@@ -320,7 +263,7 @@ with st.sidebar:
     st.divider()
 
     # ── Default Knowledge Base stats ──
-    st.markdown("##### 📊 Knowledge Base")
+    st.markdown("##### Knowledge Base")
     cols = st.columns(2)
     with cols[0]:
         st.markdown(f"""
@@ -336,34 +279,27 @@ with st.sidebar:
         </div>""", unsafe_allow_html=True)
 
     for company, count in docs_per_company.items():
-        icon = {"BMW": "🚗", "Ford": "🚙", "Tesla": "⚡"}.get(company, "📁")
         st.markdown(f"""
         <div style="display:flex; align-items:center; justify-content:space-between;
-                    padding:0.25rem 0.5rem; margin:0.1rem 0; border-radius:0.4rem;
-                    background:rgba(255,255,255,0.04); font-size:0.88rem;">
-            <span style="font-size:0.9rem;">{icon} {company}</span>
-            <span style="background:rgba(96,165,250,0.12); padding:0.1rem 0.45rem;
-                         border-radius:1rem; font-size:0.82rem; font-weight:600; color:#60a5fa !important;">
-                {count}
-            </span>
+                    padding:0.3rem 0.5rem; margin:0.1rem 0; border-radius:0.35rem;
+                    background:#1a1e26; font-size:0.84rem;">
+            <span>{company}</span>
+            <span style="color:#6b7280 !important; font-size:0.8rem; font-weight:500;">{count}</span>
         </div>""", unsafe_allow_html=True)
 
     st.markdown(f"""
         <div style="display:flex; align-items:center; justify-content:space-between;
-                    padding:0.25rem 0.5rem; margin:0.1rem 0; border-radius:0.4rem;
-                    background:rgba(255,255,255,0.04); font-size:0.88rem;">
-            <span style="font-size:0.9rem;">📰 News & Ads</span>
-            <span style="background:rgba(96,165,250,0.12); padding:0.1rem 0.45rem;
-                         border-radius:1rem; font-size:0.82rem; font-weight:600; color:#60a5fa !important;">
-                {news_docs}
-            </span>
+                    padding:0.3rem 0.5rem; margin:0.1rem 0; border-radius:0.35rem;
+                    background:#1a1e26; font-size:0.84rem;">
+            <span>News & Ads</span>
+            <span style="color:#6b7280 !important; font-size:0.8rem; font-weight:500;">{news_docs}</span>
         </div>""", unsafe_allow_html=True)
 
     st.divider()
 
     # ── User Uploads stats ──
     if st.session_state.processed_uploads:
-        st.markdown("##### 📤 Your Uploads")
+        st.markdown("##### Your Uploads")
         upload_count = len(st.session_state.processed_uploads)
         chunk_count = sum(st.session_state.processed_uploads.values())
         cols = st.columns(2)
@@ -381,12 +317,12 @@ with st.sidebar:
             </div>""", unsafe_allow_html=True)
 
         for fname in st.session_state.processed_uploads:
-            st.markdown(f'<div class="file-chip">📄 {fname}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="file-chip">{fname}</div>', unsafe_allow_html=True)
 
         st.divider()
 
     # ── Tech Stack ──
-    st.markdown("##### ⚙️ Tech Stack")
+    st.markdown("##### Stack")
     if LLM_BASE_URL and "groq" in LLM_BASE_URL:
         _llm_provider = "Groq"
     elif LLM_BASE_URL and "localhost" in LLM_BASE_URL:
@@ -398,11 +334,11 @@ with st.sidebar:
     _llm_display = f"{_llm_provider} / {LLM_MODEL}"
 
     st.markdown(f"""
-    <div style="font-size:0.85rem; opacity:0.65; line-height:1.45;">
-        <b>Embeddings:</b> BGE-base-en v1.5<br>
-        <b>LLM:</b> {_llm_display}<br>
-        <b>Vector DB:</b> ChromaDB<br>
-        <b>Retrieval:</b> Hybrid (metadata + vector)
+    <div style="font-size:0.8rem; color:#555b65 !important; line-height:1.55;">
+        Embeddings: BGE-base-en v1.5<br>
+        LLM: {_llm_display}<br>
+        Vector DB: ChromaDB<br>
+        Retrieval: Hybrid
     </div>
     """, unsafe_allow_html=True)
 
@@ -410,7 +346,7 @@ with st.sidebar:
 
     # ── Actions ──
     st.markdown("<div style='height:0.3rem;'></div>", unsafe_allow_html=True)
-    if st.button("🗑️  Clear Conversation", use_container_width=True):
+    if st.button("Clear conversation", use_container_width=True):
         st.session_state.messages = []
         st.session_state.upload_messages = []
         st.rerun()
@@ -419,7 +355,7 @@ with st.sidebar:
 # ─────────────────────────────────────────────
 # MAIN CONTENT — TABS
 # ─────────────────────────────────────────────
-tab_kb, tab_upload = st.tabs(["📚 Knowledge Base", "📤 Your Documents"])
+tab_kb, tab_upload = st.tabs(["Knowledge Base", "Your Documents"])
 
 # ═════════════════════════════════════════════
 # TAB 1: Knowledge Base (existing functionality)
@@ -428,10 +364,9 @@ with tab_kb:
     if not st.session_state.messages:
         st.markdown("""
         <div class="welcome-card">
-            <div style="font-size:2.5rem; margin-bottom:0.6rem;">📑</div>
             <h2>DocIntel</h2>
-            <p>Ask questions about BMW, Ford, and Tesla — annual reports and financials.<br>
-            Answers grounded in real documents using hybrid retrieval.</p>
+            <p>Ask questions about BMW, Ford, and Tesla annual reports.<br>
+            Answers are grounded in real documents using hybrid retrieval.</p>
         </div>
         """, unsafe_allow_html=True)
 
@@ -462,7 +397,7 @@ with tab_kb:
         query = st.session_state.pending_query
         st.session_state.pending_query = None
         try:
-            with st.spinner("🔍 Searching documents and generating answer..."):
+            with st.spinner("Searching documents..."):
                 answer = generate_answer(query)
         except Exception as e:
             error_type = type(e).__name__
@@ -478,8 +413,7 @@ with tab_upload:
     if not st.session_state.processed_uploads:
         st.markdown("""
         <div class="upload-card">
-            <div style="font-size:2.5rem; margin-bottom:0.4rem;">📤</div>
-            <h3>Upload Your Documents</h3>
+            <h3>Upload your documents</h3>
             <p>Upload PDF or DOCX files and chat with them.<br>
             Documents are processed in your session and not stored permanently.</p>
         </div>
@@ -497,12 +431,12 @@ with tab_upload:
         new_files = [f for f in uploaded_files if f.name not in st.session_state.processed_uploads]
 
         if new_files:
-            if st.button(f"⚡ Process {len(new_files)} new file(s)", use_container_width=True):
+            if st.button(f"Process {len(new_files)} new file(s)", use_container_width=True):
                 # Initialize retriever if needed
                 if st.session_state.user_retriever is None:
                     st.session_state.user_retriever = SessionRetriever()
 
-                progress = st.progress(0, text="Processing documents...")
+                progress = st.progress(0, text="Processing...")
                 for idx, file in enumerate(new_files):
                     progress.progress(
                         (idx) / len(new_files),
@@ -527,12 +461,12 @@ with tab_upload:
         cols = st.columns([3, 1])
         with cols[0]:
             file_chips = " ".join(
-                f'<span class="file-chip">📄 {name} ({chunks} chunks)</span>'
+                f'<span class="file-chip">{name} ({chunks} chunks)</span>'
                 for name, chunks in st.session_state.processed_uploads.items()
             )
             st.markdown(file_chips, unsafe_allow_html=True)
         with cols[1]:
-            if st.button("🗑️ Clear uploads", use_container_width=True):
+            if st.button("Clear uploads", use_container_width=True):
                 st.session_state.user_retriever = None
                 st.session_state.processed_uploads = {}
                 st.session_state.upload_messages = []
@@ -553,7 +487,7 @@ with tab_upload:
             query = st.session_state.upload_pending_query
             st.session_state.upload_pending_query = None
             try:
-                with st.spinner("🔍 Searching your documents..."):
+                with st.spinner("Searching your documents..."):
                     answer = generate_answer_for_uploads(query, st.session_state.user_retriever)
             except Exception as e:
                 error_type = type(e).__name__
