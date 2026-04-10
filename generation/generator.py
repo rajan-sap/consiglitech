@@ -51,6 +51,14 @@ SYSTEM_PROMPT_RAG = (
     "do NOT fabricate facts. Cite the company name, year, or document type when relevant."
 )
 
+SYSTEM_PROMPT_UPLOAD_RAG = (
+    "You are DocIntel, a document-intelligence assistant. "
+    "The user has uploaded their own documents. Answer their question using ONLY "
+    "the retrieved document context below. If the context does not contain enough "
+    "information to answer, say so clearly — do NOT fabricate facts. "
+    "Cite the file name or page number when relevant."
+)
+
 SYSTEM_PROMPT_GENERAL = (
     "You are DocIntel, a helpful document-intelligence assistant built on a RAG "
     "(Retrieval-Augmented Generation) pipeline. You analyse the provided context to answer questions about"
@@ -123,7 +131,7 @@ def generate_answer(query, return_details=False, document_filter=None):
     
     aggregated_context = retrieve_aggregated_context(query, retiever, document_filter)
     
-    # If no context was retrieved, provide a helpful message
+    # If no context is retrieved, provide a helpful message
     if not aggregated_context.strip():
         answer = (
             "I couldn't find any relevant documents to answer your question. "
@@ -165,4 +173,44 @@ def generate_answer(query, return_details=False, document_filter=None):
             "response": response,
         }
     return answer
+
+
+# ─── Upload-aware Answer Generation ────────────────────────────────────────
+
+def generate_answer_for_uploads(query: str, session_retriever) -> str:
+    """Generate an answer from user-uploaded documents.
+
+    Simpler path than the default KB: no intent classification, no query
+    decomposition, no metadata filtering — just vector search + LLM.
+    """
+    results = session_retriever.search(query, k=5)
+
+    if not results:
+        return (
+            "I couldn't find relevant information in your uploaded documents. "
+            "Try rephrasing your question or uploading additional files."
+        )
+
+    context = "\n\n".join(
+        f"Document: {r['metadata'].get('file_name', 'unknown')}, "
+        f"Page {r['metadata'].get('page_number', '?')}\n{r['document']}"
+        for r in results
+    )
+    context = truncate_context(context)
+
+    prompt = (
+        f"Answer the following question using the retrieved context.\n\n"
+        f"Question: {query}\n\n"
+        f"Retrieved Context:\n{context}"
+    )
+
+    response = client.chat.completions.create(
+        model=LLM_MODEL,
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT_UPLOAD_RAG},
+            {"role": "user", "content": prompt},
+        ],
+        temperature=0.1,
+    )
+    return response.choices[0].message.content.strip()
 

@@ -1,27 +1,10 @@
 import streamlit as st
 import os
-import glob
 import re
-from generation.generator import generate_answer
+from generation.generator import generate_answer, generate_answer_for_uploads
+from ingestion.upload_processor import process_uploaded_file
+from retrieval.session_retriever import SessionRetriever
 from llm_config import LLM_MODEL, LLM_BASE_URL, LLM_API_KEY
-
-# ─────────────────────────────────────────────
-# DEBUG: Check retriever status on load
-# ─────────────────────────────────────────────
-DEBUG_MODE = os.environ.get("STREAMLIT_DEBUG", "false").lower() == "true"
-if DEBUG_MODE:
-    st.write("🔍 Debug Mode Enabled")
-    from generation.generator import retiever
-    st.write(f"- Current dir: {os.getcwd()}")
-    st.write(f"- Data dir exists: {os.path.isdir('./data')}")
-    st.write(f"- ChromaDB dir exists: {os.path.isdir('./chroma_db')}")
-    st.write(f"- Retriever available: {retiever.is_available}")
-    if retiever.vector_store:
-        try:
-            count = retiever.vector_store._collection.count()
-            st.write(f"- Vector store doc count: {count}")
-        except Exception as e:
-            st.write(f"- Error getting count: {e}")
 
 # ─────────────────────────────────────────────
 # PAGE CONFIG
@@ -40,7 +23,7 @@ if not LLM_API_KEY:
     st.warning(
         "⚠️ **LLM API key not found.** The app cannot generate answers.\n\n"
         "If you're running locally, create `.streamlit/secrets.toml` with:\n"
-        "```\nGROQ_API_KEY = \"gsk_your_key_here\"\n```\n\n"
+        "```\nGEMINI_API_KEY = \"your_key_here\"\n```\n\n"
         "On Streamlit Cloud, go to **Settings → Secrets** and add the key there.",
         icon="🔑",
     )
@@ -209,17 +192,22 @@ section[data-testid="stSidebar"] button:hover {
     color: #e0e0e4 !important;
 }
 
-/* ── Download button styling in sidebar ── */
-section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] button {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    min-width: auto !important;
+/* ── Upload area styling ── */
+.upload-card {
+    background: #191d23;
+    border: 2px dashed rgba(96,165,250,0.25);
+    border-radius: 1rem; padding: 2rem; text-align: center;
+    color: #d4d4d8; margin: 1.5rem auto; max-width: 640px;
 }
-section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] button p {
-    font-size: 1rem !important;
-    margin: 0 !important;
+.upload-card h3 { font-weight: 600; margin-bottom: 0.4rem; color: #f0f0f2; }
+.upload-card p  { opacity: 0.55; font-size: 0.95rem; }
+
+/* ── File chip ── */
+.file-chip {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: rgba(96,165,250,0.08); border: 1px solid rgba(96,165,250,0.18);
+    border-radius: 0.5rem; padding: 0.3rem 0.7rem; margin: 0.2rem;
+    font-size: 0.85rem; color: #93c5fd !important;
 }
 
 /* ── Sidebar section titles ── */
@@ -244,28 +232,26 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 if "pending_query" not in st.session_state:
     st.session_state.pending_query = None
-if "selected_tesla_pdf" not in st.session_state:
-    st.session_state.selected_tesla_pdf = None
+if "upload_messages" not in st.session_state:
+    st.session_state.upload_messages = []
+if "upload_pending_query" not in st.session_state:
+    st.session_state.upload_pending_query = None
+if "user_retriever" not in st.session_state:
+    st.session_state.user_retriever = None
+if "processed_uploads" not in st.session_state:
+    st.session_state.processed_uploads = {}  # {filename: chunk_count}
 
 # ─────────────────────────────────────────────
 # HELPER: count ingested docs
 # ─────────────────────────────────────────────
 def count_data_files():
-    """Return basic stats about the data directory.
-
-    When running locally (./data exists), counts are computed dynamically.
-    On Streamlit Cloud (./data not present), hardcoded defaults from the
-    last local run are returned so the sidebar still shows accurate stats.
-    """
-    # ── Hardcoded fallback (matches last local snapshot) ──
     DEFAULT_PER_COMPANY = {"BMW": 3, "Ford": 3, "Tesla": 2}
     DEFAULT_NEWS = 1
-    DEFAULT_TOTAL = sum(DEFAULT_PER_COMPANY.values()) + DEFAULT_NEWS  # 9
+    DEFAULT_TOTAL = sum(DEFAULT_PER_COMPANY.values()) + DEFAULT_NEWS
 
     if not os.path.isdir("./data"):
         return DEFAULT_TOTAL, DEFAULT_PER_COMPANY, DEFAULT_NEWS
 
-    # ── Dynamic counting (local) ──
     companies = ["BMW", "Ford", "Tesla"]
     total = 0
     per_company = {}
@@ -277,13 +263,11 @@ def count_data_files():
             total += len(files)
         else:
             per_company[c] = 0
-    # Count News folder
     news_folder = os.path.join("./data", "News")
     news_count = 0
     if os.path.isdir(news_folder):
         news_count = len([f for f in os.listdir(news_folder) if os.path.isfile(os.path.join(news_folder, f))])
         total += news_count
-    # count root-level data files too
     root_files = [f for f in os.listdir("./data") if os.path.isfile(os.path.join("./data", f))]
     total += len(root_files)
     return total, per_company, news_count
@@ -294,31 +278,33 @@ total_docs, docs_per_company, news_docs = count_data_files()
 # HELPER: extract metadata from filename
 # ─────────────────────────────────────────────
 def extract_metadata_from_filename(filename):
-    """
-    Extract company and year from PDF filename like 'Tesla_Annual_Report_2023.pdf'
-    Returns dict with 'company' and 'year' keys.
-    """
-    # Remove .pdf extension
     name = filename.replace('.pdf', '')
-    
-    # Extract company (first word)
     company = name.split('_')[0] if '_' in name else None
-    
-    # Extract year (4 digit year)
     year_match = re.search(r'(20\d{2})', name)
     year = year_match.group(1) if year_match else None
-    
-    return {
-        "company": company,
-        "year": year,
-        "document_type": "Annual Report"
-    }
+    return {"company": company, "year": year, "document_type": "Annual Report"}
+
+# ─────────────────────────────────────────────
+# HELPER: render chat messages
+# ─────────────────────────────────────────────
+def render_chat(messages):
+    for msg in messages:
+        if msg["role"] == "user":
+            avatar_class, bubble_class, row_class, avatar_text = "user-av", "user-bubble", "user", "👤"
+        else:
+            avatar_class, bubble_class, row_class, avatar_text = "bot-av", "bot-bubble", "", "🤖"
+        st.markdown(f"""
+        <div class="chat-row {row_class}">
+            <div class="chat-avatar {avatar_class}">{avatar_text}</div>
+            <div class="chat-bubble {bubble_class}">{msg['content']}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
 
 # ─────────────────────────────────────────────
 # SIDEBAR
 # ─────────────────────────────────────────────
 with st.sidebar:
-    # Logo / branding
     st.markdown("""
     <div style="text-align:center; padding: 0 0 0.2rem 0;">
         <div style="font-size:1.8rem;">📑</div>
@@ -333,14 +319,14 @@ with st.sidebar:
 
     st.divider()
 
-    # ── Knowledge base stats ──
+    # ── Default Knowledge Base stats ──
     st.markdown("##### 📊 Knowledge Base")
     cols = st.columns(2)
     with cols[0]:
         st.markdown(f"""
         <div class="stat-card">
             <div class="stat-value">{total_docs}</div>
-            <div class="stat-label">Documents, >2000 Pages</div>
+            <div class="stat-label">Documents</div>
         </div>""", unsafe_allow_html=True)
     with cols[1]:
         st.markdown(f"""
@@ -349,11 +335,8 @@ with st.sidebar:
             <div class="stat-label">Companies</div>
         </div>""", unsafe_allow_html=True)
 
-    # Per-company breakdown + News
     for company, count in docs_per_company.items():
         icon = {"BMW": "🚗", "Ford": "🚙", "Tesla": "⚡"}.get(company, "📁")
-        
-        # Regular company display
         st.markdown(f"""
         <div style="display:flex; align-items:center; justify-content:space-between;
                     padding:0.25rem 0.5rem; margin:0.1rem 0; border-radius:0.4rem;
@@ -365,7 +348,6 @@ with st.sidebar:
             </span>
         </div>""", unsafe_allow_html=True)
 
-    # News and Advertisements row
     st.markdown(f"""
         <div style="display:flex; align-items:center; justify-content:space-between;
                     padding:0.25rem 0.5rem; margin:0.1rem 0; border-radius:0.4rem;
@@ -377,40 +359,40 @@ with st.sidebar:
             </span>
         </div>""", unsafe_allow_html=True)
 
-    st.markdown("<div style='height: 0.5rem;'></div>", unsafe_allow_html=True)
-    
-    # ── Sample Documents ──
-    st.markdown("##### 📄 Sample Documents")
-    
-    # Tesla PDF files - show only the first one
-    tesla_folder = "./data/Tesla"
-    if os.path.isdir(tesla_folder):
-        tesla_files = [f for f in os.listdir(tesla_folder) if f.endswith('.pdf')]
-        tesla_files = sorted(tesla_files)
-        
-        if tesla_files:
-            # Show only the first PDF file as a download button
-            pdf_file = tesla_files[0]
-            pdf_path = os.path.join(tesla_folder, pdf_file)
-            with open(pdf_path, "rb") as f:
-                st.download_button(
-                    label=pdf_file,
-                    data=f,
-                    file_name=pdf_file,
-                    mime="application/pdf"
-                )
-
     st.divider()
 
-    st.divider()
+    # ── User Uploads stats ──
+    if st.session_state.processed_uploads:
+        st.markdown("##### 📤 Your Uploads")
+        upload_count = len(st.session_state.processed_uploads)
+        chunk_count = sum(st.session_state.processed_uploads.values())
+        cols = st.columns(2)
+        with cols[0]:
+            st.markdown(f"""
+            <div class="stat-card">
+                <div class="stat-value">{upload_count}</div>
+                <div class="stat-label">Files</div>
+            </div>""", unsafe_allow_html=True)
+        with cols[1]:
+            st.markdown(f"""
+            <div class="stat-card">
+                <div class="stat-value">{chunk_count}</div>
+                <div class="stat-label">Chunks</div>
+            </div>""", unsafe_allow_html=True)
 
-    # ── RAG Pipeline info ──
+        for fname in st.session_state.processed_uploads:
+            st.markdown(f'<div class="file-chip">📄 {fname}</div>', unsafe_allow_html=True)
+
+        st.divider()
+
+    # ── Tech Stack ──
     st.markdown("##### ⚙️ Tech Stack")
-    # Derive a friendly display name for the active LLM provider + model
     if LLM_BASE_URL and "groq" in LLM_BASE_URL:
         _llm_provider = "Groq"
     elif LLM_BASE_URL and "localhost" in LLM_BASE_URL:
         _llm_provider = "LM Studio"
+    elif LLM_BASE_URL and "google" in LLM_BASE_URL:
+        _llm_provider = "Google"
     else:
         _llm_provider = "OpenAI"
     _llm_display = f"{_llm_provider} / {LLM_MODEL}"
@@ -426,138 +408,161 @@ with st.sidebar:
 
     st.divider()
 
-    # ── RAG Evals ──
-    with st.expander("📈 RAG Evals", expanded=False):
-        st.markdown("""
-        <div style="font-size:0.9rem; line-height:1.65; opacity:0.75;">
-            <b>Retrieval Metrics</b>
-            <ul style="margin:0.3rem 0 0.6rem 1.2rem; padding:0;">
-                <li><b>Context Precision</b> — Are the retrieved chunks relevant to the query?</li>
-                <li><b>Context Recall</b> — Are all necessary chunks retrieved?</li>
-                <li><b>MRR</b> — How high does the correct document rank?</li>
-                <li><b>Hit Rate @k</b> — Is the answer in the top-k results?</li>
-            </ul>
-            <b>Generation Metrics</b>
-            <ul style="margin:0.3rem 0 0.6rem 1.2rem; padding:0;">
-                <li><b>Faithfulness</b> — Is the answer grounded in retrieved context?</li>
-                <li><b>Answer Relevancy</b> — Does the answer address the question?</li>
-                <li><b>Hallucination Rate</b> — % of claims not supported by context</li>
-            </ul>
-            <b>End-to-End</b>
-            <ul style="margin:0.3rem 0 0.2rem 1.2rem; padding:0;">
-                <li><b>Correctness</b> — Does the answer match the ground truth?</li>
-                <li><b>Latency (P50/P95)</b> — Response time percentiles</li>
-                <li><b>Token Cost</b> — Tokens consumed per query</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-
-    st.divider()
-
     # ── Actions ──
     st.markdown("<div style='height:0.3rem;'></div>", unsafe_allow_html=True)
     if st.button("🗑️  Clear Conversation", use_container_width=True):
         st.session_state.messages = []
+        st.session_state.upload_messages = []
         st.rerun()
 
 
 # ─────────────────────────────────────────────
-# MAIN CONTENT
+# MAIN CONTENT — TABS
 # ─────────────────────────────────────────────
-# Welcome screen when no messages yet
-if not st.session_state.messages:
-    st.markdown("""
-    <div class="welcome-card">
-        <div style="font-size:2.5rem; margin-bottom:0.6rem;">📑</div>
-        <h2>DocIntel</h2>
-        <p>Ask questions about BMW, Ford, and Tesla — annual reports and financials.<br>
-        Answers grounded in real documents using hybrid retrieval.<br>
-        <span style="opacity:0.5; font-size:0.9rem; color:white; font-style:italic;">Real-time news coming soon.</span></p>
-    </div>
-    """, unsafe_allow_html=True)
+tab_kb, tab_upload = st.tabs(["📚 Knowledge Base", "📤 Your Documents"])
 
-    st.markdown("")
-
-    # Example questions
-    st.markdown("<p class='example-label'>Try one of these questions</p>", unsafe_allow_html=True)
-
-    example_questions = [
-        "What was Tesla's revenue in 2022 and 2023?",
-        "Which Tesla models were in development phase in 2022?",
-        "Compare BMW and Ford's net income over the past 3 years",
-
-    ]
-
-    # Render example questions as clickable buttons
-    cols = st.columns(3)
-    for i, q in enumerate(example_questions):
-        with cols[i % 3]:
-            if st.button(q, key=f"example_{i}", use_container_width=True):
-                st.session_state.messages.append({"role": "user", "content": q})
-                st.session_state.pending_query = q
-                st.rerun()
-
-else:
-    # ── Chat history ──
-    for msg in st.session_state.messages:
-        if msg["role"] == "user":
-            avatar_class = "user-av"
-            bubble_class = "user-bubble"
-            row_class = "user"
-            avatar_text = "👤"
-        else:
-            avatar_class = "bot-av"
-            bubble_class = "bot-bubble"
-            row_class = ""
-            avatar_text = "🤖"
-
-        st.markdown(f"""
-        <div class="chat-row {row_class}">
-            <div class="chat-avatar {avatar_class}">{avatar_text}</div>
-            <div class="chat-bubble {bubble_class}">{msg['content']}</div>
+# ═════════════════════════════════════════════
+# TAB 1: Knowledge Base (existing functionality)
+# ═════════════════════════════════════════════
+with tab_kb:
+    if not st.session_state.messages:
+        st.markdown("""
+        <div class="welcome-card">
+            <div style="font-size:2.5rem; margin-bottom:0.6rem;">📑</div>
+            <h2>DocIntel</h2>
+            <p>Ask questions about BMW, Ford, and Tesla — annual reports and financials.<br>
+            Answers grounded in real documents using hybrid retrieval.</p>
         </div>
         """, unsafe_allow_html=True)
 
-# ─────────────────────────────────────────────
-# CHAT INPUT (always visible at bottom)
-# ─────────────────────────────────────────────
-if prompt := st.chat_input("Ask a question about BMW, Ford, or Tesla..."):
-    # Add user message
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    st.session_state.pending_query = prompt
-    st.rerun()
+        st.markdown("")
+        st.markdown("<p class='example-label'>Try one of these questions</p>", unsafe_allow_html=True)
 
-# ─────────────────────────────────────────────
-# GENERATE ANSWER FOR PENDING QUERY
-# ─────────────────────────────────────────────
-if st.session_state.pending_query:
-    query = st.session_state.pending_query
-    st.session_state.pending_query = None
+        example_questions = [
+            "What was Tesla's revenue in 2022 and 2023?",
+            "Which Tesla models were in development phase in 2022?",
+            "Compare BMW and Ford's net income over the past 3 years",
+        ]
+        cols = st.columns(3)
+        for i, q in enumerate(example_questions):
+            with cols[i % 3]:
+                if st.button(q, key=f"example_{i}", use_container_width=True):
+                    st.session_state.messages.append({"role": "user", "content": q})
+                    st.session_state.pending_query = q
+                    st.rerun()
+    else:
+        render_chat(st.session_state.messages)
 
-    # Get document filter from selected Tesla PDF (if any)
-    document_filter = None
-    # Get checkbox value from session state - use True as default
-    use_doc_filter = st.session_state.get("use_tesla_doc_filter", True)
-    if (
-        use_doc_filter 
-        and "selected_tesla_pdf" in st.session_state 
-        and st.session_state.selected_tesla_pdf
-    ):
-        document_filter = extract_metadata_from_filename(st.session_state.selected_tesla_pdf)
+    if prompt := st.chat_input("Ask about BMW, Ford, or Tesla...", key="kb_chat"):
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        st.session_state.pending_query = prompt
+        st.rerun()
 
-    try:
-        with st.spinner("🔍 Searching documents and generating answer..."):
-            answer = generate_answer(query, document_filter=document_filter)
-    except Exception as e:
-        error_type = type(e).__name__
-        if "AuthenticationError" in error_type:
-            answer = (
-                "⚠️ **Authentication error** — the LLM API key is missing or invalid.\n\n"
-                "Please set `GROQ_API_KEY` in Streamlit Cloud **Settings → Secrets**, "
-                "or in `.streamlit/secrets.toml` when running locally."
-            )
-        else:
+    if st.session_state.pending_query:
+        query = st.session_state.pending_query
+        st.session_state.pending_query = None
+        try:
+            with st.spinner("🔍 Searching documents and generating answer..."):
+                answer = generate_answer(query)
+        except Exception as e:
+            error_type = type(e).__name__
             answer = f"⚠️ **Error generating answer:** {error_type} — {e}"
+        st.session_state.messages.append({"role": "assistant", "content": answer})
+        st.rerun()
 
-    st.session_state.messages.append({"role": "assistant", "content": answer})
-    st.rerun()
+# ═════════════════════════════════════════════
+# TAB 2: Your Documents (upload + chat)
+# ═════════════════════════════════════════════
+with tab_upload:
+    # ── Upload area ──
+    if not st.session_state.processed_uploads:
+        st.markdown("""
+        <div class="upload-card">
+            <div style="font-size:2.5rem; margin-bottom:0.4rem;">📤</div>
+            <h3>Upload Your Documents</h3>
+            <p>Upload PDF or DOCX files and chat with them.<br>
+            Documents are processed in your session and not stored permanently.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    uploaded_files = st.file_uploader(
+        "Upload PDF or DOCX files",
+        type=["pdf", "docx"],
+        accept_multiple_files=True,
+        key="file_uploader",
+    )
+
+    if uploaded_files:
+        # Find files not yet processed
+        new_files = [f for f in uploaded_files if f.name not in st.session_state.processed_uploads]
+
+        if new_files:
+            if st.button(f"⚡ Process {len(new_files)} new file(s)", use_container_width=True):
+                # Initialize retriever if needed
+                if st.session_state.user_retriever is None:
+                    st.session_state.user_retriever = SessionRetriever()
+
+                progress = st.progress(0, text="Processing documents...")
+                for idx, file in enumerate(new_files):
+                    progress.progress(
+                        (idx) / len(new_files),
+                        text=f"Processing {file.name}...",
+                    )
+                    try:
+                        chunks = process_uploaded_file(file.name, file.getvalue())
+                        if chunks:
+                            st.session_state.user_retriever.add_documents(chunks, file.name)
+                            st.session_state.processed_uploads[file.name] = len(chunks)
+                        else:
+                            st.warning(f"No text extracted from **{file.name}** — it may be a scanned/image PDF.")
+                    except Exception as e:
+                        st.error(f"Failed to process **{file.name}**: {e}")
+
+                progress.progress(1.0, text="Done!")
+                st.rerun()
+
+    # ── Show processed files ──
+    if st.session_state.processed_uploads:
+        st.markdown("---")
+        cols = st.columns([3, 1])
+        with cols[0]:
+            file_chips = " ".join(
+                f'<span class="file-chip">📄 {name} ({chunks} chunks)</span>'
+                for name, chunks in st.session_state.processed_uploads.items()
+            )
+            st.markdown(file_chips, unsafe_allow_html=True)
+        with cols[1]:
+            if st.button("🗑️ Clear uploads", use_container_width=True):
+                st.session_state.user_retriever = None
+                st.session_state.processed_uploads = {}
+                st.session_state.upload_messages = []
+                st.rerun()
+
+        st.markdown("")
+
+        # ── Chat with uploaded documents ──
+        if st.session_state.upload_messages:
+            render_chat(st.session_state.upload_messages)
+
+        if upload_prompt := st.chat_input("Ask about your uploaded documents...", key="upload_chat"):
+            st.session_state.upload_messages.append({"role": "user", "content": upload_prompt})
+            st.session_state.upload_pending_query = upload_prompt
+            st.rerun()
+
+        if st.session_state.upload_pending_query:
+            query = st.session_state.upload_pending_query
+            st.session_state.upload_pending_query = None
+            try:
+                with st.spinner("🔍 Searching your documents..."):
+                    answer = generate_answer_for_uploads(query, st.session_state.user_retriever)
+            except Exception as e:
+                error_type = type(e).__name__
+                answer = f"⚠️ **Error generating answer:** {error_type} — {e}"
+            st.session_state.upload_messages.append({"role": "assistant", "content": answer})
+            st.rerun()
+    elif not uploaded_files:
+        st.markdown(
+            "<p style='text-align:center; opacity:0.4; margin-top:1rem;'>"
+            "Upload documents above to get started.</p>",
+            unsafe_allow_html=True,
+        )
