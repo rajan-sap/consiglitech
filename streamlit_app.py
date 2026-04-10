@@ -37,17 +37,20 @@ st.markdown("""
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 html, body, [class*="css"] { font-family: 'Inter', -apple-system, sans-serif; }
 
+/* ── Outer page background (visible outside the app) ── */
+html, body { background: #090b0e !important; }
+
 /* ── Main area ── */
 .stApp { background: #0f1117; color: #c9cdd4; }
 .stApp > header { background: transparent !important; }
 
-/* ── Constrain main content width on desktop ── */
+/* ── Constrain entire app to 70% on desktop ── */
 @media (min-width: 1024px) {
-    .main .block-container {
-        max-width: 70% !important;
+    .stApp {
+        max-width: 70vw !important;
         margin: 0 auto !important;
-        padding-left: 2rem !important;
-        padding-right: 2rem !important;
+        border-left: 1px solid #1e222b;
+        border-right: 1px solid #1e222b;
     }
 }
 
