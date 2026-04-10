@@ -1,11 +1,16 @@
 
 import re
-from retrieval.retriever import retrieve_aggregated_context
-from retrieval.retriever import Retriever
 from llm_config import llm_client as client, LLM_MODEL, truncate_context
 
+# Lazy imports — retrieval depends on chromadb which can fail at import time
+_retriever = None
 
-retiever = Retriever()
+def _get_retriever():
+    global _retriever
+    if _retriever is None:
+        from retrieval.retriever import Retriever
+        _retriever = Retriever()
+    return _retriever
 
 
 # ─── Query Intent Classification (LLM-based) ────────────────────────────────
@@ -110,9 +115,10 @@ def generate_answer(query, return_details=False, document_filter=None):
     # Check if the retriever is available (ChromaDB has documents)
     import sys
     
+    retiever = _get_retriever()
     print(f"[GENERATOR] Processing document query: {query}", file=sys.stderr)
     print(f"[GENERATOR] Retriever available: {retiever.is_available}", file=sys.stderr)
-    
+
     if not retiever.is_available:
         answer = (
             "I'm sorry, but the document knowledge base is not currently available. "
@@ -129,6 +135,7 @@ def generate_answer(query, return_details=False, document_filter=None):
             }
         return answer
     
+    from retrieval.retriever import retrieve_aggregated_context
     aggregated_context = retrieve_aggregated_context(query, retiever, document_filter)
     
     # If no context is retrieved, provide a helpful message
