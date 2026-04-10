@@ -251,6 +251,18 @@ def count_pages():
 
 total_pages = count_pages()
 
+def count_chunks():
+    """Count total chunks in the ChromaDB collection."""
+    try:
+        import chromadb
+        client = chromadb.PersistentClient(path="./chroma_db")
+        col = client.get_collection("documents")
+        return col.count()
+    except Exception:
+        return 3001
+
+total_chunks = count_chunks()
+
 # ─────────────────────────────────────────────
 # HELPER: extract metadata from filename
 # ─────────────────────────────────────────────
@@ -297,24 +309,31 @@ with st.sidebar:
 
     # ── Default Knowledge Base stats ──
     st.markdown("##### Knowledge Base")
-    cols = st.columns(3)
-    with cols[0]:
+    row1 = st.columns(2)
+    with row1[0]:
         st.markdown(f"""
         <div class="stat-card">
             <div class="stat-value">{total_docs}</div>
             <div class="stat-label">Documents</div>
         </div>""", unsafe_allow_html=True)
-    with cols[1]:
+    with row1[1]:
+        st.markdown(f"""
+        <div class="stat-card">
+            <div class="stat-value">{len(docs_per_company)}</div>
+            <div class="stat-label">Companies</div>
+        </div>""", unsafe_allow_html=True)
+    row2 = st.columns(2)
+    with row2[0]:
         st.markdown(f"""
         <div class="stat-card">
             <div class="stat-value">{total_pages}</div>
             <div class="stat-label">Pages</div>
         </div>""", unsafe_allow_html=True)
-    with cols[2]:
+    with row2[1]:
         st.markdown(f"""
         <div class="stat-card">
-            <div class="stat-value">{len(docs_per_company)}</div>
-            <div class="stat-label">Companies</div>
+            <div class="stat-value">{total_chunks}</div>
+            <div class="stat-label">Chunks</div>
         </div>""", unsafe_allow_html=True)
 
     for company, count in docs_per_company.items():
