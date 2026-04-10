@@ -55,7 +55,6 @@ section[data-testid="stSidebar"] {
     height: 100vh !important;
     min-height: 100vh !important;
     top: 0 !important;
-    position: fixed !important;
 }
 section[data-testid="stSidebar"] > div:first-child {
     display: flex; flex-direction: column;
