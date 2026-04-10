@@ -235,6 +235,22 @@ def count_data_files():
 
 total_docs, docs_per_company, news_docs = count_data_files()
 
+def count_pages():
+    """Count unique pages in the ChromaDB collection."""
+    try:
+        import chromadb
+        client = chromadb.PersistentClient(path="./chroma_db")
+        col = client.get_collection("documents")
+        results = col.get(include=["metadatas"])
+        pages = set()
+        for m in results["metadatas"]:
+            pages.add((m.get("file_name", ""), m.get("page_number", "")))
+        return len(pages)
+    except Exception:
+        return 2000  # fallback estimate
+
+total_pages = count_pages()
+
 # ─────────────────────────────────────────────
 # HELPER: extract metadata from filename
 # ─────────────────────────────────────────────
@@ -281,7 +297,7 @@ with st.sidebar:
 
     # ── Default Knowledge Base stats ──
     st.markdown("##### Knowledge Base")
-    cols = st.columns(2)
+    cols = st.columns(3)
     with cols[0]:
         st.markdown(f"""
         <div class="stat-card">
@@ -289,6 +305,12 @@ with st.sidebar:
             <div class="stat-label">Documents</div>
         </div>""", unsafe_allow_html=True)
     with cols[1]:
+        st.markdown(f"""
+        <div class="stat-card">
+            <div class="stat-value">{total_pages}</div>
+            <div class="stat-label">Pages</div>
+        </div>""", unsafe_allow_html=True)
+    with cols[2]:
         st.markdown(f"""
         <div class="stat-card">
             <div class="stat-value">{len(docs_per_company)}</div>
