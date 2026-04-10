@@ -41,6 +41,13 @@ html, body, [class*="css"] { font-family: 'Inter', -apple-system, sans-serif; }
 .stApp { background: #0f1117; color: #c9cdd4; }
 .stApp > header { background: transparent !important; }
 
+/* ── Constrain main content width ── */
+.main .block-container {
+    max-width: 70% !important;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+}
+
 /* ── Sidebar ── */
 section[data-testid="stSidebar"] {
     background: #161a22;
