@@ -31,7 +31,7 @@ def _get_secret(key: str, fallback: str = "") -> str:
 
 # --- Gemini (Google, OpenAI-compatible endpoint) ---
 LLM_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
-LLM_MODEL = "gemini-2.0-flash"
+LLM_MODEL = "gemini-2.5-flash"
 LLM_API_KEY = _get_secret("GEMINI_API_KEY")
 
 # --- LM Studio (local) — uncomment these and comment out the block above ---
