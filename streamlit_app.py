@@ -340,7 +340,7 @@ with st.sidebar:
     with row2[0]:
         st.markdown(f"""
         <div class="stat-card">
-            <div class="stat-value">{total_pages}</div>
+            <div class="stat-value">1000+</div>
             <div class="stat-label">Pages</div>
         </div>""", unsafe_allow_html=True)
     with row2[1]:
