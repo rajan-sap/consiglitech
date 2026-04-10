@@ -201,10 +201,23 @@ if "user_retriever" not in st.session_state:
     st.session_state.user_retriever = None
 if "processed_uploads" not in st.session_state:
     st.session_state.processed_uploads = {}  # {filename: chunk_count}
-if "query_count" not in st.session_state:
-    st.session_state.query_count = 0
+import time
 
 MAX_FREE_QUERIES = 10
+LIMIT_WINDOW_SECONDS = 3600  # 1 hour
+
+if "query_count" not in st.session_state:
+    st.session_state.query_count = 0
+if "limit_hit_time" not in st.session_state:
+    st.session_state.limit_hit_time = None
+
+# Reset counter if 1 hour has passed since hitting the limit
+if (
+    st.session_state.limit_hit_time is not None
+    and time.time() - st.session_state.limit_hit_time >= LIMIT_WINDOW_SECONDS
+):
+    st.session_state.query_count = 0
+    st.session_state.limit_hit_time = None
 
 # ─────────────────────────────────────────────
 # HELPER: count ingested docs
@@ -491,12 +504,14 @@ with tab_kb:
         query = st.session_state.pending_query
         st.session_state.pending_query = None
         if st.session_state.query_count >= MAX_FREE_QUERIES:
-            answer = "You've reached the free chat limit (10 queries). This is a beta version with limited resources. Thank you for trying DocIntel!"
+            answer = "You've reached the free chat limit (10 queries per hour). This is a beta version with limited resources. Please try again later."
         else:
             try:
                 with st.spinner("Searching documents..."):
                     answer = generate_answer(query)
                 st.session_state.query_count += 1
+                if st.session_state.query_count >= MAX_FREE_QUERIES:
+                    st.session_state.limit_hit_time = time.time()
             except Exception as e:
                 error_type = type(e).__name__
                 answer = f"⚠️ **Error generating answer:** {error_type} — {e}"
